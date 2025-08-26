@@ -759,7 +759,7 @@
                     <div>
                         <h5 class="text-lg font-semibold mb-4">معلومات الاتصال</h5>
                         <ul class="space-y-2">
-                            <li>+971 543835771</li>
+                            <li>+971 5438357551</li>
                             <li>shcoolsschool2019@gmail.com</li>
                             <li>بني ياس شرق 9 -ابوظبي، الإمارات</li>
                         </ul>
@@ -1040,11 +1040,11 @@
                     <label class="block text-sm font-medium mb-2">اليوم</label>
                     <select id="plan-day" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                         <option value="">اختر اليوم</option>
-                        <option value="الأحد">الأحد</option>
-                        <option value="الاثنين">الاثنين</option>
+                        <option value="الاتنين">الاتنين</option>
                         <option value="الثلاثاء">الثلاثاء</option>
-                        <option value="الأربعاء">الأربعاء</option>
+                        <option value="الاربعاء">الاربعاء</option>
                         <option value="الخميس">الخميس</option>
+                        <option value="الجمعة">الجمعة</option>
                     </select>
                 </div>
                 
@@ -2600,7 +2600,7 @@
             tableContainer.classList.remove('hidden');
             
             // Sort plans by grade, date, and day
-            const dayOrder = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+            const dayOrder = ['الاتنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة'];
             filteredPlans.sort((a, b) => {
                 if (a.grade !== b.grade) {
                     return a.grade.localeCompare(b.grade);
