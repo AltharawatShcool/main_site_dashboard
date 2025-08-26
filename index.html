@@ -204,6 +204,28 @@
             padding: 1px 2px;
             border-radius: 2px;
         }
+
+        .activity-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #5D5CDE;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(93, 92, 222, 0.15);
+        }
+
+        .activity-status-active {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .activity-status-completed {
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+        }
+
+        .activity-status-upcoming {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
     </style>
     <script>
         tailwind.config = {
@@ -311,7 +333,7 @@
                 <div class="bounce-in">
                     <h2 class="text-4xl md:text-5xl font-bold mb-4">لوحة إدارة المدرسة</h2>
                     <p class="text-xl mb-6">إدارة شاملة لجميع أنشطة المدرسة</p>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto mt-8">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-7xl mx-auto mt-8">
                         <div class="stats-card">
                             <i class="fas fa-calendar-week text-3xl mb-2"></i>
                             <div class="text-2xl font-bold" id="plans-count">0</div>
@@ -326,6 +348,11 @@
                             <i class="fas fa-chalkboard-teacher text-3xl mb-2"></i>
                             <div class="text-2xl font-bold" id="teachers-count">0</div>
                             <div class="text-sm opacity-90">معلم ومعلمة</div>
+                        </div>
+                        <div class="stats-card">
+                            <i class="fas fa-calendar-day text-3xl mb-2"></i>
+                            <div class="text-2xl font-bold" id="activities-count">0</div>
+                            <div class="text-sm opacity-90">نشاط</div>
                         </div>
                         <div class="stats-card">
                             <i class="fas fa-chart-line text-3xl mb-2"></i>
@@ -352,6 +379,10 @@
                     <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="attendance">
                         <i class="fas fa-user-check ml-2"></i>
                         الحضور والغياب
+                    </button>
+                    <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="activities">
+                        <i class="fas fa-calendar-day ml-2"></i>
+                        إدارة الأنشطة
                     </button>
                     <button id="users-tab-btn" class="tab-button admin-only px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="users">
                         <i class="fas fa-users-cog ml-2"></i>
@@ -581,6 +612,77 @@
             </div>
         </section>
 
+        <!-- Activities Management Tab -->
+        <section id="activities-tab" class="tab-content hidden py-8">
+            <div class="container mx-auto px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">إدارة الأنشطة المدرسية</h3>
+                        <button id="add-activity-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            <i class="fas fa-plus ml-2"></i>
+                            إضافة نشاط جديد
+                        </button>
+                    </div>
+                    
+                    <!-- Activity Filters -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                        <h4 class="text-lg font-semibold mb-4">البحث والتصفية</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label for="activities-search" class="block text-sm font-medium mb-2">البحث في الأنشطة:</label>
+                                <input type="text" id="activities-search" placeholder="البحث بالاسم أو الوصف" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            </div>
+                            <div>
+                                <label for="activities-date-filter" class="block text-sm font-medium mb-2">التاريخ:</label>
+                                <input type="date" id="activities-date-filter" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            </div>
+                            <div>
+                                <label for="activities-status-filter" class="block text-sm font-medium mb-2">الحالة:</label>
+                                <select id="activities-status-filter" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">جميع الأنشطة</option>
+                                    <option value="upcoming">قادم</option>
+                                    <option value="active">جاري</option>
+                                    <option value="completed">مكتمل</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button id="search-activities-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-search ml-2"></i>
+                                بحث
+                            </button>
+                            <button id="clear-activities-search-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                                <i class="fas fa-times ml-2"></i>
+                                مسح الفلاتر
+                            </button>
+                            <button id="export-activities-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                <i class="fas fa-file-excel ml-2"></i>
+                                تصدير الأنشطة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="activities-loading" class="text-center py-8">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p>جاري تحميل الأنشطة...</p>
+                    </div>
+                    
+                    <div id="activities-grid" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                    
+                    <div id="activities-empty" class="hidden empty-state">
+                        <i class="fas fa-calendar-day text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا توجد أنشطة</h4>
+                        <p class="mb-4">ابدأ بإضافة الأنشطة المدرسية</p>
+                        <button onclick="document.getElementById('add-activity-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة نشاط جديد
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Users Management Tab -->
         <section id="users-tab" class="tab-content admin-only hidden py-8">
             <div class="container mx-auto px-4">
@@ -648,6 +750,7 @@
                         <ul class="space-y-2">
                             <li><a href="#" onclick="switchTab('plans')" class="hover:text-primary transition-colors">الخطط الأسبوعية</a></li>
                             <li><a href="#" onclick="switchTab('students')" class="hover:text-primary transition-colors">إدارة الطلاب</a></li>
+                            <li><a href="#" onclick="switchTab('activities')" class="hover:text-primary transition-colors">إدارة الأنشطة</a></li>
                             <li><a href="#" onclick="switchTab('attendance')" class="hover:text-primary transition-colors">الحضور والغياب</a></li>
                             <li id="footer-users-link" class="admin-only"><a href="#" onclick="switchTab('users')" class="hover:text-primary transition-colors">إدارة المستخدمين</a></li>
                         </ul>
@@ -656,18 +759,18 @@
                     <div>
                         <h5 class="text-lg font-semibold mb-4">معلومات الاتصال</h5>
                         <ul class="space-y-2">
-                            <li>+971 2 123 4567</li>
-                            <li>admin@nationalwealthschool.ae</li>
-                            <li>أبوظبي، الإمارات</li>
+                            <li>+971 543835771</li>
+                            <li>shcoolsschool2019@gmail.com</li>
+                            <li>بني ياس شرق 9 -ابوظبي، الإمارات</li>
                         </ul>
                     </div>
                     
                     <div>
                         <h5 class="text-lg font-semibold mb-4">ساعات العمل</h5>
                         <ul class="space-y-2">
-                            <li>الأحد - الخميس</li>
+                            <li>الاتنين - الجمعه</li>
                             <li>7:30 ص - 2:30 م</li>
-                            <li>الجمعة والسبت: إجازة</li>
+                            <li> الاحد: إجازة</li>
                         </ul>
                     </div>
                 </div>
@@ -680,6 +783,72 @@
         </footer>
     </div>
 
+    <!-- Add Activity Modal -->
+    <div id="add-activity-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="activity-modal-title" class="text-2xl font-bold text-primary">إضافة نشاط جديد</h3>
+                <button id="close-activity-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="activity-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">اسم النشاط <span class="text-red-500">*</span></label>
+                    <input type="text" id="activity-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم النشاط">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">وصف النشاط <span class="text-red-500">*</span></label>
+                    <textarea id="activity-description" required rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="وصف مفصل للنشاط"></textarea>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">تاريخ النشاط <span class="text-red-500">*</span></label>
+                        <input type="date" id="activity-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">وقت النشاط <span class="text-red-500">*</span></label>
+                        <input type="time" id="activity-time" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">موقع النشاط</label>
+                        <input type="text" id="activity-location" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="مكان إقامة النشاط">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الفئة المستهدفة</label>
+                        <select id="activity-target" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="all">جميع الصفوف</option>
+                            <option value="primary">المرحلة الابتدائية</option>
+                            <option value="middle">المرحلة المتوسطة</option>
+                            <option value="high">المرحلة الثانوية</option>
+                            <option value="specific">صفوف محددة</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">ملاحظات إضافية</label>
+                    <textarea id="activity-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات أو تعليمات خاصة بالنشاط"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-activity" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="activity-submit-text">إضافة النشاط</span>
+                        <div id="activity-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing modals remain the same... -->
     <!-- Add Student Modal -->
     <div id="add-student-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
@@ -1030,8 +1199,10 @@
         let allPlans = [];
         let allUsers = [];
         let allStudents = [];
+        let allActivities = [];
         let currentExcelData = [];
         let currentSearchFilters = {};
+        let currentActivityFilters = {};
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -1048,6 +1219,7 @@
             document.getElementById('attendance-date').value = today;
             document.getElementById('whatsapp-date').value = today;
             document.getElementById('plan-date').value = today;
+            document.getElementById('activity-date').value = today;
         }
 
         function setupEventListeners() {
@@ -1098,6 +1270,23 @@
             
             // Export functionality
             document.getElementById('export-students-btn').addEventListener('click', exportStudentsToExcel);
+            
+            // Activities functionality
+            document.getElementById('add-activity-btn').addEventListener('click', openActivityModal);
+            document.getElementById('close-activity-modal').addEventListener('click', closeActivityModal);
+            document.getElementById('cancel-activity').addEventListener('click', closeActivityModal);
+            document.getElementById('activity-form').addEventListener('submit', handleActivitySubmit);
+            
+            // Activity search functionality
+            document.getElementById('search-activities-btn').addEventListener('click', searchActivities);
+            document.getElementById('clear-activities-search-btn').addEventListener('click', clearActivitySearchFilters);
+            document.getElementById('export-activities-btn').addEventListener('click', exportActivitiesToExcel);
+            
+            // Auto-search for activities
+            const activitySearchInputs = ['activities-search', 'activities-date-filter', 'activities-status-filter'];
+            activitySearchInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', debounce(searchActivities, 300));
+            });
             
             // Users functionality
             document.getElementById('add-user-btn').addEventListener('click', openUserModal);
@@ -1224,7 +1413,7 @@
         function setupModalCloseEvents() {
             const modals = [
                 'add-plan-modal', 'add-user-modal', 'add-student-modal', 
-                'import-excel-modal', 'whatsapp-modal'
+                'import-excel-modal', 'whatsapp-modal', 'add-activity-modal'
             ];
             
             modals.forEach(modalId => {
@@ -1236,6 +1425,7 @@
                         else if (closeFunction === 'closestudentModal') window.closeStudentModal();
                         else if (closeFunction === 'closeimportexcelModal') window.closeImportModal();
                         else if (closeFunction === 'closewhatsappModal') window.closeWhatsAppModal();
+                        else if (closeFunction === 'closeactivityModal') window.closeActivityModal();
                     }
                 });
             });
@@ -1524,6 +1714,7 @@
             loadPlansRealtime();
             loadUsersRealtime();
             loadStudentsRealtime();
+            loadActivitiesRealtime();
         }
 
         function loadPlansRealtime() {
@@ -1594,6 +1785,324 @@
                 displayStudents();
                 hideLoading('students');
             });
+        }
+
+        function loadActivitiesRealtime() {
+            db.collection('activities').onSnapshot((snapshot) => {
+                allActivities = [];
+                snapshot.forEach((doc) => {
+                    allActivities.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                updateActivitiesCount();
+                displayActivities();
+                hideLoading('activities');
+            });
+        }
+
+        // Activities functionality
+        function displayActivities() {
+            const filteredActivities = filterActivitiesBySearch();
+            const activitiesGrid = document.getElementById('activities-grid');
+            const emptyState = document.getElementById('activities-empty');
+            
+            if (filteredActivities.length === 0) {
+                activitiesGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            activitiesGrid.classList.remove('hidden');
+            
+            activitiesGrid.innerHTML = '';
+            
+            // Sort activities by date (newest first)
+            filteredActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            filteredActivities.forEach(activity => {
+                const activityCard = createActivityCard(activity);
+                activitiesGrid.appendChild(activityCard);
+            });
+        }
+
+        function createActivityCard(activity) {
+            const card = document.createElement('div');
+            card.className = 'activity-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
+            
+            const status = getActivityStatus(activity.date);
+            const statusClass = getActivityStatusClass(status);
+            const statusText = getActivityStatusText(status);
+            
+            const targetText = getTargetText(activity.target);
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">${activity.name}</h4>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="editActivity('${activity.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 p-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteActivity('${activity.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 p-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">${activity.description}</p>
+                
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-calendar ml-2 text-primary"></i>
+                        <span>${formatDate(activity.date)}</span>
+                    </div>
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-clock ml-2 text-primary"></i>
+                        <span>${activity.time}</span>
+                    </div>
+                    ${activity.location ? `
+                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt ml-2 text-primary"></i>
+                            <span>${activity.location}</span>
+                        </div>
+                    ` : ''}
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-users ml-2 text-primary"></i>
+                        <span>${targetText}</span>
+                    </div>
+                </div>
+                
+                ${activity.notes ? `
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-600 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-sticky-note ml-2"></i>${activity.notes}</p>
+                    </div>
+                ` : ''}
+            `;
+            
+            return card;
+        }
+
+        function getActivityStatus(activityDate) {
+            const today = new Date();
+            const activity = new Date(activityDate);
+            
+            today.setHours(0, 0, 0, 0);
+            activity.setHours(0, 0, 0, 0);
+            
+            if (activity < today) return 'completed';
+            if (activity.getTime() === today.getTime()) return 'active';
+            return 'upcoming';
+        }
+
+        function getActivityStatusClass(status) {
+            switch (status) {
+                case 'completed': return 'activity-status-completed text-white';
+                case 'active': return 'activity-status-active text-white';
+                case 'upcoming': return 'activity-status-upcoming text-white';
+                default: return 'bg-gray-500 text-white';
+            }
+        }
+
+        function getActivityStatusText(status) {
+            switch (status) {
+                case 'completed': return 'مكتمل';
+                case 'active': return 'جاري اليوم';
+                case 'upcoming': return 'قادم';
+                default: return 'غير محدد';
+            }
+        }
+
+        function getTargetText(target) {
+            switch (target) {
+                case 'all': return 'جميع الصفوف';
+                case 'primary': return 'المرحلة الابتدائية';
+                case 'middle': return 'المرحلة المتوسطة';
+                case 'high': return 'المرحلة الثانوية';
+                case 'specific': return 'صفوف محددة';
+                default: return target || 'غير محدد';
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-AE', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function searchActivities() {
+            const filters = {
+                search: document.getElementById('activities-search').value.toLowerCase(),
+                date: document.getElementById('activities-date-filter').value,
+                status: document.getElementById('activities-status-filter').value
+            };
+            
+            currentActivityFilters = filters;
+            displayActivities();
+        }
+
+        function clearActivitySearchFilters() {
+            document.getElementById('activities-search').value = '';
+            document.getElementById('activities-date-filter').value = '';
+            document.getElementById('activities-status-filter').value = '';
+            
+            currentActivityFilters = {};
+            displayActivities();
+        }
+
+        function filterActivitiesBySearch() {
+            let filteredActivities = [...allActivities];
+            
+            // Filter by search term
+            if (currentActivityFilters.search) {
+                filteredActivities = filteredActivities.filter(activity => 
+                    activity.name.toLowerCase().includes(currentActivityFilters.search) ||
+                    activity.description.toLowerCase().includes(currentActivityFilters.search)
+                );
+            }
+            
+            // Filter by date
+            if (currentActivityFilters.date) {
+                filteredActivities = filteredActivities.filter(activity => 
+                    activity.date === currentActivityFilters.date
+                );
+            }
+            
+            // Filter by status
+            if (currentActivityFilters.status) {
+                filteredActivities = filteredActivities.filter(activity => {
+                    const status = getActivityStatus(activity.date);
+                    return status === currentActivityFilters.status;
+                });
+            }
+            
+            return filteredActivities;
+        }
+
+        function exportActivitiesToExcel() {
+            const filteredActivities = filterActivitiesBySearch();
+            
+            if (filteredActivities.length === 0) {
+                showErrorMessage('لا توجد أنشطة لتصديرها');
+                return;
+            }
+            
+            const exportData = filteredActivities.map(activity => ({
+                'اسم النشاط': activity.name,
+                'الوصف': activity.description,
+                'التاريخ': formatDate(activity.date),
+                'الوقت': activity.time,
+                'الموقع': activity.location || '',
+                'الفئة المستهدفة': getTargetText(activity.target),
+                'الحالة': getActivityStatusText(getActivityStatus(activity.date)),
+                'ملاحظات': activity.notes || ''
+            }));
+            
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'الأنشطة');
+            
+            const fileName = `activities_${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(workbook, fileName);
+            
+            showSuccessMessage('تم تصدير البيانات بنجاح');
+        }
+
+        async function handleActivitySubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const editId = form.dataset.editId;
+            const isEdit = !!editId;
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('activity-submit-text');
+            const submitSpinner = document.getElementById('activity-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const activityData = {
+                    name: document.getElementById('activity-name').value,
+                    description: document.getElementById('activity-description').value,
+                    date: document.getElementById('activity-date').value,
+                    time: document.getElementById('activity-time').value,
+                    location: document.getElementById('activity-location').value || '',
+                    target: document.getElementById('activity-target').value,
+                    notes: document.getElementById('activity-notes').value || '',
+                    createdBy: currentUser.id,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                if (isEdit) {
+                    // Update existing activity
+                    await db.collection('activities').doc(editId).update(activityData);
+                    showSuccessMessage('تم تحديث النشاط بنجاح');
+                } else {
+                    // Add new activity
+                    activityData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('activities').add(activityData);
+                    showSuccessMessage('تمت إضافة النشاط بنجاح');
+                }
+                
+                closeActivityModal();
+                document.getElementById('activity-form').reset();
+                
+            } catch (error) {
+                console.error('Error saving activity:', error);
+                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' النشاط');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        async function deleteActivity(activityId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا النشاط؟', async () => {
+                try {
+                    await db.collection('activities').doc(activityId).delete();
+                    showSuccessMessage('تم حذف النشاط بنجاح');
+                } catch (error) {
+                    console.error('Error deleting activity:', error);
+                    showErrorMessage('حدث خطأ في حذف النشاط');
+                }
+            });
+        }
+
+        function editActivity(activityId) {
+            const activity = allActivities.find(a => a.id === activityId);
+            if (!activity) {
+                showErrorMessage('لم يتم العثور على النشاط');
+                return;
+            }
+            
+            // Fill the form with existing data
+            document.getElementById('activity-name').value = activity.name;
+            document.getElementById('activity-description').value = activity.description;
+            document.getElementById('activity-date').value = activity.date;
+            document.getElementById('activity-time').value = activity.time;
+            document.getElementById('activity-location').value = activity.location || '';
+            document.getElementById('activity-target').value = activity.target;
+            document.getElementById('activity-notes').value = activity.notes || '';
+            
+            // Change form mode to edit
+            document.getElementById('activity-submit-text').textContent = 'حفظ التعديلات';
+            document.getElementById('activity-modal-title').textContent = 'تعديل النشاط';
+            
+            // Store activity ID for updating
+            document.getElementById('activity-form').dataset.editId = activityId;
+            
+            openActivityModal();
         }
 
         // Students functionality
@@ -2610,6 +3119,28 @@
             document.getElementById('plan-modal-title').textContent = 'إضافة خطة أسبوعية';
         }
 
+        function openActivityModal() {
+            // Reset form to add mode if no edit ID
+            if (!document.getElementById('activity-form').dataset.editId) {
+                document.getElementById('activity-submit-text').textContent = 'إضافة النشاط';
+                document.getElementById('activity-modal-title').textContent = 'إضافة نشاط جديد';
+            }
+            
+            document.getElementById('add-activity-modal').classList.remove('hidden');
+            document.getElementById('add-activity-modal').classList.add('flex');
+        }
+
+        function closeActivityModal() {
+            document.getElementById('add-activity-modal').classList.add('hidden');
+            document.getElementById('add-activity-modal').classList.remove('flex');
+            document.getElementById('activity-form').reset();
+            delete document.getElementById('activity-form').dataset.editId;
+            
+            // Reset to add mode
+            document.getElementById('activity-submit-text').textContent = 'إضافة النشاط';
+            document.getElementById('activity-modal-title').textContent = 'إضافة نشاط جديد';
+        }
+
         function openUserModal() {
             // Check if user has permission to access this
             if (currentUser && currentUser.role !== 'admin') {
@@ -2692,6 +3223,10 @@
 
         function updateStudentsCount() {
             document.getElementById('students-count').textContent = allStudents.length;
+        }
+
+        function updateActivitiesCount() {
+            document.getElementById('activities-count').textContent = allActivities.length;
         }
 
         // Utility functions
