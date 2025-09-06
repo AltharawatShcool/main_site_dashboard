@@ -226,6 +226,44 @@
         .activity-status-upcoming {
             background: linear-gradient(135deg, #F59E0B, #D97706);
         }
+
+        .section-badge {
+            background: linear-gradient(135deg, #8B5CF6, #A855F7);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .report-card {
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+            background: white;
+        }
+
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .grade-excellent {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .grade-good {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+        }
+
+        .grade-average {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+
+        .grade-poor {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
     </style>
     <script>
         tailwind.config = {
@@ -289,8 +327,6 @@
                     <div id="login-spinner" class="hidden loading-spinner mx-auto"></div>
                 </button>
             </form>
-            
-            
         </div>
     </div>
 
@@ -317,6 +353,7 @@
                             <span class="text-sm text-gray-600 dark:text-gray-400">مرحباً، </span>
                             <span id="user-name" class="font-semibold">المدير</span>
                             <span id="user-role-badge" class="mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"></span>
+                            <span id="user-section-badge" class="hidden mr-2 section-badge text-xs"></span>
                         </div>
                         <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
                             <i class="fas fa-sign-out-alt ml-2"></i>
@@ -333,7 +370,7 @@
                 <div class="bounce-in">
                     <h2 class="text-4xl md:text-5xl font-bold mb-4">لوحة إدارة المدرسة</h2>
                     <p class="text-xl mb-6">إدارة شاملة لجميع أنشطة المدرسة</p>
-                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-7xl mx-auto mt-8">
+                    <div class="grid grid-cols-1 md:grid-cols-6 gap-6 max-w-7xl mx-auto mt-8">
                         <div class="stats-card">
                             <i class="fas fa-calendar-week text-3xl mb-2"></i>
                             <div class="text-2xl font-bold" id="plans-count">0</div>
@@ -359,6 +396,11 @@
                             <div class="text-2xl font-bold" id="attendance-rate">95%</div>
                             <div class="text-sm opacity-90">نسبة الحضور</div>
                         </div>
+                        <div class="stats-card">
+                            <i class="fas fa-file-alt text-3xl mb-2"></i>
+                            <div class="text-2xl font-bold" id="reports-count">0</div>
+                            <div class="text-sm opacity-90">تقرير أداء</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -379,6 +421,10 @@
                     <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="attendance">
                         <i class="fas fa-user-check ml-2"></i>
                         الحضور والغياب
+                    </button>
+                    <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="reports">
+                        <i class="fas fa-chart-bar ml-2"></i>
+                        تقارير الأداء
                     </button>
                     <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="activities">
                         <i class="fas fa-calendar-day ml-2"></i>
@@ -407,11 +453,27 @@
                     <!-- Advanced Search and Filter Section -->
                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
                         <h4 class="text-lg font-semibold mb-4">البحث والتصفية المتقدم</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
                             <div>
                                 <label for="plans-grade-select" class="block text-sm font-medium mb-2">الصف:</label>
                                 <select id="plans-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                                     <option value="">جميع الصفوف</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="plans-section-select" class="block text-sm font-medium mb-2">الشعبة:</label>
+                                <select id="plans-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">جميع الشعب</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
                                 </select>
                             </div>
                             <div>
@@ -472,6 +534,7 @@
                                 <thead>
                                     <tr class="bg-primary text-white">
                                         <th class="border border-gray-300 px-4 py-2">الصف</th>
+                                        <th class="border border-gray-300 px-4 py-2">الشعبة</th>
                                         <th class="border border-gray-300 px-4 py-2">التاريخ</th>
                                         <th class="border border-gray-300 px-4 py-2">اليوم</th>
                                         <th class="border border-gray-300 px-4 py-2">المادة</th>
@@ -523,11 +586,29 @@
                         </div>
                     </div>
                     
-                    <div class="mb-6">
-                        <label for="students-grade-select" class="block text-sm font-medium mb-2">اختر الصف:</label>
-                        <select id="students-grade-select" class="w-full md:w-auto px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                            <option value="">جميع الصفوف</option>
-                        </select>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="students-grade-select" class="block text-sm font-medium mb-2">اختر الصف:</label>
+                            <select id="students-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">جميع الصفوف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="students-section-select" class="block text-sm font-medium mb-2">اختر الشعبة:</label>
+                            <select id="students-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">جميع الشعب</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
                     </div>
                     
                     <div id="students-loading" class="text-center py-8">
@@ -563,11 +644,27 @@
                         </button>
                     </div>
                     
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
                         <div>
                             <label for="attendance-grade-select" class="block text-sm font-medium mb-2">اختر الصف:</label>
                             <select id="attendance-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                                 <option value="">اختر الصف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="attendance-section-select" class="block text-sm font-medium mb-2">اختر الشعبة:</label>
+                            <select id="attendance-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر الشعبة</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
                             </select>
                         </div>
                         <div>
@@ -607,6 +704,98 @@
                                 حفظ الحضور
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Tab -->
+        <section id="reports-tab" class="tab-content hidden py-8">
+            <div class="container mx-auto px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">تقارير أداء الطلاب</h3>
+                        <button id="add-report-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            <i class="fas fa-plus ml-2"></i>
+                            إضافة تقرير جديد
+                        </button>
+                    </div>
+                    
+                    <!-- Report Type Selection -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                        <h4 class="text-lg font-semibold mb-4">نوع التقرير</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                            <div>
+                                <label for="report-grade-select" class="block text-sm font-medium mb-2">الصف:</label>
+                                <select id="report-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">اختر الصف</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="report-section-select" class="block text-sm font-medium mb-2">الشعبة:</label>
+                                <select id="report-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">اختر الشعبة</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="report-period-select" class="block text-sm font-medium mb-2">فترة التقرير:</label>
+                                <select id="report-period-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">اختر الفترة</option>
+                                    <option value="weekly">أسبوعي</option>
+                                    <option value="monthly">شهري</option>
+                                    <option value="yearly">سنوي</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button id="generate-report-btn" class="mt-7 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                    <i class="fas fa-chart-bar ml-2"></i>
+                                    إنشاء التقرير
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="reports-loading" class="text-center py-8 hidden">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p>جاري إنشاء التقرير...</p>
+                    </div>
+                    
+                    <div id="reports-container" class="hidden">
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-xl font-semibold">نتائج التقرير</h4>
+                                <div class="flex gap-2">
+                                    <button id="send-reports-whatsapp" class="whatsapp-btn text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                        <i class="fab fa-whatsapp ml-2"></i>
+                                        إرسال عبر الواتساب
+                                    </button>
+                                    <button id="export-reports-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                        <i class="fas fa-file-excel ml-2"></i>
+                                        تصدير Excel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="reports-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Reports will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div id="reports-empty" class="empty-state">
+                        <i class="fas fa-chart-bar text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا توجد تقارير</h4>
+                        <p class="mb-4">اختر الصف والشعبة وفترة التقرير لإنشاء تقرير أداء الطلاب</p>
                     </div>
                 </div>
             </div>
@@ -750,6 +939,7 @@
                         <ul class="space-y-2">
                             <li><a href="#" onclick="switchTab('plans')" class="hover:text-primary transition-colors">الخطط الأسبوعية</a></li>
                             <li><a href="#" onclick="switchTab('students')" class="hover:text-primary transition-colors">إدارة الطلاب</a></li>
+                            <li><a href="#" onclick="switchTab('reports')" class="hover:text-primary transition-colors">تقارير الأداء</a></li>
                             <li><a href="#" onclick="switchTab('activities')" class="hover:text-primary transition-colors">إدارة الأنشطة</a></li>
                             <li><a href="#" onclick="switchTab('attendance')" class="hover:text-primary transition-colors">الحضور والغياب</a></li>
                             <li id="footer-users-link" class="admin-only"><a href="#" onclick="switchTab('users')" class="hover:text-primary transition-colors">إدارة المستخدمين</a></li>
@@ -781,6 +971,215 @@
                 </div>
             </div>
         </footer>
+    </div>
+
+    <!-- Add Plan Modal -->
+    <div id="add-plan-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="plan-modal-title" class="text-2xl font-bold text-primary">إضافة خطة أسبوعية</h3>
+                <button id="close-plan-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="plan-form" class="space-y-4">
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الصف</label>
+                        <select id="plan-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الصف</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الشعبة</label>
+                        <select id="plan-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الشعبة</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">التاريخ</label>
+                        <input type="date" id="plan-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">اليوم</label>
+                    <select id="plan-day" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        <option value="">اختر اليوم</option>
+                        <option value="الاتنين">الاتنين</option>
+                        <option value="الثلاثاء">الثلاثاء</option>
+                        <option value="الاربعاء">الاربعاء</option>
+                        <option value="الخميس">الخميس</option>
+                        <option value="الجمعة">الجمعة</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">المادة</label>
+                    <input type="text" id="plan-subject" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المادة">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">الموضوع</label>
+                    <input type="text" id="plan-topic" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="موضوع الدرس">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">الأنشطة</label>
+                    <textarea id="plan-activities" required rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="وصف الأنشطة المخططة"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-plan" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="plan-submit-text">حفظ الخطة</span>
+                        <div id="plan-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-primary">إضافة طالب جديد</h3>
+                <button id="close-student-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="student-form" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">رقم الأساس <span class="text-red-500">*</span></label>
+                        <input type="text" id="student-id" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="رقم الأساس">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">اسم الطالب <span class="text-red-500">*</span></label>
+                        <input type="text" id="student-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="الاسم الكامل">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
+                        <select id="student-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الصف</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
+                        <select id="student-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الشعبة</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">رقم ولي الأمر <span class="text-red-500">*</span></label>
+                        <input type="tel" id="parent-phone" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="971501234567" dir="ltr">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">اسم ولي الأمر</label>
+                    <input type="text" id="parent-name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم ولي الأمر">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">ملاحظات</label>
+                    <textarea id="student-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-student" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="student-submit-text">إضافة الطالب</span>
+                        <div id="student-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Report Modal -->
+    <div id="add-report-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-primary">إضافة تقرير أداء طالب</h3>
+                <button id="close-report-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="report-form" class="space-y-6">
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الطالب <span class="text-red-500">*</span></label>
+                        <select id="report-student" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الطالب</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">المادة <span class="text-red-500">*</span></label>
+                        <input type="text" id="report-subject" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المادة">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الدرجة <span class="text-red-500">*</span></label>
+                        <input type="number" id="report-grade" required min="0" max="100" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="الدرجة من 100">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">التاريخ <span class="text-red-500">*</span></label>
+                        <input type="date" id="report-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">نقاط القوة</label>
+                        <textarea id="report-strengths" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اذكر نقاط القوة لدى الطالب"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">نقاط التحسين</label>
+                        <textarea id="report-improvements" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اذكر النقاط التي تحتاج إلى تحسين"></textarea>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">ملاحظات المعلم</label>
+                    <textarea id="report-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية من المعلم"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-report" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="report-submit-text">حفظ التقرير</span>
+                        <div id="report-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Add Activity Modal -->
@@ -848,232 +1247,6 @@
         </div>
     </div>
 
-    <!-- Existing modals remain the same... -->
-    <!-- Add Student Modal -->
-    <div id="add-student-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-primary">إضافة طالب جديد</h3>
-                <button id="close-student-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <form id="student-form" class="space-y-4">
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">رقم الأساس <span class="text-red-500">*</span></label>
-                        <input type="text" id="student-id" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="رقم الأساس">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">اسم الطالب <span class="text-red-500">*</span></label>
-                        <input type="text" id="student-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="الاسم الكامل">
-                    </div>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
-                        <select id="student-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                            <option value="">اختر الصف</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">رقم ولي الأمر <span class="text-red-500">*</span></label>
-                        <input type="tel" id="parent-phone" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="971501234567" dir="ltr">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">اسم ولي الأمر</label>
-                    <input type="text" id="parent-name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم ولي الأمر">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">ملاحظات</label>
-                    <textarea id="student-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية (اختياري)"></textarea>
-                </div>
-                
-                <div class="flex justify-end space-x-4 space-x-reverse">
-                    <button type="button" id="cancel-student" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
-                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
-                        <span id="student-submit-text">إضافة الطالب</span>
-                        <div id="student-submit-spinner" class="hidden loading-spinner mx-auto"></div>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Import Excel Modal -->
-    <div id="import-excel-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-primary">استيراد بيانات الطلاب من Excel</h3>
-                <button id="close-import-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-6">
-                <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
-                    <h4 class="font-semibold text-blue-800 dark:text-blue-200 mb-2">تعليمات:</h4>
-                    <ul class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-                        <li>• يجب أن يحتوي الملف على الأعمدة التالية: رقم الأساس، اسم الطالب، الصف، رقم ولي الأمر، اسم ولي الأمر</li>
-                        <li>• الصف يجب أن يكون بالتنسيق: grade1, grade2, grade3... إلخ</li>
-                        <li>• رقم ولي الأمر يجب أن يتضمن رمز البلد (مثال: 971501234567)</li>
-                        <li>• يمكن ترك عمود اسم ولي الأمر فارغاً</li>
-                    </ul>
-                </div>
-                
-                <div class="drag-drop-area" id="excel-drop-area">
-                    <div class="text-center">
-                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                        <p class="text-lg font-semibold mb-2">اسحب ملف Excel هنا أو انقر للاختيار</p>
-                        <p class="text-sm text-gray-500">يدعم ملفات .xlsx و .xls</p>
-                        <input type="file" id="excel-file-input" accept=".xlsx,.xls" class="hidden">
-                    </div>
-                </div>
-                
-                <div id="excel-preview" class="hidden">
-                    <h4 class="font-semibold mb-4">معاينة البيانات:</h4>
-                    <div class="overflow-x-auto max-h-64">
-                        <table id="excel-preview-table" class="w-full border-collapse border border-gray-300 dark:border-gray-600 text-sm">
-                            <!-- Preview will be shown here -->
-                        </table>
-                    </div>
-                </div>
-                
-                <div class="flex justify-end space-x-4 space-x-reverse">
-                    <button type="button" id="cancel-import" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
-                    <button type="button" id="confirm-import" class="hidden px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-                        <span id="import-submit-text">استيراد البيانات</span>
-                        <div id="import-submit-spinner" class="hidden loading-spinner mx-auto"></div>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WhatsApp Send Modal -->
-    <div id="whatsapp-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-primary">إرسال تقرير الحضور عبر الواتساب</h3>
-                <button id="close-whatsapp-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">اختر الصف:</label>
-                        <select id="whatsapp-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                            <option value="">اختر الصف</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">تاريخ التقرير:</label>
-                        <input type="date" id="whatsapp-date" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">نص الرسالة:</label>
-                    <textarea id="whatsapp-message" rows="6" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="مرحباً {parent_name}، نود إعلامكم بأن {student_name} كان {status} في تاريخ {date}. شكراً لكم - مدرسة الثروات الوطنية">مرحباً {parent_name}، نود إعلامكم بأن {student_name} كان {status} في تاريخ {date}. 
-
-نشكركم على متابعتكم وثقتكم.
-
-مدرسة الثروات الوطنية الخاصة</textarea>
-                    <p class="text-xs text-gray-500 mt-1">
-                        يمكنك استخدام المتغيرات: {parent_name}, {student_name}, {status}, {date}
-                    </p>
-                </div>
-                
-                <div id="whatsapp-preview" class="hidden">
-                    <h4 class="font-semibold mb-4">معاينة الرسائل:</h4>
-                    <div id="whatsapp-preview-list" class="space-y-2 max-h-64 overflow-y-auto">
-                        <!-- Preview messages will be shown here -->
-                    </div>
-                </div>
-                
-                <div class="flex justify-end space-x-4 space-x-reverse">
-                    <button type="button" id="cancel-whatsapp" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
-                    <button type="button" id="preview-whatsapp" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                        معاينة الرسائل
-                    </button>
-                    <button type="button" id="send-whatsapp" class="hidden whatsapp-btn text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
-                        <span id="whatsapp-submit-text">إرسال الرسائل</span>
-                        <div id="whatsapp-submit-spinner" class="hidden loading-spinner mx-auto"></div>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Plan Modal -->
-    <div id="add-plan-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 id="plan-modal-title" class="text-2xl font-bold text-primary">إضافة خطة أسبوعية</h3>
-                <button id="close-plan-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <form id="plan-form" class="space-y-4">
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">الصف</label>
-                        <select id="plan-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                            <option value="">اختر الصف</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">التاريخ</label>
-                        <input type="date" id="plan-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">اليوم</label>
-                    <select id="plan-day" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                        <option value="">اختر اليوم</option>
-                        <option value="الاتنين">الاتنين</option>
-                        <option value="الثلاثاء">الثلاثاء</option>
-                        <option value="الاربعاء">الاربعاء</option>
-                        <option value="الخميس">الخميس</option>
-                        <option value="الجمعة">الجمعة</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">المادة</label>
-                    <input type="text" id="plan-subject" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المادة">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">الموضوع</label>
-                    <input type="text" id="plan-topic" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="موضوع الدرس">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">الأنشطة</label>
-                    <textarea id="plan-activities" required rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="وصف الأنشطة المخططة"></textarea>
-                </div>
-                
-                <div class="flex justify-end space-x-4 space-x-reverse">
-                    <button type="button" id="cancel-plan" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
-                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
-                        <span id="plan-submit-text">حفظ الخطة</span>
-                        <div id="plan-submit-spinner" class="hidden loading-spinner mx-auto"></div>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Add User Modal -->
     <div id="add-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
@@ -1112,56 +1285,56 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium mb-2">الصلاحيات (الصفوف المسموح بإدارتها)</label>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade1" class="user-permissions">
-                            <span class="text-sm">الصف الأول</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade2" class="user-permissions">
-                            <span class="text-sm">الصف الثاني</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade3" class="user-permissions">
-                            <span class="text-sm">الصف الثالث</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade4" class="user-permissions">
-                            <span class="text-sm">الصف الرابع</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade5" class="user-permissions">
-                            <span class="text-sm">الصف الخامس</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade6" class="user-permissions">
-                            <span class="text-sm">الصف السادس</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade7" class="user-permissions">
-                            <span class="text-sm">الصف السابع</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade8" class="user-permissions">
-                            <span class="text-sm">الصف الثامن</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade9" class="user-permissions">
-                            <span class="text-sm">الصف التاسع</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade10" class="user-permissions">
-                            <span class="text-sm">الصف العاشر</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade11" class="user-permissions">
-                            <span class="text-sm">الصف الحادي عشر</span>
-                        </label>
-                        <label class="flex items-center space-x-2 space-x-reverse">
-                            <input type="checkbox" value="grade12" class="user-permissions">
-                            <span class="text-sm">الصف الثاني عشر</span>
-                        </label>
+                    <label class="block text-sm font-medium mb-2">الصلاحيات (الصفوف والشعب المسموح بإدارتها)</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="grade-permissions" class="space-y-2">
+                            <!-- Grade checkboxes will be populated here -->
+                        </div>
+                        <div id="section-permissions" class="space-y-2">
+                            <h5 class="font-medium text-sm">الشعب المسموحة:</h5>
+                            <div class="space-y-1">
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="1" class="section-permissions">
+                                    <span class="text-sm">الشعبة 1</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="2" class="section-permissions">
+                                    <span class="text-sm">الشعبة 2</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="3" class="section-permissions">
+                                    <span class="text-sm">الشعبة 3</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="4" class="section-permissions">
+                                    <span class="text-sm">الشعبة 4</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="5" class="section-permissions">
+                                    <span class="text-sm">الشعبة 5</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="6" class="section-permissions">
+                                    <span class="text-sm">الشعبة 6</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="7" class="section-permissions">
+                                    <span class="text-sm">الشعبة 7</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="8" class="section-permissions">
+                                    <span class="text-sm">الشعبة 8</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="9" class="section-permissions">
+                                    <span class="text-sm">الشعبة 9</span>
+                                </label>
+                                <label class="flex items-center space-x-2 space-x-reverse">
+                                    <input type="checkbox" value="10" class="section-permissions">
+                                    <span class="text-sm">الشعبة 10</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1177,7 +1350,7 @@
     </div>
 
     <script>
-        // Firebase Configuration (same as main site)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC1aGBA8OapqeNy-5mi1bOzcDGEgP-Xsr0",
             authDomain: "thawarat-project.firebaseapp.com",
@@ -1187,7 +1360,6 @@
             messagingSenderId: "847469725368",
             appId: "1:847469725368:web:550889ff05499c30f5564d",
             measurementId: "G-0G7JW998ES"
-            
         };
 
         // Initialize Firebase
@@ -1200,6 +1372,7 @@
         let allUsers = [];
         let allStudents = [];
         let allActivities = [];
+        let allReports = [];
         let currentExcelData = [];
         let currentSearchFilters = {};
         let currentActivityFilters = {};
@@ -1217,9 +1390,9 @@
         function setDefaultDates() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('attendance-date').value = today;
-            document.getElementById('whatsapp-date').value = today;
             document.getElementById('plan-date').value = today;
             document.getElementById('activity-date').value = today;
+            document.getElementById('report-date').value = today;
         }
 
         function setupEventListeners() {
@@ -1240,53 +1413,27 @@
             document.getElementById('cancel-plan').addEventListener('click', closePlanModal);
             document.getElementById('plan-form').addEventListener('submit', handlePlanSubmit);
             
-            // Search functionality
-            document.getElementById('search-plans-btn').addEventListener('click', searchPlans);
-            document.getElementById('clear-search-btn').addEventListener('click', clearSearchFilters);
-            document.getElementById('export-plans-btn').addEventListener('click', exportPlansToExcel);
-            
-            // Auto-search on input change
-            const searchInputs = ['plans-grade-select', 'plans-subject-search', 'plans-topic-search', 'plans-teacher-search', 'plans-date-from', 'plans-date-to', 'plans-status-filter'];
-            searchInputs.forEach(id => {
-                document.getElementById(id).addEventListener('input', debounce(searchPlans, 300));
-            });
-            
             // Students functionality
             document.getElementById('add-student-btn').addEventListener('click', openStudentModal);
             document.getElementById('close-student-modal').addEventListener('click', closeStudentModal);
             document.getElementById('cancel-student').addEventListener('click', closeStudentModal);
             document.getElementById('student-form').addEventListener('submit', handleStudentSubmit);
             document.getElementById('students-grade-select').addEventListener('change', filterStudents);
+            document.getElementById('students-section-select').addEventListener('change', filterStudents);
             
-            // Excel import functionality
-            document.getElementById('import-students-btn').addEventListener('click', openImportModal);
-            document.getElementById('close-import-modal').addEventListener('click', closeImportModal);
-            document.getElementById('cancel-import').addEventListener('click', closeImportModal);
-            document.getElementById('excel-drop-area').addEventListener('click', () => {
-                document.getElementById('excel-file-input').click();
-            });
-            document.getElementById('excel-file-input').addEventListener('change', handleExcelFile);
-            document.getElementById('confirm-import').addEventListener('click', handleExcelImport);
-            
-            // Export functionality
-            document.getElementById('export-students-btn').addEventListener('click', exportStudentsToExcel);
+            // Reports functionality
+            document.getElementById('add-report-btn').addEventListener('click', openReportModal);
+            document.getElementById('close-report-modal').addEventListener('click', closeReportModal);
+            document.getElementById('cancel-report').addEventListener('click', closeReportModal);
+            document.getElementById('report-form').addEventListener('submit', handleReportSubmit);
+            document.getElementById('generate-report-btn').addEventListener('click', generateReport);
+            document.getElementById('send-reports-whatsapp').addEventListener('click', sendReportsViaWhatsApp);
             
             // Activities functionality
             document.getElementById('add-activity-btn').addEventListener('click', openActivityModal);
             document.getElementById('close-activity-modal').addEventListener('click', closeActivityModal);
             document.getElementById('cancel-activity').addEventListener('click', closeActivityModal);
             document.getElementById('activity-form').addEventListener('submit', handleActivitySubmit);
-            
-            // Activity search functionality
-            document.getElementById('search-activities-btn').addEventListener('click', searchActivities);
-            document.getElementById('clear-activities-search-btn').addEventListener('click', clearActivitySearchFilters);
-            document.getElementById('export-activities-btn').addEventListener('click', exportActivitiesToExcel);
-            
-            // Auto-search for activities
-            const activitySearchInputs = ['activities-search', 'activities-date-filter', 'activities-status-filter'];
-            activitySearchInputs.forEach(id => {
-                document.getElementById(id).addEventListener('input', debounce(searchActivities, 300));
-            });
             
             // Users functionality
             document.getElementById('add-user-btn').addEventListener('click', openUserModal);
@@ -1296,23 +1443,40 @@
             
             // Attendance functionality
             document.getElementById('attendance-grade-select').addEventListener('change', handleAttendanceGradeSelect);
+            document.getElementById('attendance-section-select').addEventListener('change', handleAttendanceGradeSelect);
             document.getElementById('save-attendance-btn').addEventListener('click', saveAttendance);
             
-            // WhatsApp functionality
-            document.getElementById('send-whatsapp-btn').addEventListener('click', openWhatsAppModal);
-            document.getElementById('close-whatsapp-modal').addEventListener('click', closeWhatsAppModal);
-            document.getElementById('cancel-whatsapp').addEventListener('click', closeWhatsAppModal);
-            document.getElementById('preview-whatsapp').addEventListener('click', previewWhatsAppMessages);
-            document.getElementById('send-whatsapp').addEventListener('click', sendWhatsAppMessages);
+            // Search functionality for plans
+            const searchInputs = ['plans-grade-select', 'plans-section-select', 'plans-subject-search', 'plans-topic-search', 'plans-teacher-search', 'plans-date-from', 'plans-date-to', 'plans-status-filter'];
+            searchInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', debounce(searchPlans, 300));
+            });
             
-            // Close modals when clicking outside
-            setupModalCloseEvents();
-            
-            // Drag and drop for Excel files
-            setupDragAndDrop();
+            // Activity search functionality
+            const activitySearchInputs = ['activities-search', 'activities-date-filter', 'activities-status-filter'];
+            activitySearchInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', debounce(searchActivities, 300));
+            });
         }
 
-        // Check if user has permission for a specific grade
+        // Enhanced permission system for sections - updated for 10 sections
+        function hasPermissionForGradeAndSection(grade, section) {
+            if (!currentUser) return false;
+            if (currentUser.role === 'admin') return true;
+            if (currentUser.role === 'teacher') {
+                const hasGradePermission = currentUser.permissions && (
+                    currentUser.permissions.includes('all') || 
+                    currentUser.permissions.includes(grade)
+                );
+                const hasSectionPermission = currentUser.sectionPermissions && (
+                    currentUser.sectionPermissions.includes('all') ||
+                    currentUser.sectionPermissions.includes(section)
+                );
+                return hasGradePermission && hasSectionPermission;
+            }
+            return false;
+        }
+
         function hasPermissionForGrade(grade) {
             if (!currentUser) return false;
             if (currentUser.role === 'admin') return true;
@@ -1342,6 +1506,21 @@
             return [];
         }
 
+        // Get available sections for current user - updated for 10 sections
+        function getAvailableSections() {
+            if (!currentUser) return [];
+            if (currentUser.role === 'admin') {
+                return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+            }
+            if (currentUser.role === 'teacher') {
+                if (currentUser.sectionPermissions && currentUser.sectionPermissions.includes('all')) {
+                    return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+                }
+                return currentUser.sectionPermissions || [];
+            }
+            return [];
+        }
+
         // Populate grade selects based on user permissions
         function populateGradeSelects() {
             const availableGrades = getAvailableGrades();
@@ -1354,13 +1533,13 @@
             // Get all grade select elements
             const gradeSelects = [
                 'plans-grade-select', 'students-grade-select', 'attendance-grade-select',
-                'whatsapp-grade-select', 'plan-grade', 'student-grade'
+                'report-grade-select', 'plan-grade', 'student-grade'
             ];
 
             gradeSelects.forEach(selectId => {
                 const selectElement = document.getElementById(selectId);
                 if (selectElement) {
-                    // Keep first option (usually "اختر الصف" or "جميع الصفوف")
+                    // Keep first option
                     const firstOption = selectElement.children[0];
                     selectElement.innerHTML = '';
                     selectElement.appendChild(firstOption);
@@ -1374,9 +1553,24 @@
                     });
                 }
             });
+
+            // Populate grade permissions in user modal
+            const gradePermissionsDiv = document.getElementById('grade-permissions');
+            if (gradePermissionsDiv) {
+                gradePermissionsDiv.innerHTML = '<h5 class="font-medium text-sm mb-2">الصفوف المسموحة:</h5>';
+                Object.entries(gradeNames).forEach(([gradeId, gradeName]) => {
+                    const label = document.createElement('label');
+                    label.className = 'flex items-center space-x-2 space-x-reverse';
+                    label.innerHTML = `
+                        <input type="checkbox" value="${gradeId}" class="user-permissions">
+                        <span class="text-sm">${gradeName}</span>
+                    `;
+                    gradePermissionsDiv.appendChild(label);
+                });
+            }
         }
 
-        // Update UI based on user role
+        // Update UI based on user role and display section info
         function updateUIBasedOnUserRole() {
             if (!currentUser) return;
             
@@ -1401,200 +1595,23 @@
                     'mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs';
             }
             
+            // Show section badge for teachers
+            const sectionBadge = document.getElementById('user-section-badge');
+            if (sectionBadge && !isAdmin && currentUser.sectionPermissions) {
+                const sections = currentUser.sectionPermissions.includes('all') ? 
+                    'جميع الشعب' : 
+                    currentUser.sectionPermissions.join(', ');
+                sectionBadge.textContent = `الشعب: ${sections}`;
+                sectionBadge.classList.remove('hidden');
+            } else if (sectionBadge) {
+                sectionBadge.classList.add('hidden');
+            }
+            
             // Populate grade selects based on permissions
             populateGradeSelects();
-            
-            // If user is a teacher and tries to access users tab, redirect to plans
-            if (!isAdmin && window.location.hash === '#users') {
-                switchTab('plans');
-            }
         }
 
-        function setupModalCloseEvents() {
-            const modals = [
-                'add-plan-modal', 'add-user-modal', 'add-student-modal', 
-                'import-excel-modal', 'whatsapp-modal', 'add-activity-modal'
-            ];
-            
-            modals.forEach(modalId => {
-                document.getElementById(modalId).addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        const closeFunction = modalId.replace('add-', 'close').replace('-modal', 'Modal');
-                        if (closeFunction === 'closeplanModal') window.closePlanModal();
-                        else if (closeFunction === 'closeuserModal') window.closeUserModal();
-                        else if (closeFunction === 'closestudentModal') window.closeStudentModal();
-                        else if (closeFunction === 'closeimportexcelModal') window.closeImportModal();
-                        else if (closeFunction === 'closewhatsappModal') window.closeWhatsAppModal();
-                        else if (closeFunction === 'closeactivityModal') window.closeActivityModal();
-                    }
-                });
-            });
-        }
-
-        function setupDragAndDrop() {
-            const dropArea = document.getElementById('excel-drop-area');
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-over'), false);
-            });
-            
-            dropArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                
-                if (files.length > 0) {
-                    document.getElementById('excel-file-input').files = files;
-                    handleExcelFile({ target: { files: files } });
-                }
-            }
-        }
-
-        // Search and Filter Functions
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        function searchPlans() {
-            const filters = {
-                grade: document.getElementById('plans-grade-select').value,
-                subject: document.getElementById('plans-subject-search').value.toLowerCase(),
-                topic: document.getElementById('plans-topic-search').value.toLowerCase(),
-                teacher: document.getElementById('plans-teacher-search').value.toLowerCase(),
-                dateFrom: document.getElementById('plans-date-from').value,
-                dateTo: document.getElementById('plans-date-to').value,
-                status: document.getElementById('plans-status-filter').value
-            };
-            
-            currentSearchFilters = filters;
-            displayPlans();
-        }
-
-        function clearSearchFilters() {
-            document.getElementById('plans-grade-select').value = '';
-            document.getElementById('plans-subject-search').value = '';
-            document.getElementById('plans-topic-search').value = '';
-            document.getElementById('plans-teacher-search').value = '';
-            document.getElementById('plans-date-from').value = '';
-            document.getElementById('plans-date-to').value = '';
-            document.getElementById('plans-status-filter').value = '';
-            
-            currentSearchFilters = {};
-            displayPlans();
-        }
-
-        function filterPlansBySearch() {
-            let filteredPlans = [...allPlans];
-            
-            // Filter by grade
-            if (currentSearchFilters.grade) {
-                filteredPlans = filteredPlans.filter(plan => plan.grade === currentSearchFilters.grade);
-            }
-            
-            // Filter by subject
-            if (currentSearchFilters.subject) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.subject.toLowerCase().includes(currentSearchFilters.subject)
-                );
-            }
-            
-            // Filter by topic
-            if (currentSearchFilters.topic) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.topic.toLowerCase().includes(currentSearchFilters.topic)
-                );
-            }
-            
-            // Filter by teacher
-            if (currentSearchFilters.teacher) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    (plan.teacherName || '').toLowerCase().includes(currentSearchFilters.teacher)
-                );
-            }
-            
-            // Filter by date range
-            if (currentSearchFilters.dateFrom) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.planDate >= currentSearchFilters.dateFrom
-                );
-            }
-            
-            if (currentSearchFilters.dateTo) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.planDate <= currentSearchFilters.dateTo
-                );
-            }
-            
-            // Filter by status
-            if (currentSearchFilters.status) {
-                if (currentSearchFilters.status === 'active') {
-                    filteredPlans = filteredPlans.filter(plan => !plan.archived);
-                } else if (currentSearchFilters.status === 'archived') {
-                    filteredPlans = filteredPlans.filter(plan => plan.archived);
-                }
-            }
-            
-            return filteredPlans;
-        }
-
-        function highlightSearchTerm(text, searchTerm) {
-            if (!searchTerm) return text;
-            const regex = new RegExp(`(${searchTerm})`, 'gi');
-            return text.replace(regex, '<span class="search-highlight">$1</span>');
-        }
-
-        function exportPlansToExcel() {
-            const filteredPlans = filterPlansBySearch();
-            
-            if (filteredPlans.length === 0) {
-                showErrorMessage('لا توجد بيانات لتصديرها');
-                return;
-            }
-            
-            const exportData = filteredPlans.map(plan => ({
-                'الصف': getGradeName(plan.grade),
-                'التاريخ': plan.planDate || '',
-                'اليوم': plan.day,
-                'المادة': plan.subject,
-                'الموضوع': plan.topic,
-                'الأنشطة': plan.activities,
-                'المعلم': plan.teacherName || '',
-                'الحالة': plan.archived ? 'مؤرشف' : 'نشط'
-            }));
-            
-            const worksheet = XLSX.utils.json_to_sheet(exportData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'الخطط الأسبوعية');
-            
-            const fileName = `weekly_plans_${new Date().toISOString().split('T')[0]}.xlsx`;
-            XLSX.writeFile(workbook, fileName);
-            
-            showSuccessMessage('تم تصدير البيانات بنجاح');
-        }
-
-        // Authentication
+        // Enhanced authentication to handle section permissions
         async function handleLogin(e) {
             e.preventDefault();
             
@@ -1639,7 +1656,8 @@
                         name: 'المدير',
                         username: 'admin',
                         role: 'admin',
-                        permissions: ['all']
+                        permissions: ['all'],
+                        sectionPermissions: ['all']
                     };
                     
                     document.getElementById('user-name').textContent = 'المدير';
@@ -1715,6 +1733,7 @@
             loadUsersRealtime();
             loadStudentsRealtime();
             loadActivitiesRealtime();
+            loadReportsRealtime();
         }
 
         function loadPlansRealtime() {
@@ -1728,15 +1747,77 @@
             query.onSnapshot((snapshot) => {
                 allPlans = [];
                 snapshot.forEach((doc) => {
-                    allPlans.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
+                    const planData = doc.data();
+                    // Additional section-based filtering for teachers
+                    if (currentUser && currentUser.role === 'teacher') {
+                        if (hasPermissionForGradeAndSection(planData.grade, planData.section)) {
+                            allPlans.push({
+                                id: doc.id,
+                                ...planData
+                            });
+                        }
+                    } else {
+                        allPlans.push({
+                            id: doc.id,
+                            ...planData
+                        });
+                    }
                 });
                 
                 updatePlansCount();
                 displayPlans();
                 hideLoading('plans');
+            });
+        }
+
+        function loadStudentsRealtime() {
+            db.collection('students').onSnapshot((snapshot) => {
+                allStudents = [];
+                snapshot.forEach((doc) => {
+                    const studentData = doc.data();
+                    // If user is a teacher, only load students from grades and sections they have permission for
+                    if (currentUser && currentUser.role === 'teacher') {
+                        if (hasPermissionForGradeAndSection(studentData.grade, studentData.section)) {
+                            allStudents.push({
+                                id: doc.id,
+                                ...studentData
+                            });
+                        }
+                    } else {
+                        // Admin can see all students
+                        allStudents.push({
+                            id: doc.id,
+                            ...studentData
+                        });
+                    }
+                });
+                
+                updateStudentsCount();
+                displayStudents();
+                populateStudentSelects();
+                hideLoading('students');
+            });
+        }
+
+        function loadReportsRealtime() {
+            let query = db.collection('studentReports');
+            
+            // If user is a teacher, only load reports for their sections
+            if (currentUser && currentUser.role === 'teacher') {
+                query = query.where('teacherId', '==', currentUser.id);
+            }
+            
+            query.onSnapshot((snapshot) => {
+                allReports = [];
+                snapshot.forEach((doc) => {
+                    allReports.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                updateReportsCount();
+                hideLoading('reports');
             });
         }
 
@@ -1759,34 +1840,6 @@
             });
         }
 
-        function loadStudentsRealtime() {
-            db.collection('students').onSnapshot((snapshot) => {
-                allStudents = [];
-                snapshot.forEach((doc) => {
-                    const studentData = doc.data();
-                    // If user is a teacher, only load students from grades they have permission for
-                    if (currentUser && currentUser.role === 'teacher') {
-                        if (hasPermissionForGrade(studentData.grade)) {
-                            allStudents.push({
-                                id: doc.id,
-                                ...studentData
-                            });
-                        }
-                    } else {
-                        // Admin can see all students
-                        allStudents.push({
-                            id: doc.id,
-                            ...studentData
-                        });
-                    }
-                });
-                
-                updateStudentsCount();
-                displayStudents();
-                hideLoading('students');
-            });
-        }
-
         function loadActivitiesRealtime() {
             db.collection('activities').onSnapshot((snapshot) => {
                 allActivities = [];
@@ -1803,7 +1856,914 @@
             });
         }
 
-        // Activities functionality
+        // Enhanced display functions to include sections
+        function displayPlans() {
+            const filteredPlans = filterPlansBySearch();
+            const tableBody = document.getElementById('plans-table-body');
+            const tableContainer = document.getElementById('plans-table-container');
+            const emptyState = document.getElementById('plans-empty');
+            
+            if (filteredPlans.length === 0) {
+                tableContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            tableContainer.classList.remove('hidden');
+            
+            // Sort plans by grade, section, date, and day
+            const dayOrder = ['الاتنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة'];
+            filteredPlans.sort((a, b) => {
+                if (a.grade !== b.grade) return a.grade.localeCompare(b.grade);
+                if (a.section !== b.section) return a.section.localeCompare(b.section);
+                if (a.planDate !== b.planDate) return (a.planDate || '').localeCompare(b.planDate || '');
+                return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
+            });
+            
+            tableBody.innerHTML = '';
+            filteredPlans.forEach(plan => {
+                const row = tableBody.insertRow();
+                row.className = `hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${plan.archived ? 'archived-plan' : ''}`;
+                
+                // Highlight search terms
+                const subjectText = highlightSearchTerm(plan.subject, currentSearchFilters.subject);
+                const topicText = highlightSearchTerm(plan.topic, currentSearchFilters.topic);
+                const teacherText = highlightSearchTerm(plan.teacherName || 'غير محدد', currentSearchFilters.teacher);
+                
+                row.innerHTML = `
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <span class="bg-primary text-white px-2 py-1 rounded text-xs">${getGradeName(plan.grade)}</span>
+                    </td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <span class="section-badge text-xs">${plan.section}</span>
+                    </td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.planDate || ''}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 font-medium">${plan.day}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${subjectText}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${topicText}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.activities}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacherText}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <span class="px-2 py-1 rounded text-xs ${plan.archived ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-600'}">
+                            ${plan.archived ? 'مؤرشف' : 'نشط'}
+                        </span>
+                    </td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <div class="flex space-x-1 space-x-reverse">
+                            ${plan.teacherId === currentUser.id || currentUser.role === 'admin' ? `
+                                <button onclick="editPlan('${plan.id}')" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="${plan.archived ? 'unarchivePlan' : 'archivePlan'}('${plan.id}')" class="text-yellow-600 hover:text-yellow-800">
+                                    <i class="fas fa-${plan.archived ? 'undo' : 'archive'}"></i>
+                                </button>
+                                <button onclick="deletePlan('${plan.id}')" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            ` : `
+                                <span class="text-gray-400 text-xs">عرض فقط</span>
+                            `}
+                        </div>
+                    </td>
+                `;
+            });
+        }
+
+        function displayStudents() {
+            const filteredStudents = filterStudentsByGradeAndSection();
+            const studentsGrid = document.getElementById('students-grid');
+            const emptyState = document.getElementById('students-empty');
+            
+            if (filteredStudents.length === 0) {
+                studentsGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            studentsGrid.classList.remove('hidden');
+            
+            studentsGrid.innerHTML = '';
+            filteredStudents.forEach(student => {
+                const studentCard = createStudentCard(student);
+                studentsGrid.appendChild(studentCard);
+            });
+        }
+
+        function createStudentCard(student) {
+            const card = document.createElement('div');
+            card.className = 'student-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
+            
+            const statusBadge = getGradeBadge(student.grade);
+            const sectionBadge = `<span class="section-badge text-xs mr-2">${student.section}</span>`;
+            const whatsappBtn = student.parentPhone ? 
+                `<button onclick="sendWhatsAppToParent('${student.parentPhone}', '${student.name}')" 
+                         class="whatsapp-btn text-white px-3 py-1 rounded text-sm hover:bg-opacity-90 transition-colors">
+                    <i class="fab fa-whatsapp ml-1"></i>
+                    واتساب
+                 </button>` : '';
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">رقم الأساس: ${student.studentId}</p>
+                    </div>
+                    <div class="flex items-center">
+                        ${statusBadge}
+                        ${sectionBadge}
+                    </div>
+                </div>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-user-tie ml-2 text-primary"></i>
+                        <span>${student.parentName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-phone ml-2 text-primary"></i>
+                        <span dir="ltr">${student.parentPhone || 'غير محدد'}</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div class="flex space-x-2 space-x-reverse">
+                        <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteStudent('${student.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    ${whatsappBtn}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function filterStudentsByGradeAndSection() {
+            const selectedGrade = document.getElementById('students-grade-select').value;
+            const selectedSection = document.getElementById('students-section-select').value;
+            
+            let filtered = allStudents;
+            
+            if (selectedGrade) {
+                filtered = filtered.filter(student => student.grade === selectedGrade);
+            }
+            
+            if (selectedSection) {
+                filtered = filtered.filter(student => student.section === selectedSection);
+            }
+            
+            return filtered;
+        }
+
+        function filterStudents() {
+            displayStudents();
+        }
+
+        // Enhanced search to include sections
+        function filterPlansBySearch() {
+            let filteredPlans = [...allPlans];
+            
+            // Filter by grade
+            if (currentSearchFilters.grade) {
+                filteredPlans = filteredPlans.filter(plan => plan.grade === currentSearchFilters.grade);
+            }
+            
+            // Filter by section
+            if (currentSearchFilters.section) {
+                filteredPlans = filteredPlans.filter(plan => plan.section === currentSearchFilters.section);
+            }
+            
+            // Other filters remain the same...
+            if (currentSearchFilters.subject) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.subject.toLowerCase().includes(currentSearchFilters.subject)
+                );
+            }
+            
+            if (currentSearchFilters.topic) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.topic.toLowerCase().includes(currentSearchFilters.topic)
+                );
+            }
+            
+            if (currentSearchFilters.teacher) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    (plan.teacherName || '').toLowerCase().includes(currentSearchFilters.teacher)
+                );
+            }
+            
+            if (currentSearchFilters.dateFrom) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.planDate >= currentSearchFilters.dateFrom
+                );
+            }
+            
+            if (currentSearchFilters.dateTo) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.planDate <= currentSearchFilters.dateTo
+                );
+            }
+            
+            if (currentSearchFilters.status) {
+                if (currentSearchFilters.status === 'active') {
+                    filteredPlans = filteredPlans.filter(plan => !plan.archived);
+                } else if (currentSearchFilters.status === 'archived') {
+                    filteredPlans = filteredPlans.filter(plan => plan.archived);
+                }
+            }
+            
+            return filteredPlans;
+        }
+
+        function searchPlans() {
+            const filters = {
+                grade: document.getElementById('plans-grade-select').value,
+                section: document.getElementById('plans-section-select').value,
+                subject: document.getElementById('plans-subject-search').value.toLowerCase(),
+                topic: document.getElementById('plans-topic-search').value.toLowerCase(),
+                teacher: document.getElementById('plans-teacher-search').value.toLowerCase(),
+                dateFrom: document.getElementById('plans-date-from').value,
+                dateTo: document.getElementById('plans-date-to').value,
+                status: document.getElementById('plans-status-filter').value
+            };
+            
+            currentSearchFilters = filters;
+            displayPlans();
+        }
+
+        // Enhanced plan submission with section
+        async function handlePlanSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const editId = form.dataset.editId;
+            const isEdit = !!editId;
+            const planGrade = document.getElementById('plan-grade').value;
+            const planSection = document.getElementById('plan-section').value;
+            
+            // Check if user has permission for this grade and section
+            if (!hasPermissionForGradeAndSection(planGrade, planSection)) {
+                showErrorMessage('ليس لديك صلاحية لإنشاء خطط لهذا الصف والشعبة');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('plan-submit-text');
+            const submitSpinner = document.getElementById('plan-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const planData = {
+                    grade: planGrade,
+                    section: planSection,
+                    planDate: document.getElementById('plan-date').value,
+                    day: document.getElementById('plan-day').value,
+                    subject: document.getElementById('plan-subject').value,
+                    topic: document.getElementById('plan-topic').value,
+                    activities: document.getElementById('plan-activities').value,
+                    teacherName: currentUser.name,
+                    teacherId: currentUser.id,
+                    archived: false,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                if (isEdit) {
+                    // Check if user can edit this plan
+                    const existingPlan = allPlans.find(p => p.id === editId);
+                    if (existingPlan && existingPlan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
+                        showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
+                        return;
+                    }
+                    
+                    // Update existing plan
+                    await db.collection('weeklyPlans').doc(editId).update(planData);
+                    showSuccessMessage('تم تحديث الخطة بنجاح');
+                } else {
+                    // Add new plan
+                    planData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('weeklyPlans').add(planData);
+                    showSuccessMessage('تمت إضافة الخطة بنجاح');
+                }
+                
+                closePlanModal();
+                
+            } catch (error) {
+                console.error('Error saving plan:', error);
+                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' الخطة');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        // Enhanced student submission with section
+        async function handleStudentSubmit(e) {
+            e.preventDefault();
+            
+            const studentGrade = document.getElementById('student-grade').value;
+            const studentSection = document.getElementById('student-section').value;
+            
+            // Check if user has permission for this grade and section
+            if (!hasPermissionForGradeAndSection(studentGrade, studentSection)) {
+                showErrorMessage('ليس لديك صلاحية لإضافة طلاب في هذا الصف والشعبة');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('student-submit-text');
+            const submitSpinner = document.getElementById('student-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const studentData = {
+                    studentId: document.getElementById('student-id').value,
+                    name: document.getElementById('student-name').value,
+                    grade: studentGrade,
+                    section: studentSection,
+                    parentPhone: document.getElementById('parent-phone').value,
+                    parentName: document.getElementById('parent-name').value || '',
+                    notes: document.getElementById('student-notes').value || '',
+                    createdBy: currentUser.id,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('students').add(studentData);
+                
+                showSuccessMessage('تمت إضافة الطالب بنجاح');
+                closeStudentModal();
+                document.getElementById('student-form').reset();
+                
+            } catch (error) {
+                console.error('Error adding student:', error);
+                showErrorMessage('حدث خطأ في إضافة الطالب');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        // Report generation and management
+        function populateStudentSelects() {
+            const studentSelect = document.getElementById('report-student');
+            if (!studentSelect) return;
+            
+            // Clear existing options except first
+            const firstOption = studentSelect.children[0];
+            studentSelect.innerHTML = '';
+            studentSelect.appendChild(firstOption);
+            
+            // Add students based on user permissions
+            const availableStudents = allStudents.filter(student => {
+                if (currentUser.role === 'admin') return true;
+                return hasPermissionForGradeAndSection(student.grade, student.section);
+            });
+            
+            availableStudents.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} - ${getGradeName(student.grade)} ${student.section}`;
+                studentSelect.appendChild(option);
+            });
+        }
+
+        async function handleReportSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('report-submit-text');
+            const submitSpinner = document.getElementById('report-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const studentId = document.getElementById('report-student').value;
+                const student = allStudents.find(s => s.id === studentId);
+                
+                if (!student) {
+                    showErrorMessage('الطالب غير موجود');
+                    return;
+                }
+                
+                // Check permissions
+                if (!hasPermissionForGradeAndSection(student.grade, student.section)) {
+                    showErrorMessage('ليس لديك صلاحية لإنشاء تقارير لهذا الطالب');
+                    return;
+                }
+                
+                const reportData = {
+                    studentId: studentId,
+                    studentName: student.name,
+                    grade: student.grade,
+                    section: student.section,
+                    subject: document.getElementById('report-subject').value,
+                    gradeScore: parseInt(document.getElementById('report-grade').value),
+                    date: document.getElementById('report-date').value,
+                    strengths: document.getElementById('report-strengths').value || '',
+                    improvements: document.getElementById('report-improvements').value || '',
+                    notes: document.getElementById('report-notes').value || '',
+                    teacherId: currentUser.id,
+                    teacherName: currentUser.name,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('studentReports').add(reportData);
+                
+                showSuccessMessage('تم حفظ التقرير بنجاح');
+                closeReportModal();
+                document.getElementById('report-form').reset();
+                
+            } catch (error) {
+                console.error('Error saving report:', error);
+                showErrorMessage('حدث خطأ في حفظ التقرير');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        async function generateReport() {
+            const grade = document.getElementById('report-grade-select').value;
+            const section = document.getElementById('report-section-select').value;
+            const period = document.getElementById('report-period-select').value;
+            
+            if (!grade || !section || !period) {
+                showErrorMessage('يرجى اختيار الصف والشعبة وفترة التقرير');
+                return;
+            }
+            
+            if (!hasPermissionForGradeAndSection(grade, section)) {
+                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف والشعبة');
+                return;
+            }
+            
+            const loadingDiv = document.getElementById('reports-loading');
+            const containerDiv = document.getElementById('reports-container');
+            const emptyDiv = document.getElementById('reports-empty');
+            
+            loadingDiv.classList.remove('hidden');
+            containerDiv.classList.add('hidden');
+            emptyDiv.classList.add('hidden');
+            
+            try {
+                // Calculate date range based on period
+                const endDate = new Date();
+                const startDate = new Date();
+                
+                switch (period) {
+                    case 'weekly':
+                        startDate.setDate(endDate.getDate() - 7);
+                        break;
+                    case 'monthly':
+                        startDate.setMonth(endDate.getMonth() - 1);
+                        break;
+                    case 'yearly':
+                        startDate.setFullYear(endDate.getFullYear() - 1);
+                        break;
+                }
+                
+                // Get reports for the specified period, grade, and section
+                const reportsQuery = await db.collection('studentReports')
+                    .where('grade', '==', grade)
+                    .where('section', '==', section)
+                    .where('date', '>=', startDate.toISOString().split('T')[0])
+                    .where('date', '<=', endDate.toISOString().split('T')[0])
+                    .get();
+                
+                const periodReports = [];
+                reportsQuery.forEach(doc => {
+                    periodReports.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                // Get students for this grade and section
+                const sectionStudents = allStudents.filter(s => s.grade === grade && s.section === section);
+                
+                if (sectionStudents.length === 0) {
+                    showErrorMessage('لا يوجد طلاب في هذا الصف والشعبة');
+                    return;
+                }
+                
+                // Generate summary report for each student
+                const studentSummaries = sectionStudents.map(student => {
+                    const studentReports = periodReports.filter(r => r.studentId === student.id);
+                    
+                    let averageGrade = 0;
+                    let subjectCount = 0;
+                    
+                    if (studentReports.length > 0) {
+                        const totalGrades = studentReports.reduce((sum, report) => sum + (report.gradeScore || 0), 0);
+                        averageGrade = Math.round(totalGrades / studentReports.length);
+                        subjectCount = studentReports.length;
+                    }
+                    
+                    return {
+                        student: student,
+                        averageGrade: averageGrade,
+                        subjectCount: subjectCount,
+                        reports: studentReports
+                    };
+                });
+                
+                displayReportSummaries(studentSummaries, period, grade, section);
+                
+            } catch (error) {
+                console.error('Error generating report:', error);
+                showErrorMessage('حدث خطأ في إنشاء التقرير');
+            } finally {
+                loadingDiv.classList.add('hidden');
+            }
+        }
+
+        function displayReportSummaries(summaries, period, grade, section) {
+            const containerDiv = document.getElementById('reports-container');
+            const gridDiv = document.getElementById('reports-grid');
+            const emptyDiv = document.getElementById('reports-empty');
+            
+            if (summaries.length === 0) {
+                containerDiv.classList.add('hidden');
+                emptyDiv.classList.remove('hidden');
+                return;
+            }
+            
+            emptyDiv.classList.add('hidden');
+            containerDiv.classList.remove('hidden');
+            
+            gridDiv.innerHTML = '';
+            
+            summaries.forEach(summary => {
+                const reportCard = createReportCard(summary, period);
+                gridDiv.appendChild(reportCard);
+            });
+        }
+
+        function createReportCard(summary, period) {
+            const { student, averageGrade, subjectCount, reports } = summary;
+            
+            let gradeClass = 'grade-poor';
+            let gradeText = 'ضعيف';
+            
+            if (averageGrade >= 90) {
+                gradeClass = 'grade-excellent';
+                gradeText = 'ممتاز';
+            } else if (averageGrade >= 80) {
+                gradeClass = 'grade-good';
+                gradeText = 'جيد';
+            } else if (averageGrade >= 60) {
+                gradeClass = 'grade-average';
+                gradeText = 'متوسط';
+            }
+            
+            const periodText = {
+                'weekly': 'الأسبوع الماضي',
+                'monthly': 'الشهر الماضي',
+                'yearly': 'السنة الماضية'
+            };
+            
+            const card = document.createElement('div');
+            card.className = 'report-card dark:bg-gray-700';
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">${getGradeName(student.grade)} - الشعبة ${student.section}</p>
+                        <p class="text-xs text-gray-500">رقم الأساس: ${student.studentId}</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 rounded-full ${gradeClass} flex items-center justify-center text-white font-bold text-lg mb-2">
+                            ${averageGrade}
+                        </div>
+                        <span class="text-xs text-gray-600 dark:text-gray-400">${gradeText}</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">فترة التقرير:</span>
+                        <span class="font-medium">${periodText[period]}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">عدد المواد:</span>
+                        <span class="font-medium">${subjectCount}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">المعدل العام:</span>
+                        <span class="font-medium">${averageGrade}/100</span>
+                    </div>
+                </div>
+                
+                ${reports.length > 0 ? `
+                    <div class="border-t border-gray-200 dark:border-gray-600 pt-4">
+                        <h5 class="text-sm font-medium mb-2">تفاصيل المواد:</h5>
+                        <div class="space-y-1 max-h-32 overflow-y-auto">
+                            ${reports.map(report => `
+                                <div class="flex justify-between text-xs">
+                                    <span>${report.subject}</span>
+                                    <span class="font-medium">${report.gradeScore}/100</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : `
+                    <div class="text-center py-4 text-gray-500 text-sm">
+                        لا توجد تقارير للفترة المحددة
+                    </div>
+                `}
+                
+                <div class="flex justify-center mt-4">
+                    <button onclick="sendStudentReportViaWhatsApp('${student.id}', '${averageGrade}', '${subjectCount}')" 
+                            class="whatsapp-btn text-white px-4 py-2 rounded text-sm hover:bg-opacity-90 transition-colors">
+                        <i class="fab fa-whatsapp ml-2"></i>
+                        إرسال للولي
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        async function sendStudentReportViaWhatsApp(studentId, averageGrade, subjectCount) {
+            const student = allStudents.find(s => s.id === studentId);
+            if (!student || !student.parentPhone) {
+                showErrorMessage('رقم ولي الأمر غير متوفر');
+                return;
+            }
+            
+            const period = document.getElementById('report-period-select').value;
+            const periodText = {
+                'weekly': 'الأسبوع الماضي',
+                'monthly': 'الشهر الماضي', 
+                'yearly': 'السنة الماضية'
+            };
+            
+            let gradeText = 'ضعيف';
+            if (averageGrade >= 90) gradeText = 'ممتاز';
+            else if (averageGrade >= 80) gradeText = 'جيد';
+            else if (averageGrade >= 60) gradeText = 'متوسط';
+            
+            const message = `مرحباً ${student.parentName || 'ولي الأمر'},
+
+هذا تقرير أداء الطالب ${student.name} للفترة ${periodText[period]}:
+
+📊 المعدل العام: ${averageGrade}/100 (${gradeText})
+📚 عدد المواد المُقيمة: ${subjectCount}
+🏫 الصف: ${getGradeName(student.grade)} - الشعبة ${student.section}
+
+نشكركم على متابعتكم وثقتكم.
+
+مدرسة الثروات الوطنية الخاصة`;
+            
+            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        async function sendReportsViaWhatsApp() {
+            const grade = document.getElementById('report-grade-select').value;
+            const section = document.getElementById('report-section-select').value;
+            
+            if (!grade || !section) {
+                showErrorMessage('يرجى إنشاء التقرير أولاً');
+                return;
+            }
+            
+            // Get all students in the current report
+            const reportCards = document.querySelectorAll('#reports-grid .report-card');
+            let sentCount = 0;
+            
+            reportCards.forEach((card, index) => {
+                const whatsappBtn = card.querySelector('[onclick*="sendStudentReportViaWhatsApp"]');
+                if (whatsappBtn) {
+                    setTimeout(() => {
+                        whatsappBtn.click();
+                    }, index * 1000); // 1 second delay between each message
+                    sentCount++;
+                }
+            });
+            
+            if (sentCount > 0) {
+                showSuccessMessage(`سيتم فتح ${sentCount} محادثة واتساب`);
+            } else {
+                showErrorMessage('لا توجد تقارير لإرسالها');
+            }
+        }
+
+        // Enhanced attendance with sections
+        function handleAttendanceGradeSelect() {
+            const selectedGrade = document.getElementById('attendance-grade-select').value;
+            const selectedSection = document.getElementById('attendance-section-select').value;
+            const container = document.getElementById('attendance-container');
+            
+            if (selectedGrade && selectedSection && hasPermissionForGradeAndSection(selectedGrade, selectedSection)) {
+                container.classList.remove('hidden');
+                loadStudentsForAttendance(selectedGrade, selectedSection);
+            } else if (selectedGrade && selectedSection && !hasPermissionForGradeAndSection(selectedGrade, selectedSection)) {
+                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف والشعبة');
+                container.classList.add('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function loadStudentsForAttendance(grade, section) {
+            const studentsContainer = document.getElementById('students-attendance');
+            const loadingDiv = document.getElementById('attendance-loading');
+            
+            loadingDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                const students = allStudents.filter(s => s.grade === grade && s.section === section);
+                
+                studentsContainer.innerHTML = '';
+                students.forEach((student, index) => {
+                    const studentCard = document.createElement('div');
+                    studentCard.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border';
+                    studentCard.innerHTML = `
+                        <h4 class="font-semibold mb-3">${student.name}</h4>
+                        <p class="text-xs text-gray-500 mb-3">رقم الأساس: ${student.studentId}</p>
+                        <div class="flex space-x-2 space-x-reverse">
+                            <button class="attendance-btn attendance-present text-white px-3 py-1 rounded text-sm" data-status="present" data-student="${student.id}">
+                                حاضر
+                            </button>
+                            <button class="attendance-btn attendance-absent text-white px-3 py-1 rounded text-sm" data-status="absent" data-student="${student.id}">
+                                غائب
+                            </button>
+                            <button class="attendance-btn attendance-late text-white px-3 py-1 rounded text-sm" data-status="late" data-student="${student.id}">
+                                متأخر
+                            </button>
+                        </div>
+                    `;
+                    studentsContainer.appendChild(studentCard);
+                });
+                
+                // Add click handlers for attendance buttons
+                document.querySelectorAll('.attendance-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const studentId = this.getAttribute('data-student');
+                        const status = this.getAttribute('data-status');
+                        
+                        // Remove active state from all buttons for this student
+                        document.querySelectorAll(`[data-student="${studentId}"]`).forEach(button => {
+                            button.classList.remove('ring-2', 'ring-white');
+                        });
+                        
+                        // Add active state to clicked button
+                        this.classList.add('ring-2', 'ring-white');
+                    });
+                });
+                
+                loadingDiv.classList.add('hidden');
+            }, 1000);
+        }
+
+        async function saveAttendance() {
+            const grade = document.getElementById('attendance-grade-select').value;
+            const section = document.getElementById('attendance-section-select').value;
+            const date = document.getElementById('attendance-date').value;
+            
+            if (!grade || !section || !date) {
+                showErrorMessage('يرجى اختيار الصف والشعبة والتاريخ');
+                return;
+            }
+            
+            if (!hasPermissionForGradeAndSection(grade, section)) {
+                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف والشعبة');
+                return;
+            }
+            
+            try {
+                const attendanceData = [];
+                document.querySelectorAll('.attendance-btn.ring-2').forEach(btn => {
+                    attendanceData.push({
+                        studentId: btn.getAttribute('data-student'),
+                        status: btn.getAttribute('data-status')
+                    });
+                });
+                
+                const docData = {
+                    grade: grade,
+                    section: section,
+                    date: date,
+                    attendance: attendanceData,
+                    teacherId: currentUser.id,
+                    teacherName: currentUser.name,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('attendance').doc(`${grade}_${section}_${date}`).set(docData);
+                
+                showSuccessMessage('تم حفظ بيانات الحضور بنجاح');
+                
+            } catch (error) {
+                console.error('Error saving attendance:', error);
+                showErrorMessage('حدث خطأ في حفظ بيانات الحضور');
+            }
+        }
+
+        // Enhanced user submission with section permissions
+        async function handleUserSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const editId = form.dataset.editId;
+            const isEdit = !!editId;
+            
+            const submitBtn = document.getElementById('user-submit-btn');
+            const submitText = document.getElementById('user-submit-text');
+            const submitSpinner = document.getElementById('user-submit-spinner');
+            
+            // Validate form fields first
+            const name = document.getElementById('modal-user-name').value.trim();
+            const username = document.getElementById('modal-user-username').value.trim();
+            const password = document.getElementById('modal-user-password').value;
+            const role = document.getElementById('modal-user-role').value;
+            
+            if (!name || !username || !role) {
+                showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            if (!isEdit && !password) {
+                showErrorMessage('كلمة المرور مطلوبة للمستخدمين الجدد');
+                return;
+            }
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            submitBtn.disabled = true;
+            
+            try {
+                // Check if username already exists (only for new users)
+                if (!isEdit) {
+                    const existingUser = await db.collection('users').where('username', '==', username).get();
+                    if (!existingUser.empty) {
+                        showErrorMessage('اسم المستخدم موجود بالفعل');
+                        return;
+                    }
+                }
+                
+                const permissions = Array.from(document.querySelectorAll('.user-permissions:checked'))
+                    .map(checkbox => checkbox.value);
+                    
+                const sectionPermissions = Array.from(document.querySelectorAll('.section-permissions:checked'))
+                    .map(checkbox => checkbox.value);
+                
+                const userData = {
+                    name: name,
+                    username: username,
+                    role: role,
+                    permissions: permissions,
+                    sectionPermissions: sectionPermissions,
+                    status: 'active',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                // Only include password if it's provided
+                if (password) {
+                    userData.password = password;
+                }
+                
+                if (isEdit) {
+                    // Update existing user
+                    await db.collection('users').doc(editId).update(userData);
+                    showSuccessMessage('تم تحديث المستخدم بنجاح');
+                } else {
+                    // Add new user
+                    userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('users').add(userData);
+                    showSuccessMessage('تمت إضافة المستخدم بنجاح');
+                }
+                
+                closeUserModal();
+                
+            } catch (error) {
+                console.error('Error saving user:', error);
+                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' المستخدم: ' + error.message);
+            } finally {
+                // Always hide loading and enable button
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Activities functionality remains the same...
         function displayActivities() {
             const filteredActivities = filterActivitiesBySearch();
             const activitiesGrid = document.getElementById('activities-grid');
@@ -1987,35 +2947,6 @@
             return filteredActivities;
         }
 
-        function exportActivitiesToExcel() {
-            const filteredActivities = filterActivitiesBySearch();
-            
-            if (filteredActivities.length === 0) {
-                showErrorMessage('لا توجد أنشطة لتصديرها');
-                return;
-            }
-            
-            const exportData = filteredActivities.map(activity => ({
-                'اسم النشاط': activity.name,
-                'الوصف': activity.description,
-                'التاريخ': formatDate(activity.date),
-                'الوقت': activity.time,
-                'الموقع': activity.location || '',
-                'الفئة المستهدفة': getTargetText(activity.target),
-                'الحالة': getActivityStatusText(getActivityStatus(activity.date)),
-                'ملاحظات': activity.notes || ''
-            }));
-            
-            const worksheet = XLSX.utils.json_to_sheet(exportData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'الأنشطة');
-            
-            const fileName = `activities_${new Date().toISOString().split('T')[0]}.xlsx`;
-            XLSX.writeFile(workbook, fileName);
-            
-            showSuccessMessage('تم تصدير البيانات بنجاح');
-        }
-
         async function handleActivitySubmit(e) {
             e.preventDefault();
             
@@ -2105,720 +3036,6 @@
             openActivityModal();
         }
 
-        // Students functionality
-        function displayStudents() {
-            const filteredStudents = filterStudentsByGrade();
-            const studentsGrid = document.getElementById('students-grid');
-            const emptyState = document.getElementById('students-empty');
-            
-            if (filteredStudents.length === 0) {
-                studentsGrid.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            
-            emptyState.classList.add('hidden');
-            studentsGrid.classList.remove('hidden');
-            
-            studentsGrid.innerHTML = '';
-            filteredStudents.forEach(student => {
-                const studentCard = createStudentCard(student);
-                studentsGrid.appendChild(studentCard);
-            });
-        }
-
-        function createStudentCard(student) {
-            const card = document.createElement('div');
-            card.className = 'student-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
-            
-            const statusBadge = getGradeBadge(student.grade);
-            const whatsappBtn = student.parentPhone ? 
-                `<button onclick="sendWhatsAppToParent('${student.parentPhone}', '${student.name}')" 
-                         class="whatsapp-btn text-white px-3 py-1 rounded text-sm hover:bg-opacity-90 transition-colors">
-                    <i class="fab fa-whatsapp ml-1"></i>
-                    واتساب
-                 </button>` : '';
-            
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">رقم الأساس: ${student.studentId}</p>
-                    </div>
-                    ${statusBadge}
-                </div>
-                
-                <div class="space-y-2 mb-4">
-                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <i class="fas fa-user-tie ml-2 text-primary"></i>
-                        <span>${student.parentName || 'غير محدد'}</span>
-                    </div>
-                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <i class="fas fa-phone ml-2 text-primary"></i>
-                        <span dir="ltr">${student.parentPhone || 'غير محدد'}</span>
-                    </div>
-                </div>
-                
-                <div class="flex justify-between items-center">
-                    <div class="flex space-x-2 space-x-reverse">
-                        <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteStudent('${student.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    ${whatsappBtn}
-                </div>
-            `;
-            
-            return card;
-        }
-
-        function filterStudentsByGrade() {
-            const selectedGrade = document.getElementById('students-grade-select').value;
-            if (!selectedGrade) return allStudents;
-            return allStudents.filter(student => student.grade === selectedGrade);
-        }
-
-        function filterStudents() {
-            displayStudents();
-        }
-
-        function getGradeBadge(gradeId) {
-            const gradeNames = {
-                'grade1': 'الأول', 'grade2': 'الثاني', 'grade3': 'الثالث', 'grade4': 'الرابع',
-                'grade5': 'الخامس', 'grade6': 'السادس', 'grade7': 'السابع', 'grade8': 'الثامن',
-                'grade9': 'التاسع', 'grade10': 'العاشر', 'grade11': 'الحادي عشر', 'grade12': 'الثاني عشر'
-            };
-            const gradeName = gradeNames[gradeId] || gradeId;
-            return `<span class="bg-primary text-white px-2 py-1 rounded-full text-xs">${gradeName}</span>`;
-        }
-
-        async function handleStudentSubmit(e) {
-            e.preventDefault();
-            
-            const studentGrade = document.getElementById('student-grade').value;
-            
-            // Check if user has permission for this grade
-            if (!hasPermissionForGrade(studentGrade)) {
-                showErrorMessage('ليس لديك صلاحية لإضافة طلاب في هذا الصف');
-                return;
-            }
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const submitText = document.getElementById('student-submit-text');
-            const submitSpinner = document.getElementById('student-submit-spinner');
-            
-            // Show loading
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            
-            try {
-                const studentData = {
-                    studentId: document.getElementById('student-id').value,
-                    name: document.getElementById('student-name').value,
-                    grade: studentGrade,
-                    parentPhone: document.getElementById('parent-phone').value,
-                    parentName: document.getElementById('parent-name').value || '',
-                    notes: document.getElementById('student-notes').value || '',
-                    createdBy: currentUser.id,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                await db.collection('students').add(studentData);
-                
-                showSuccessMessage('تمت إضافة الطالب بنجاح');
-                closeStudentModal();
-                document.getElementById('student-form').reset();
-                
-            } catch (error) {
-                console.error('Error adding student:', error);
-                showErrorMessage('حدث خطأ في إضافة الطالب');
-            } finally {
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
-            }
-        }
-
-        async function deleteStudent(studentId) {
-            const student = allStudents.find(s => s.id === studentId);
-            if (student && !hasPermissionForGrade(student.grade)) {
-                showErrorMessage('ليس لديك صلاحية لحذف هذا الطالب');
-                return;
-            }
-            
-            showConfirmDialog('هل أنت متأكد من حذف هذا الطالب؟', async () => {
-                try {
-                    await db.collection('students').doc(studentId).delete();
-                    showSuccessMessage('تم حذف الطالب بنجاح');
-                } catch (error) {
-                    console.error('Error deleting student:', error);
-                    showErrorMessage('حدث خطأ في حذف الطالب');
-                }
-            });
-        }
-
-        function editStudent(studentId) {
-            showInfoMessage('سيتم تطوير ميزة التعديل قريباً');
-        }
-
-        // Excel functionality
-        function handleExcelFile(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const sheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                    
-                    if (jsonData.length === 0) {
-                        showErrorMessage('الملف فارغ أو تنسيقه غير صحيح');
-                        return;
-                    }
-                    
-                    currentExcelData = processExcelData(jsonData);
-                    displayExcelPreview(currentExcelData);
-                    
-                } catch (error) {
-                    console.error('Error reading Excel file:', error);
-                    showErrorMessage('حدث خطأ في قراءة الملف');
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function processExcelData(data) {
-            return data.map((row, index) => {
-                // Try to map common column names
-                const processedRow = {
-                    studentId: row['رقم الأساس'] || row['Student ID'] || row['studentId'] || '',
-                    name: row['اسم الطالب'] || row['Student Name'] || row['name'] || '',
-                    grade: row['الصف'] || row['Grade'] || row['grade'] || '',
-                    parentPhone: row['رقم ولي الأمر'] || row['Parent Phone'] || row['parentPhone'] || '',
-                    parentName: row['اسم ولي الأمر'] || row['Parent Name'] || row['parentName'] || '',
-                    notes: row['ملاحظات'] || row['Notes'] || row['notes'] || ''
-                };
-                
-                // Convert grade to proper format if needed
-                if (processedRow.grade && !processedRow.grade.startsWith('grade')) {
-                    const gradeNum = parseInt(processedRow.grade);
-                    if (gradeNum >= 1 && gradeNum <= 12) {
-                        processedRow.grade = `grade${gradeNum}`;
-                    }
-                }
-                
-                return {
-                    ...processedRow,
-                    rowIndex: index + 1,
-                    valid: processedRow.studentId && processedRow.name && processedRow.grade && 
-                           processedRow.parentPhone && hasPermissionForGrade(processedRow.grade)
-                };
-            });
-        }
-
-        function displayExcelPreview(data) {
-            const preview = document.getElementById('excel-preview');
-            const table = document.getElementById('excel-preview-table');
-            const confirmBtn = document.getElementById('confirm-import');
-            
-            if (data.length === 0) {
-                preview.classList.add('hidden');
-                confirmBtn.classList.add('hidden');
-                return;
-            }
-            
-            const validRows = data.filter(row => row.valid);
-            const invalidRows = data.filter(row => !row.valid);
-            
-            table.innerHTML = `
-                <thead>
-                    <tr class="bg-primary text-white">
-                        <th class="border border-gray-300 px-2 py-1">الصف</th>
-                        <th class="border border-gray-300 px-2 py-1">رقم الأساس</th>
-                        <th class="border border-gray-300 px-2 py-1">اسم الطالب</th>
-                        <th class="border border-gray-300 px-2 py-1">رقم ولي الأمر</th>
-                        <th class="border border-gray-300 px-2 py-1">اسم ولي الأمر</th>
-                        <th class="border border-gray-300 px-2 py-1">الحالة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${data.map(row => `
-                        <tr class="${row.valid ? 'bg-green-50 dark:bg-green-900' : 'bg-red-50 dark:bg-red-900'}">
-                            <td class="border border-gray-300 px-2 py-1">${getGradeName(row.grade)}</td>
-                            <td class="border border-gray-300 px-2 py-1">${row.studentId}</td>
-                            <td class="border border-gray-300 px-2 py-1">${row.name}</td>
-                            <td class="border border-gray-300 px-2 py-1" dir="ltr">${row.parentPhone}</td>
-                            <td class="border border-gray-300 px-2 py-1">${row.parentName}</td>
-                            <td class="border border-gray-300 px-2 py-1">
-                                ${row.valid ? 
-                                    '<span class="text-green-600 text-xs"><i class="fas fa-check"></i> صالح</span>' : 
-                                    '<span class="text-red-600 text-xs"><i class="fas fa-times"></i> ناقص أو ممنوع</span>'
-                                }
-                            </td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            `;
-            
-            preview.classList.remove('hidden');
-            
-            if (validRows.length > 0) {
-                confirmBtn.classList.remove('hidden');
-                if (invalidRows.length > 0) {
-                    showInfoMessage(`سيتم استيراد ${validRows.length} طالب. يوجد ${invalidRows.length} صف غير مكتمل أو ليس لديك صلاحية عليه سيتم تجاهله.`);
-                }
-            } else {
-                confirmBtn.classList.add('hidden');
-                showErrorMessage('لا توجد بيانات صالحة للاستيراد أو ليس لديك صلاحية لهذه الصفوف');
-            }
-        }
-
-        async function handleExcelImport() {
-            const submitText = document.getElementById('import-submit-text');
-            const submitSpinner = document.getElementById('import-submit-spinner');
-            
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            
-            try {
-                const validData = currentExcelData.filter(row => row.valid);
-                const batch = db.batch();
-                
-                validData.forEach(row => {
-                    const docRef = db.collection('students').doc();
-                    batch.set(docRef, {
-                        studentId: row.studentId,
-                        name: row.name,
-                        grade: row.grade,
-                        parentPhone: row.parentPhone,
-                        parentName: row.parentName,
-                        notes: row.notes,
-                        createdBy: currentUser.id,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                });
-                
-                await batch.commit();
-                
-                showSuccessMessage(`تم استيراد ${validData.length} طالب بنجاح`);
-                closeImportModal();
-                currentExcelData = [];
-                
-            } catch (error) {
-                console.error('Error importing students:', error);
-                showErrorMessage('حدث خطأ في استيراد البيانات');
-            } finally {
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
-            }
-        }
-
-        function exportStudentsToExcel() {
-            if (allStudents.length === 0) {
-                showErrorMessage('لا توجد بيانات طلاب لتصديرها');
-                return;
-            }
-            
-            const exportData = allStudents.map(student => ({
-                'رقم الأساس': student.studentId,
-                'اسم الطالب': student.name,
-                'الصف': getGradeName(student.grade),
-                'رقم ولي الأمر': student.parentPhone,
-                'اسم ولي الأمر': student.parentName || '',
-                'ملاحظات': student.notes || ''
-            }));
-            
-            const worksheet = XLSX.utils.json_to_sheet(exportData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'الطلاب');
-            
-            const fileName = `students_${new Date().toISOString().split('T')[0]}.xlsx`;
-            XLSX.writeFile(workbook, fileName);
-            
-            showSuccessMessage('تم تصدير البيانات بنجاح');
-        }
-
-        // WhatsApp functionality
-        function sendWhatsAppToParent(phoneNumber, studentName) {
-            const message = encodeURIComponent(`مرحباً، هذه رسالة من مدرسة الثروات الوطنية الخاصة بخصوص الطالب ${studentName}.`);
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        function previewWhatsAppMessages() {
-            const grade = document.getElementById('whatsapp-grade-select').value;
-            const date = document.getElementById('whatsapp-date').value;
-            const messageTemplate = document.getElementById('whatsapp-message').value;
-            
-            if (!grade || !date) {
-                showErrorMessage('يرجى اختيار الصف والتاريخ');
-                return;
-            }
-            
-            if (!hasPermissionForGrade(grade)) {
-                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف');
-                return;
-            }
-            
-            // Get attendance data for the selected grade and date
-            db.collection('attendance').doc(`${grade}_${date}`).get()
-                .then(doc => {
-                    if (!doc.exists) {
-                        showErrorMessage('لا توجد بيانات حضور لهذا التاريخ');
-                        return;
-                    }
-                    
-                    const attendanceData = doc.data();
-                    const gradeStudents = allStudents.filter(s => s.grade === grade);
-                    const preview = document.getElementById('whatsapp-preview');
-                    const previewList = document.getElementById('whatsapp-preview-list');
-                    
-                    previewList.innerHTML = '';
-                    
-                    attendanceData.attendance.forEach(record => {
-                        const student = gradeStudents.find(s => s.id === record.studentId);
-                        if (student && student.parentPhone) {
-                            const statusArabic = {
-                                'present': 'حاضر',
-                                'absent': 'غائب',
-                                'late': 'متأخر'
-                            };
-                            
-                            let message = messageTemplate
-                                .replace(/{parent_name}/g, student.parentName || 'ولي الأمر')
-                                .replace(/{student_name}/g, student.name)
-                                .replace(/{status}/g, statusArabic[record.status])
-                                .replace(/{date}/g, new Date(date).toLocaleDateString('ar-AE'));
-                            
-                            const messageDiv = document.createElement('div');
-                            messageDiv.className = 'bg-gray-50 dark:bg-gray-700 p-3 rounded border-l-4 border-green-500';
-                            messageDiv.innerHTML = `
-                                <div class="flex justify-between items-start mb-2">
-                                    <strong class="text-sm">${student.name}</strong>
-                                    <span class="text-xs text-gray-500" dir="ltr">${student.parentPhone}</span>
-                                </div>
-                                <p class="text-sm whitespace-pre-line">${message}</p>
-                            `;
-                            previewList.appendChild(messageDiv);
-                        }
-                    });
-                    
-                    preview.classList.remove('hidden');
-                    document.getElementById('send-whatsapp').classList.remove('hidden');
-                })
-                .catch(error => {
-                    console.error('Error loading attendance:', error);
-                    showErrorMessage('حدث خطأ في تحميل بيانات الحضور');
-                });
-        }
-
-        function sendWhatsAppMessages() {
-            const grade = document.getElementById('whatsapp-grade-select').value;
-            const date = document.getElementById('whatsapp-date').value;
-            const messageTemplate = document.getElementById('whatsapp-message').value;
-            
-            if (!hasPermissionForGrade(grade)) {
-                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف');
-                return;
-            }
-            
-            const submitText = document.getElementById('whatsapp-submit-text');
-            const submitSpinner = document.getElementById('whatsapp-submit-spinner');
-            
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            
-            // Get attendance data and send messages
-            db.collection('attendance').doc(`${grade}_${date}`).get()
-                .then(doc => {
-                    const attendanceData = doc.data();
-                    const gradeStudents = allStudents.filter(s => s.grade === grade);
-                    let sentCount = 0;
-                    
-                    attendanceData.attendance.forEach(record => {
-                        const student = gradeStudents.find(s => s.id === record.studentId);
-                        if (student && student.parentPhone) {
-                            const statusArabic = {
-                                'present': 'حاضر',
-                                'absent': 'غائب',
-                                'late': 'متأخر'
-                            };
-                            
-                            let message = messageTemplate
-                                .replace(/{parent_name}/g, student.parentName || 'ولي الأمر')
-                                .replace(/{student_name}/g, student.name)
-                                .replace(/{status}/g, statusArabic[record.status])
-                                .replace(/{date}/g, new Date(date).toLocaleDateString('ar-AE'));
-                            
-                            // Open WhatsApp for each parent (with a small delay)
-                            setTimeout(() => {
-                                const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${encodeURIComponent(message)}`;
-                                window.open(whatsappUrl, '_blank');
-                            }, sentCount * 1000); // 1 second delay between each message
-                            
-                            sentCount++;
-                        }
-                    });
-                    
-                    setTimeout(() => {
-                        showSuccessMessage(`تم فتح ${sentCount} محادثة واتساب`);
-                        closeWhatsAppModal();
-                        submitText.classList.remove('hidden');
-                        submitSpinner.classList.add('hidden');
-                    }, sentCount * 1000 + 500);
-                })
-                .catch(error => {
-                    console.error('Error sending WhatsApp messages:', error);
-                    showErrorMessage('حدث خطأ في إرسال الرسائل');
-                    submitText.classList.remove('hidden');
-                    submitSpinner.classList.add('hidden');
-                });
-        }
-
-        // Plans functionality
-        function displayPlans() {
-            const filteredPlans = filterPlansBySearch();
-            const tableBody = document.getElementById('plans-table-body');
-            const tableContainer = document.getElementById('plans-table-container');
-            const emptyState = document.getElementById('plans-empty');
-            
-            if (filteredPlans.length === 0) {
-                tableContainer.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            
-            emptyState.classList.add('hidden');
-            tableContainer.classList.remove('hidden');
-            
-            // Sort plans by grade, date, and day
-            const dayOrder = ['الاتنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعة'];
-            filteredPlans.sort((a, b) => {
-                if (a.grade !== b.grade) {
-                    return a.grade.localeCompare(b.grade);
-                }
-                if (a.planDate !== b.planDate) {
-                    return (a.planDate || '').localeCompare(b.planDate || '');
-                }
-                return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
-            });
-            
-            tableBody.innerHTML = '';
-            filteredPlans.forEach(plan => {
-                const row = tableBody.insertRow();
-                row.className = `hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${plan.archived ? 'archived-plan' : ''}`;
-                
-                // Highlight search terms
-                const subjectText = highlightSearchTerm(plan.subject, currentSearchFilters.subject);
-                const topicText = highlightSearchTerm(plan.topic, currentSearchFilters.topic);
-                const teacherText = highlightSearchTerm(plan.teacherName || 'غير محدد', currentSearchFilters.teacher);
-                
-                row.innerHTML = `
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                        <span class="bg-primary text-white px-2 py-1 rounded text-xs">${getGradeName(plan.grade)}</span>
-                    </td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.planDate || ''}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 font-medium">${plan.day}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${subjectText}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${topicText}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.activities}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacherText}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                        <span class="px-2 py-1 rounded text-xs ${plan.archived ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-600'}">
-                            ${plan.archived ? 'مؤرشف' : 'نشط'}
-                        </span>
-                    </td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                        <div class="flex space-x-1 space-x-reverse">
-                            ${plan.teacherId === currentUser.id || currentUser.role === 'admin' ? `
-                                <button onclick="editPlan('${plan.id}')" class="text-blue-600 hover:text-blue-800">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="${plan.archived ? 'unarchivePlan' : 'archivePlan'}('${plan.id}')" class="text-yellow-600 hover:text-yellow-800">
-                                    <i class="fas fa-${plan.archived ? 'undo' : 'archive'}"></i>
-                                </button>
-                                <button onclick="deletePlan('${plan.id}')" class="text-red-600 hover:text-red-800">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            ` : `
-                                <span class="text-gray-400 text-xs">عرض فقط</span>
-                            `}
-                        </div>
-                    </td>
-                `;
-            });
-        }
-
-        function getGradeName(gradeId) {
-            const gradeNames = {
-                'grade1': 'الأول', 'grade2': 'الثاني', 'grade3': 'الثالث', 'grade4': 'الرابع',
-                'grade5': 'الخامس', 'grade6': 'السادس', 'grade7': 'السابع', 'grade8': 'الثامن',
-                'grade9': 'التاسع', 'grade10': 'العاشر', 'grade11': 'الحادي عشر', 'grade12': 'الثاني عشر'
-            };
-            return gradeNames[gradeId] || gradeId;
-        }
-
-        async function handlePlanSubmit(e) {
-            e.preventDefault();
-            
-            const form = e.target;
-            const editId = form.dataset.editId;
-            const isEdit = !!editId;
-            const planGrade = document.getElementById('plan-grade').value;
-            
-            // Check if user has permission for this grade
-            if (!hasPermissionForGrade(planGrade)) {
-                showErrorMessage('ليس لديك صلاحية لإنشاء خطط لهذا الصف');
-                return;
-            }
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const submitText = document.getElementById('plan-submit-text');
-            const submitSpinner = document.getElementById('plan-submit-spinner');
-            
-            // Show loading
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            
-            try {
-                const planData = {
-                    grade: planGrade,
-                    planDate: document.getElementById('plan-date').value,
-                    day: document.getElementById('plan-day').value,
-                    subject: document.getElementById('plan-subject').value,
-                    topic: document.getElementById('plan-topic').value,
-                    activities: document.getElementById('plan-activities').value,
-                    teacherName: currentUser.name,
-                    teacherId: currentUser.id,
-                    archived: false,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                if (isEdit) {
-                    // Check if user can edit this plan
-                    const existingPlan = allPlans.find(p => p.id === editId);
-                    if (existingPlan && existingPlan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
-                        showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
-                        return;
-                    }
-                    
-                    // Update existing plan
-                    await db.collection('weeklyPlans').doc(editId).update(planData);
-                    showSuccessMessage('تم تحديث الخطة بنجاح');
-                } else {
-                    // Add new plan
-                    planData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('weeklyPlans').add(planData);
-                    showSuccessMessage('تمت إضافة الخطة بنجاح');
-                }
-                
-                closePlanModal();
-                
-            } catch (error) {
-                console.error('Error saving plan:', error);
-                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' الخطة');
-            } finally {
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
-            }
-        }
-
-        function editPlan(planId) {
-            const plan = allPlans.find(p => p.id === planId);
-            if (!plan) {
-                showErrorMessage('لم يتم العثور على الخطة');
-                return;
-            }
-            
-            // Check if user can edit this plan
-            if (plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
-                showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
-                return;
-            }
-            
-            // Fill the form with existing data
-            document.getElementById('plan-grade').value = plan.grade;
-            document.getElementById('plan-date').value = plan.planDate || '';
-            document.getElementById('plan-day').value = plan.day;
-            document.getElementById('plan-subject').value = plan.subject;
-            document.getElementById('plan-topic').value = plan.topic;
-            document.getElementById('plan-activities').value = plan.activities;
-            
-            // Change form mode to edit
-            document.getElementById('plan-submit-text').textContent = 'حفظ التعديلات';
-            document.getElementById('plan-modal-title').textContent = 'تعديل الخطة الأسبوعية';
-            
-            // Store plan ID for updating
-            document.getElementById('plan-form').dataset.editId = planId;
-            
-            openPlanModal();
-        }
-
-        async function archivePlan(planId) {
-            const plan = allPlans.find(p => p.id === planId);
-            if (plan && plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
-                showErrorMessage('ليس لديك صلاحية لأرشفة هذه الخطة');
-                return;
-            }
-            
-            try {
-                await db.collection('weeklyPlans').doc(planId).update({
-                    archived: true,
-                    archivedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showSuccessMessage('تم أرشفة الخطة بنجاح');
-            } catch (error) {
-                console.error('Error archiving plan:', error);
-                showErrorMessage('حدث خطأ في أرشفة الخطة');
-            }
-        }
-
-        async function unarchivePlan(planId) {
-            const plan = allPlans.find(p => p.id === planId);
-            if (plan && plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
-                showErrorMessage('ليس لديك صلاحية لإلغاء أرشفة هذه الخطة');
-                return;
-            }
-            
-            try {
-                await db.collection('weeklyPlans').doc(planId).update({
-                    archived: false,
-                    unarchivedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showSuccessMessage('تم إلغاء أرشفة الخطة بنجاح');
-            } catch (error) {
-                console.error('Error unarchiving plan:', error);
-                showErrorMessage('حدث خطأ في إلغاء أرشفة الخطة');
-            }
-        }
-
-        async function deletePlan(planId) {
-            const plan = allPlans.find(p => p.id === planId);
-            if (plan && plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
-                showErrorMessage('ليس لديك صلاحية لحذف هذه الخطة');
-                return;
-            }
-            
-            showConfirmDialog('هل أنت متأكد من حذف هذه الخطة؟', async () => {
-                try {
-                    await db.collection('weeklyPlans').doc(planId).delete();
-                    showSuccessMessage('تم حذف الخطة بنجاح');
-                } catch (error) {
-                    console.error('Error deleting plan:', error);
-                    showErrorMessage('حدث خطأ في حذف الخطة');
-                }
-            });
-        }
-
-        // Users functionality
         function displayUsers() {
             const tableBody = document.getElementById('users-table-body');
             const tableContainer = document.getElementById('users-table-container');
@@ -2837,6 +3054,9 @@
             allUsers.forEach(user => {
                 const permissions = Array.isArray(user.permissions) ? 
                     user.permissions.map(p => getGradeName(p)).join(', ') : 'غير محدد';
+                    
+                const sectionPermissions = Array.isArray(user.sectionPermissions) ? 
+                    user.sectionPermissions.join(', ') : 'غير محدد';
                 
                 const row = tableBody.insertRow();
                 row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
@@ -2846,7 +3066,12 @@
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                         <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">${user.role === 'teacher' ? 'معلم' : 'مدير'}</span>
                     </td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${permissions}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <div class="text-xs">
+                            <div><strong>الصفوف:</strong> ${permissions}</div>
+                            <div><strong>الشعب:</strong> ${sectionPermissions}</div>
+                        </div>
+                    </td>
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
                         <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">${user.status === 'active' ? 'نشط' : 'معلق'}</span>
                     </td>
@@ -2862,89 +3087,6 @@
             });
         }
 
-        async function handleUserSubmit(e) {
-            e.preventDefault();
-            
-            const form = e.target;
-            const editId = form.dataset.editId;
-            const isEdit = !!editId;
-            
-            const submitBtn = document.getElementById('user-submit-btn');
-            const submitText = document.getElementById('user-submit-text');
-            const submitSpinner = document.getElementById('user-submit-spinner');
-            
-            // Validate form fields first
-            const name = document.getElementById('modal-user-name').value.trim();
-            const username = document.getElementById('modal-user-username').value.trim();
-            const password = document.getElementById('modal-user-password').value;
-            const role = document.getElementById('modal-user-role').value;
-            
-            if (!name || !username || !role) {
-                showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
-                return;
-            }
-            
-            if (!isEdit && !password) {
-                showErrorMessage('كلمة المرور مطلوبة للمستخدمين الجدد');
-                return;
-            }
-            
-            // Show loading
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            submitBtn.disabled = true;
-            
-            try {
-                // Check if username already exists (only for new users)
-                if (!isEdit) {
-                    const existingUser = await db.collection('users').where('username', '==', username).get();
-                    if (!existingUser.empty) {
-                        showErrorMessage('اسم المستخدم موجود بالفعل');
-                        return;
-                    }
-                }
-                
-                const permissions = Array.from(document.querySelectorAll('.user-permissions:checked'))
-                    .map(checkbox => checkbox.value);
-                
-                const userData = {
-                    name: name,
-                    username: username,
-                    role: role,
-                    permissions: permissions,
-                    status: 'active',
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                // Only include password if it's provided
-                if (password) {
-                    userData.password = password;
-                }
-                
-                if (isEdit) {
-                    // Update existing user
-                    await db.collection('users').doc(editId).update(userData);
-                    showSuccessMessage('تم تحديث المستخدم بنجاح');
-                } else {
-                    // Add new user
-                    userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('users').add(userData);
-                    showSuccessMessage('تمت إضافة المستخدم بنجاح');
-                }
-                
-                closeUserModal();
-                
-            } catch (error) {
-                console.error('Error saving user:', error);
-                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' المستخدم: ' + error.message);
-            } finally {
-                // Always hide loading and enable button
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
-                submitBtn.disabled = false;
-            }
-        }
-
         function editUser(userId) {
             const user = allUsers.find(u => u.id === userId);
             if (!user) {
@@ -2958,9 +3100,14 @@
             document.getElementById('modal-user-password').value = ''; // Don't show password for security
             document.getElementById('modal-user-role').value = user.role;
             
-            // Set permissions
+            // Set grade permissions
             document.querySelectorAll('.user-permissions').forEach(checkbox => {
                 checkbox.checked = user.permissions && user.permissions.includes(checkbox.value);
+            });
+            
+            // Set section permissions
+            document.querySelectorAll('.section-permissions').forEach(checkbox => {
+                checkbox.checked = user.sectionPermissions && user.sectionPermissions.includes(checkbox.value);
             });
             
             // Change form mode to edit
@@ -2987,118 +3134,55 @@
             });
         }
 
-        // Attendance functionality
-        function handleAttendanceGradeSelect() {
-            const selectedGrade = document.getElementById('attendance-grade-select').value;
-            const container = document.getElementById('attendance-container');
-            
-            if (selectedGrade && hasPermissionForGrade(selectedGrade)) {
-                container.classList.remove('hidden');
-                loadStudentsForAttendance(selectedGrade);
-            } else if (selectedGrade && !hasPermissionForGrade(selectedGrade)) {
-                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف');
-                container.classList.add('hidden');
-            } else {
-                container.classList.add('hidden');
-            }
-        }
-
-        function loadStudentsForAttendance(grade) {
-            const studentsContainer = document.getElementById('students-attendance');
-            const loadingDiv = document.getElementById('attendance-loading');
-            
-            loadingDiv.classList.remove('hidden');
-            
-            setTimeout(() => {
-                const students = allStudents.filter(s => s.grade === grade);
-                
-                studentsContainer.innerHTML = '';
-                students.forEach((student, index) => {
-                    const studentCard = document.createElement('div');
-                    studentCard.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border';
-                    studentCard.innerHTML = `
-                        <h4 class="font-semibold mb-3">${student.name}</h4>
-                        <p class="text-xs text-gray-500 mb-3">رقم الأساس: ${student.studentId}</p>
-                        <div class="flex space-x-2 space-x-reverse">
-                            <button class="attendance-btn attendance-present text-white px-3 py-1 rounded text-sm" data-status="present" data-student="${student.id}">
-                                حاضر
-                            </button>
-                            <button class="attendance-btn attendance-absent text-white px-3 py-1 rounded text-sm" data-status="absent" data-student="${student.id}">
-                                غائب
-                            </button>
-                            <button class="attendance-btn attendance-late text-white px-3 py-1 rounded text-sm" data-status="late" data-student="${student.id}">
-                                متأخر
-                            </button>
-                        </div>
-                    `;
-                    studentsContainer.appendChild(studentCard);
-                });
-                
-                // Add click handlers for attendance buttons
-                document.querySelectorAll('.attendance-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const studentId = this.getAttribute('data-student');
-                        const status = this.getAttribute('data-status');
-                        
-                        // Remove active state from all buttons for this student
-                        document.querySelectorAll(`[data-student="${studentId}"]`).forEach(button => {
-                            button.classList.remove('ring-2', 'ring-white');
-                        });
-                        
-                        // Add active state to clicked button
-                        this.classList.add('ring-2', 'ring-white');
-                    });
-                });
-                
-                loadingDiv.classList.add('hidden');
-            }, 1000);
-        }
-
-        async function saveAttendance() {
-            const grade = document.getElementById('attendance-grade-select').value;
-            const date = document.getElementById('attendance-date').value;
-            
-            if (!grade || !date) {
-                showErrorMessage('يرجى اختيار الصف والتاريخ');
+        async function deleteStudent(studentId) {
+            const student = allStudents.find(s => s.id === studentId);
+            if (student && !hasPermissionForGradeAndSection(student.grade, student.section)) {
+                showErrorMessage('ليس لديك صلاحية لحذف هذا الطالب');
                 return;
             }
             
-            if (!hasPermissionForGrade(grade)) {
-                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف');
-                return;
-            }
-            
-            try {
-                const attendanceData = [];
-                document.querySelectorAll('.attendance-btn.ring-2').forEach(btn => {
-                    attendanceData.push({
-                        studentId: btn.getAttribute('data-student'),
-                        status: btn.getAttribute('data-status')
-                    });
-                });
-                
-                const docData = {
-                    grade: grade,
-                    date: date,
-                    attendance: attendanceData,
-                    teacherId: currentUser.id,
-                    teacherName: currentUser.name,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                await db.collection('attendance').doc(`${grade}_${date}`).set(docData);
-                
-                showSuccessMessage('تم حفظ بيانات الحضور بنجاح');
-                
-            } catch (error) {
-                console.error('Error saving attendance:', error);
-                showErrorMessage('حدث خطأ في حفظ بيانات الحضور');
-            }
+            showConfirmDialog('هل أنت متأكد من حذف هذا الطالب؟', async () => {
+                try {
+                    await db.collection('students').doc(studentId).delete();
+                    showSuccessMessage('تم حذف الطالب بنجاح');
+                } catch (error) {
+                    console.error('Error deleting student:', error);
+                    showErrorMessage('حدث خطأ في حذف الطالب');
+                }
+            });
+        }
+
+        function editStudent(studentId) {
+            showInfoMessage('سيتم تطوير ميزة التعديل قريباً');
+        }
+
+        function sendWhatsAppToParent(phoneNumber, studentName) {
+            const message = encodeURIComponent(`مرحباً، هذه رسالة من مدرسة الثروات الوطنية الخاصة بخصوص الطالب ${studentName}.`);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function getGradeName(gradeId) {
+            const gradeNames = {
+                'grade1': 'الأول', 'grade2': 'الثاني', 'grade3': 'الثالث', 'grade4': 'الرابع',
+                'grade5': 'الخامس', 'grade6': 'السادس', 'grade7': 'السابع', 'grade8': 'الثامن',
+                'grade9': 'التاسع', 'grade10': 'العاشر', 'grade11': 'الحادي عشر', 'grade12': 'الثاني عشر'
+            };
+            return gradeNames[gradeId] || gradeId;
+        }
+
+        function getGradeBadge(gradeId) {
+            const gradeNames = {
+                'grade1': 'الأول', 'grade2': 'الثاني', 'grade3': 'الثالث', 'grade4': 'الرابع',
+                'grade5': 'الخامس', 'grade6': 'السادس', 'grade7': 'السابع', 'grade8': 'الثامن',
+                'grade9': 'التاسع', 'grade10': 'العاشر', 'grade11': 'الحادي عشر', 'grade12': 'الثاني عشر'
+            };
+            const gradeName = gradeNames[gradeId] || gradeId;
+            return `<span class="bg-primary text-white px-2 py-1 rounded-full text-xs">${gradeName}</span>`;
         }
 
         // Modal functions
         function openPlanModal() {
-            // Reset form to add mode if no edit ID
             if (!document.getElementById('plan-form').dataset.editId) {
                 document.getElementById('plan-submit-text').textContent = 'حفظ الخطة';
                 document.getElementById('plan-modal-title').textContent = 'إضافة خطة أسبوعية';
@@ -3114,13 +3198,33 @@
             document.getElementById('plan-form').reset();
             delete document.getElementById('plan-form').dataset.editId;
             
-            // Reset to add mode
             document.getElementById('plan-submit-text').textContent = 'حفظ الخطة';
             document.getElementById('plan-modal-title').textContent = 'إضافة خطة أسبوعية';
         }
 
+        function openStudentModal() {
+            document.getElementById('add-student-modal').classList.remove('hidden');
+            document.getElementById('add-student-modal').classList.add('flex');
+        }
+
+        function closeStudentModal() {
+            document.getElementById('add-student-modal').classList.add('hidden');
+            document.getElementById('add-student-modal').classList.remove('flex');
+            document.getElementById('student-form').reset();
+        }
+
+        function openReportModal() {
+            document.getElementById('add-report-modal').classList.remove('hidden');
+            document.getElementById('add-report-modal').classList.add('flex');
+        }
+
+        function closeReportModal() {
+            document.getElementById('add-report-modal').classList.add('hidden');
+            document.getElementById('add-report-modal').classList.remove('flex');
+            document.getElementById('report-form').reset();
+        }
+
         function openActivityModal() {
-            // Reset form to add mode if no edit ID
             if (!document.getElementById('activity-form').dataset.editId) {
                 document.getElementById('activity-submit-text').textContent = 'إضافة النشاط';
                 document.getElementById('activity-modal-title').textContent = 'إضافة نشاط جديد';
@@ -3136,19 +3240,16 @@
             document.getElementById('activity-form').reset();
             delete document.getElementById('activity-form').dataset.editId;
             
-            // Reset to add mode
             document.getElementById('activity-submit-text').textContent = 'إضافة النشاط';
             document.getElementById('activity-modal-title').textContent = 'إضافة نشاط جديد';
         }
 
         function openUserModal() {
-            // Check if user has permission to access this
             if (currentUser && currentUser.role !== 'admin') {
                 showErrorMessage('ليس لديك صلاحية لإدارة المستخدمين');
                 return;
             }
             
-            // Reset form to add mode if no edit ID
             if (!document.getElementById('user-form').dataset.editId) {
                 document.getElementById('user-submit-text').textContent = 'إضافة المستخدم';
                 document.getElementById('user-modal-title').textContent = 'إضافة مستخدم جديد';
@@ -3168,48 +3269,14 @@
             document.querySelectorAll('.user-permissions').forEach(checkbox => {
                 checkbox.checked = false;
             });
+            document.querySelectorAll('.section-permissions').forEach(checkbox => {
+                checkbox.checked = false;
+            });
             
-            // Reset to add mode
             document.getElementById('user-submit-text').textContent = 'إضافة المستخدم';
             document.getElementById('user-modal-title').textContent = 'إضافة مستخدم جديد';
             document.getElementById('modal-user-password').placeholder = 'كلمة المرور';
             document.getElementById('modal-user-password').required = true;
-        }
-
-        function openStudentModal() {
-            document.getElementById('add-student-modal').classList.remove('hidden');
-            document.getElementById('add-student-modal').classList.add('flex');
-        }
-
-        function closeStudentModal() {
-            document.getElementById('add-student-modal').classList.add('hidden');
-            document.getElementById('add-student-modal').classList.remove('flex');
-            document.getElementById('student-form').reset();
-        }
-
-        function openImportModal() {
-            document.getElementById('import-excel-modal').classList.remove('hidden');
-            document.getElementById('import-excel-modal').classList.add('flex');
-        }
-
-        function closeImportModal() {
-            document.getElementById('import-excel-modal').classList.add('hidden');
-            document.getElementById('import-excel-modal').classList.remove('flex');
-            document.getElementById('excel-preview').classList.add('hidden');
-            document.getElementById('confirm-import').classList.add('hidden');
-            currentExcelData = [];
-        }
-
-        function openWhatsAppModal() {
-            document.getElementById('whatsapp-modal').classList.remove('hidden');
-            document.getElementById('whatsapp-modal').classList.add('flex');
-        }
-
-        function closeWhatsAppModal() {
-            document.getElementById('whatsapp-modal').classList.add('hidden');
-            document.getElementById('whatsapp-modal').classList.remove('flex');
-            document.getElementById('whatsapp-preview').classList.add('hidden');
-            document.getElementById('send-whatsapp').classList.add('hidden');
         }
 
         // Statistics updates
@@ -3229,12 +3296,34 @@
             document.getElementById('activities-count').textContent = allActivities.length;
         }
 
+        function updateReportsCount() {
+            document.getElementById('reports-count').textContent = allReports.length;
+        }
+
         // Utility functions
         function hideLoading(section) {
             const loadingElement = document.getElementById(`${section}-loading`);
             if (loadingElement) {
                 loadingElement.classList.add('hidden');
             }
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function highlightSearchTerm(text, searchTerm) {
+            if (!searchTerm) return text;
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
         }
 
         function showSuccessMessage(message) {
@@ -3308,6 +3397,109 @@
             });
             
             document.body.appendChild(modal);
+        }
+
+        // Global functions for button clicks
+        window.editPlan = editPlan;
+        window.deletePlan = deletePlan;
+        window.archivePlan = archivePlan;
+        window.unarchivePlan = unarchivePlan;
+        window.editStudent = editStudent;
+        window.deleteStudent = deleteStudent;
+        window.editActivity = editActivity;
+        window.deleteActivity = deleteActivity;
+        window.editUser = editUser;
+        window.deleteUser = deleteUser;
+        window.sendWhatsAppToParent = sendWhatsAppToParent;
+        window.sendStudentReportViaWhatsApp = sendStudentReportViaWhatsApp;
+        window.switchTab = switchTab;
+
+        // Enhanced plan functions with sections
+        function editPlan(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (!plan) {
+                showErrorMessage('لم يتم العثور على الخطة');
+                return;
+            }
+            
+            if (plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
+                showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
+                return;
+            }
+            
+            // Fill the form with existing data
+            document.getElementById('plan-grade').value = plan.grade;
+            document.getElementById('plan-section').value = plan.section;
+            document.getElementById('plan-date').value = plan.planDate || '';
+            document.getElementById('plan-day').value = plan.day;
+            document.getElementById('plan-subject').value = plan.subject;
+            document.getElementById('plan-topic').value = plan.topic;
+            document.getElementById('plan-activities').value = plan.activities;
+            
+            // Change form mode to edit
+            document.getElementById('plan-submit-text').textContent = 'حفظ التعديلات';
+            document.getElementById('plan-modal-title').textContent = 'تعديل الخطة الأسبوعية';
+            
+            // Store plan ID for updating
+            document.getElementById('plan-form').dataset.editId = planId;
+            
+            openPlanModal();
+        }
+
+        async function archivePlan(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (plan && plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
+                showErrorMessage('ليس لديك صلاحية لأرشفة هذه الخطة');
+                return;
+            }
+            
+            try {
+                await db.collection('weeklyPlans').doc(planId).update({
+                    archived: true,
+                    archivedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showSuccessMessage('تم أرشفة الخطة بنجاح');
+            } catch (error) {
+                console.error('Error archiving plan:', error);
+                showErrorMessage('حدث خطأ في أرشفة الخطة');
+            }
+        }
+
+        async function unarchivePlan(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (plan && plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
+                showErrorMessage('ليس لديك صلاحية لإلغاء أرشفة هذه الخطة');
+                return;
+            }
+            
+            try {
+                await db.collection('weeklyPlans').doc(planId).update({
+                    archived: false,
+                    unarchivedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showSuccessMessage('تم إلغاء أرشفة الخطة بنجاح');
+            } catch (error) {
+                console.error('Error unarchiving plan:', error);
+                showErrorMessage('حدث خطأ في إلغاء أرشفة الخطة');
+            }
+        }
+
+        async function deletePlan(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (plan && plan.teacherId !== currentUser.id && currentUser.role !== 'admin') {
+                showErrorMessage('ليس لديك صلاحية لحذف هذه الخطة');
+                return;
+            }
+            
+            showConfirmDialog('هل أنت متأكد من حذف هذه الخطة؟', async () => {
+                try {
+                    await db.collection('weeklyPlans').doc(planId).delete();
+                    showSuccessMessage('تم حذف الخطة بنجاح');
+                } catch (error) {
+                    console.error('Error deleting plan:', error);
+                    showErrorMessage('حدث خطأ في حذف الخطة');
+                }
+            });
         }
     </script>
 </body>
