@@ -195,8 +195,20 @@
         }
 
         .archived-plan {
-            background-color: #f3f4f6;
-            opacity: 0.7;
+            background-color: #f9f9f9;
+            opacity: 0.8;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .archived-activity {
+            background-color: #f9f9f9;
+            opacity: 0.8;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .current-week-plan {
+            border-left: 4px solid #10B981;
+            background-color: #f0fdf4;
         }
 
         .search-highlight {
@@ -263,6 +275,15 @@
 
         .grade-poor {
             background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .archive-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
     </style>
     <script>
@@ -373,8 +394,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-6 gap-6 max-w-7xl mx-auto mt-8">
                         <div class="stats-card">
                             <i class="fas fa-calendar-week text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold" id="plans-count">0</div>
-                            <div class="text-sm opacity-90">خطة أسبوعية</div>
+                            <div class="text-2xl font-bold" id="current-week-plans-count">0</div>
+                            <div class="text-sm opacity-90">خطة هذا الأسبوع</div>
                         </div>
                         <div class="stats-card">
                             <i class="fas fa-users text-3xl mb-2"></i>
@@ -443,11 +464,25 @@
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">إدارة الخطط الأسبوعية</h3>
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-2">إدارة الخطط الأسبوعية</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">يتم عرض خطط الأسبوع الحالي، والأسابيع السابقة في الأرشيف</p>
+                        </div>
                         <button id="add-plan-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
                             <i class="fas fa-plus ml-2"></i>
                             إضافة خطة جديدة
                         </button>
+                    </div>
+                    
+                    <!-- Week Info Banner -->
+                    <div class="bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-400 p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-week text-blue-400 ml-3"></i>
+                            <div>
+                                <h4 class="text-lg font-semibold text-blue-800 dark:text-blue-200" id="current-week-info">الأسبوع الحالي</h4>
+                                <p class="text-sm text-blue-600 dark:text-blue-300" id="week-date-range">جاري التحديث...</p>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Advanced Search and Filter Section -->
@@ -502,7 +537,7 @@
                                 <label for="plans-status-filter" class="block text-sm font-medium mb-2">الحالة:</label>
                                 <select id="plans-status-filter" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                                     <option value="">جميع الخطط</option>
-                                    <option value="active">الخطط النشطة</option>
+                                    <option value="current-week">الأسبوع الحالي</option>
                                     <option value="archived">الخطط المؤرشفة</option>
                                 </select>
                             </div>
@@ -832,6 +867,7 @@
                                     <option value="upcoming">قادم</option>
                                     <option value="active">جاري</option>
                                     <option value="completed">مكتمل</option>
+                                    <option value="archived">الأنشطة المؤرشفة</option>
                                 </select>
                             </div>
                         </div>
@@ -1385,6 +1421,7 @@
         function initializeApp() {
             setupEventListeners();
             setDefaultDates();
+            updateCurrentWeekInfo();
         }
 
         function setDefaultDates() {
@@ -1393,6 +1430,85 @@
             document.getElementById('plan-date').value = today;
             document.getElementById('activity-date').value = today;
             document.getElementById('report-date').value = today;
+        }
+
+        // Get current week date range
+        function getCurrentWeekRange() {
+            const today = new Date();
+            const currentDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            // Calculate Monday (assuming Monday is start of school week)
+            let mondayOffset = currentDay === 0 ? -6 : 1 - currentDay; // If Sunday, go back 6 days
+            const monday = new Date(today);
+            monday.setDate(today.getDate() + mondayOffset);
+            
+            // Calculate Friday (end of school week)
+            const friday = new Date(monday);
+            friday.setDate(monday.getDate() + 4);
+            
+            return {
+                start: monday.toISOString().split('T')[0],
+                end: friday.toISOString().split('T')[0],
+                startFormatted: monday.toLocaleDateString('ar-AE', { day: 'numeric', month: 'long' }),
+                endFormatted: friday.toLocaleDateString('ar-AE', { day: 'numeric', month: 'long', year: 'numeric' })
+            };
+        }
+
+        // Update current week info display
+        function updateCurrentWeekInfo() {
+            const weekRange = getCurrentWeekRange();
+            const weekInfo = document.getElementById('current-week-info');
+            const weekDateRange = document.getElementById('week-date-range');
+            
+            if (weekInfo && weekDateRange) {
+                weekInfo.textContent = 'الأسبوع الحالي';
+                weekDateRange.textContent = `من ${weekRange.startFormatted} إلى ${weekRange.endFormatted}`;
+            }
+        }
+
+        // Check if a date is in current week
+        function isDateInCurrentWeek(dateStr) {
+            if (!dateStr) return false;
+            const weekRange = getCurrentWeekRange();
+            return dateStr >= weekRange.start && dateStr <= weekRange.end;
+        }
+
+        // Auto-archive old plans
+        async function autoArchiveOldPlans() {
+            if (!currentUser) return;
+            
+            const weekRange = getCurrentWeekRange();
+            
+            try {
+                // Get plans that are not archived and are older than current week
+                const oldPlansQuery = await db.collection('weeklyPlans')
+                    .where('archived', '==', false)
+                    .where('planDate', '<', weekRange.start)
+                    .get();
+                
+                const batch = db.batch();
+                let archiveCount = 0;
+                
+                oldPlansQuery.forEach((doc) => {
+                    const planData = doc.data();
+                    // Only archive if current user has permission
+                    if (currentUser.role === 'admin' || planData.teacherId === currentUser.id) {
+                        batch.update(doc.ref, {
+                            archived: true,
+                            archivedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            autoArchived: true
+                        });
+                        archiveCount++;
+                    }
+                });
+                
+                if (archiveCount > 0) {
+                    await batch.commit();
+                    console.log(`تم أرشفة ${archiveCount} خطة تلقائياً`);
+                }
+            } catch (error) {
+                console.error('Error auto-archiving plans:', error);
+            }
         }
 
         function setupEventListeners() {
@@ -1457,6 +1573,36 @@
             activitySearchInputs.forEach(id => {
                 document.getElementById(id).addEventListener('input', debounce(searchActivities, 300));
             });
+            
+            // Clear search buttons
+            document.getElementById('clear-search-btn').addEventListener('click', clearSearchFilters);
+            document.getElementById('clear-activities-search-btn').addEventListener('click', clearActivitySearchFilters);
+        }
+
+        // Clear search filters function
+        function clearSearchFilters() {
+            // Clear all search inputs
+            document.getElementById('plans-grade-select').value = '';
+            document.getElementById('plans-section-select').value = '';
+            document.getElementById('plans-subject-search').value = '';
+            document.getElementById('plans-topic-search').value = '';
+            document.getElementById('plans-teacher-search').value = '';
+            document.getElementById('plans-date-from').value = '';
+            document.getElementById('plans-date-to').value = '';
+            document.getElementById('plans-status-filter').value = '';
+            
+            // Clear current filters and refresh display
+            currentSearchFilters = {};
+            displayPlans();
+        }
+
+        function clearActivitySearchFilters() {
+            document.getElementById('activities-search').value = '';
+            document.getElementById('activities-date-filter').value = '';
+            document.getElementById('activities-status-filter').value = '';
+            
+            currentActivityFilters = {};
+            displayActivities();
         }
 
         // Enhanced permission system for sections - updated for 10 sections
@@ -1734,12 +1880,14 @@
             loadStudentsRealtime();
             loadActivitiesRealtime();
             loadReportsRealtime();
+            // Auto-archive old plans when data loads
+            setTimeout(autoArchiveOldPlans, 2000);
         }
 
         function loadPlansRealtime() {
             let query = db.collection('weeklyPlans');
             
-            // If user is a teacher, only load their own plans
+            // Enhanced privacy: Teachers only see their own plans
             if (currentUser && currentUser.role === 'teacher') {
                 query = query.where('teacherId', '==', currentUser.id);
             }
@@ -1748,15 +1896,18 @@
                 allPlans = [];
                 snapshot.forEach((doc) => {
                     const planData = doc.data();
-                    // Additional section-based filtering for teachers
+                    
                     if (currentUser && currentUser.role === 'teacher') {
-                        if (hasPermissionForGradeAndSection(planData.grade, planData.section)) {
+                        // Double check: Only load plans created by current teacher
+                        if (planData.teacherId === currentUser.id && 
+                            hasPermissionForGradeAndSection(planData.grade, planData.section)) {
                             allPlans.push({
                                 id: doc.id,
                                 ...planData
                             });
                         }
-                    } else {
+                    } else if (currentUser && currentUser.role === 'admin') {
+                        // Admins can see all plans
                         allPlans.push({
                             id: doc.id,
                             ...planData
@@ -1775,16 +1926,18 @@
                 allStudents = [];
                 snapshot.forEach((doc) => {
                     const studentData = doc.data();
-                    // If user is a teacher, only load students from grades and sections they have permission for
+                    
                     if (currentUser && currentUser.role === 'teacher') {
-                        if (hasPermissionForGradeAndSection(studentData.grade, studentData.section)) {
+                        // Enhanced privacy: Teachers only see students they added or students in their sections
+                        if ((studentData.createdBy === currentUser.id) || 
+                            hasPermissionForGradeAndSection(studentData.grade, studentData.section)) {
                             allStudents.push({
                                 id: doc.id,
                                 ...studentData
                             });
                         }
-                    } else {
-                        // Admin can see all students
+                    } else if (currentUser && currentUser.role === 'admin') {
+                        // Admins can see all students
                         allStudents.push({
                             id: doc.id,
                             ...studentData
@@ -1802,7 +1955,7 @@
         function loadReportsRealtime() {
             let query = db.collection('studentReports');
             
-            // If user is a teacher, only load reports for their sections
+            // Enhanced privacy: Teachers only see their own reports
             if (currentUser && currentUser.role === 'teacher') {
                 query = query.where('teacherId', '==', currentUser.id);
             }
@@ -1810,10 +1963,23 @@
             query.onSnapshot((snapshot) => {
                 allReports = [];
                 snapshot.forEach((doc) => {
-                    allReports.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
+                    const reportData = doc.data();
+                    
+                    if (currentUser && currentUser.role === 'teacher') {
+                        // Double check: Only load reports created by current teacher
+                        if (reportData.teacherId === currentUser.id) {
+                            allReports.push({
+                                id: doc.id,
+                                ...reportData
+                            });
+                        }
+                    } else if (currentUser && currentUser.role === 'admin') {
+                        // Admins can see all reports
+                        allReports.push({
+                            id: doc.id,
+                            ...reportData
+                        });
+                    }
                 });
                 
                 updateReportsCount();
@@ -1856,7 +2022,114 @@
             });
         }
 
-        // Enhanced display functions to include sections
+        // FIXED FILTER FUNCTIONS FOR PLANS AND ACTIVITIES
+
+        // Fixed search to properly handle archived plans filter
+        function filterPlansBySearch() {
+            let filteredPlans = [...allPlans];
+            
+            // Filter by status first (including archive status)
+            if (currentSearchFilters.status) {
+                if (currentSearchFilters.status === 'current-week') {
+                    filteredPlans = filteredPlans.filter(plan => isDateInCurrentWeek(plan.planDate) && !plan.archived);
+                } else if (currentSearchFilters.status === 'archived') {
+                    filteredPlans = filteredPlans.filter(plan => plan.archived === true);
+                } else {
+                    // For other status filters, show non-archived plans by default
+                    filteredPlans = filteredPlans.filter(plan => !plan.archived);
+                }
+            } else {
+                // If no status filter is selected, hide archived plans by default
+                filteredPlans = filteredPlans.filter(plan => !plan.archived);
+            }
+            
+            // Filter by grade
+            if (currentSearchFilters.grade) {
+                filteredPlans = filteredPlans.filter(plan => plan.grade === currentSearchFilters.grade);
+            }
+            
+            // Filter by section
+            if (currentSearchFilters.section) {
+                filteredPlans = filteredPlans.filter(plan => plan.section === currentSearchFilters.section);
+            }
+            
+            // Filter by subject
+            if (currentSearchFilters.subject) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.subject.toLowerCase().includes(currentSearchFilters.subject)
+                );
+            }
+            
+            // Filter by topic
+            if (currentSearchFilters.topic) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.topic.toLowerCase().includes(currentSearchFilters.topic)
+                );
+            }
+            
+            // Filter by teacher
+            if (currentSearchFilters.teacher) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    (plan.teacherName || '').toLowerCase().includes(currentSearchFilters.teacher)
+                );
+            }
+            
+            // Filter by date range
+            if (currentSearchFilters.dateFrom) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.planDate >= currentSearchFilters.dateFrom
+                );
+            }
+            
+            if (currentSearchFilters.dateTo) {
+                filteredPlans = filteredPlans.filter(plan => 
+                    plan.planDate <= currentSearchFilters.dateTo
+                );
+            }
+            
+            return filteredPlans;
+        }
+
+        // Fixed activities filter function
+        function filterActivitiesBySearch() {
+            let filteredActivities = [...allActivities];
+            
+            // Handle archive status properly
+            if (currentActivityFilters.status === 'archived') {
+                // Show only archived activities but keep other filters
+                filteredActivities = filteredActivities.filter(activity => activity.archived === true);
+            } else {
+                // Hide archived activities by default for all other cases
+                filteredActivities = filteredActivities.filter(activity => !activity.archived);
+            }
+            
+            // Filter by search term
+            if (currentActivityFilters.search) {
+                filteredActivities = filteredActivities.filter(activity => 
+                    activity.name.toLowerCase().includes(currentActivityFilters.search) ||
+                    activity.description.toLowerCase().includes(currentActivityFilters.search)
+                );
+            }
+            
+            // Filter by date
+            if (currentActivityFilters.date) {
+                filteredActivities = filteredActivities.filter(activity => 
+                    activity.date === currentActivityFilters.date
+                );
+            }
+            
+            // Filter by status (non-archive statuses)
+            if (currentActivityFilters.status && currentActivityFilters.status !== 'archived') {
+                filteredActivities = filteredActivities.filter(activity => {
+                    const status = getActivityStatus(activity.date);
+                    return status === currentActivityFilters.status;
+                });
+            }
+            
+            return filteredActivities;
+        }
+
+        // Enhanced display functions to include sections and current week highlighting
         function displayPlans() {
             const filteredPlans = filterPlansBySearch();
             const tableBody = document.getElementById('plans-table-body');
@@ -1884,12 +2157,33 @@
             tableBody.innerHTML = '';
             filteredPlans.forEach(plan => {
                 const row = tableBody.insertRow();
-                row.className = `hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${plan.archived ? 'archived-plan' : ''}`;
+                const isCurrentWeek = isDateInCurrentWeek(plan.planDate);
+                
+                // Set row classes based on status
+                let rowClasses = 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
+                if (plan.archived) {
+                    rowClasses += ' archived-plan';
+                } else if (isCurrentWeek) {
+                    rowClasses += ' current-week-plan';
+                }
+                row.className = rowClasses;
                 
                 // Highlight search terms
                 const subjectText = highlightSearchTerm(plan.subject, currentSearchFilters.subject);
                 const topicText = highlightSearchTerm(plan.topic, currentSearchFilters.topic);
                 const teacherText = highlightSearchTerm(plan.teacherName || 'غير محدد', currentSearchFilters.teacher);
+                
+                // Plan status with enhanced archived badge
+                let statusText = 'نشط';
+                let statusClass = 'bg-green-100 text-green-600';
+                
+                if (plan.archived) {
+                    statusText = 'مؤرشف';
+                    statusClass = 'archive-badge';
+                } else if (isCurrentWeek) {
+                    statusText = 'الأسبوع الحالي';
+                    statusClass = 'bg-blue-100 text-blue-600';
+                }
                 
                 row.innerHTML = `
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
@@ -1905,8 +2199,8 @@
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.activities}</td>
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${teacherText}</td>
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                        <span class="px-2 py-1 rounded text-xs ${plan.archived ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-600'}">
-                            ${plan.archived ? 'مؤرشف' : 'نشط'}
+                        <span class="px-2 py-1 rounded text-xs ${statusClass}">
+                            ${statusText}
                         </span>
                     </td>
                     <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
@@ -1916,7 +2210,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <button onclick="${plan.archived ? 'unarchivePlan' : 'archivePlan'}('${plan.id}')" class="text-yellow-600 hover:text-yellow-800">
-                                    <i class="fas fa-${plan.archived ? 'undo' : 'archive'}"></i>
+                                    <i class="fas fa-${plan.archived ? 'undo' : 'archive'}" title="${plan.archived ? 'إلغاء الأرشفة' : 'أرشفة'}"></i>
                                 </button>
                                 <button onclick="deletePlan('${plan.id}')" class="text-red-600 hover:text-red-800">
                                     <i class="fas fa-trash"></i>
@@ -1928,6 +2222,135 @@
                     </td>
                 `;
             });
+        }
+
+        function displayActivities() {
+            const filteredActivities = filterActivitiesBySearch();
+            const activitiesGrid = document.getElementById('activities-grid');
+            const emptyState = document.getElementById('activities-empty');
+            
+            if (filteredActivities.length === 0) {
+                activitiesGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            activitiesGrid.classList.remove('hidden');
+            
+            activitiesGrid.innerHTML = '';
+            
+            // Sort activities by date (newest first)
+            filteredActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            filteredActivities.forEach(activity => {
+                const activityCard = createActivityCard(activity);
+                activitiesGrid.appendChild(activityCard);
+            });
+        }
+
+        function createActivityCard(activity) {
+            const card = document.createElement('div');
+            
+            // Set card classes based on archived status
+            let cardClasses = 'activity-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
+            if (activity.archived) {
+                cardClasses += ' archived-activity';
+            }
+            card.className = cardClasses;
+            
+            const status = getActivityStatus(activity.date);
+            const statusClass = getActivityStatusClass(status);
+            const statusText = getActivityStatusText(status);
+            
+            const targetText = getTargetText(activity.target);
+            
+            // Add archived badge for archived activities
+            const archivedBadge = activity.archived ? 
+                '<span class="archive-badge text-xs mr-2">مؤرشف</span>' : '';
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">${activity.name}</h4>
+                        <div class="flex items-center">
+                            ${activity.archived ? 
+                                '<span class="archive-badge text-xs">مؤرشف</span>' :
+                                `<span class="px-3 py-1 rounded-full text-xs font-medium ${statusClass}">${statusText}</span>`
+                            }
+                        </div>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="editActivity('${activity.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 p-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="${activity.archived ? 'unarchiveActivity' : 'archiveActivity'}('${activity.id}')" class="text-yellow-600 hover:text-yellow-800 dark:text-yellow-400 p-2">
+                            <i class="fas fa-${activity.archived ? 'undo' : 'archive'}" title="${activity.archived ? 'إلغاء الأرشفة' : 'أرشفة'}"></i>
+                        </button>
+                        <button onclick="deleteActivity('${activity.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 p-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">${activity.description}</p>
+                
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-calendar ml-2 text-primary"></i>
+                        <span>${formatDate(activity.date)}</span>
+                    </div>
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-clock ml-2 text-primary"></i>
+                        <span>${activity.time}</span>
+                    </div>
+                    ${activity.location ? `
+                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt ml-2 text-primary"></i>
+                            <span>${activity.location}</span>
+                        </div>
+                    ` : ''}
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-users ml-2 text-primary"></i>
+                        <span>${targetText}</span>
+                    </div>
+                </div>
+                
+                ${activity.notes ? `
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-600 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-sticky-note ml-2"></i>${activity.notes}</p>
+                    </div>
+                ` : ''}
+            `;
+            
+            return card;
+        }
+
+        function searchPlans() {
+            const filters = {
+                grade: document.getElementById('plans-grade-select').value,
+                section: document.getElementById('plans-section-select').value,
+                subject: document.getElementById('plans-subject-search').value.toLowerCase(),
+                topic: document.getElementById('plans-topic-search').value.toLowerCase(),
+                teacher: document.getElementById('plans-teacher-search').value.toLowerCase(),
+                dateFrom: document.getElementById('plans-date-from').value,
+                dateTo: document.getElementById('plans-date-to').value,
+                status: document.getElementById('plans-status-filter').value
+            };
+            
+            currentSearchFilters = filters;
+            displayPlans();
+        }
+
+        function searchActivities() {
+            const filters = {
+                search: document.getElementById('activities-search').value.toLowerCase(),
+                date: document.getElementById('activities-date-filter').value,
+                status: document.getElementById('activities-status-filter').value
+            };
+            
+            currentActivityFilters = filters;
+            displayActivities();
         }
 
         function displayStudents() {
@@ -1964,11 +2387,16 @@
                     واتساب
                  </button>` : '';
             
+            // Check if current user can edit/delete this student (only who created it or admin)
+            const canEdit = (currentUser.role === 'admin') || (student.createdBy === currentUser.id);
+            
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
                         <p class="text-sm text-gray-600 dark:text-gray-400">رقم الأساس: ${student.studentId}</p>
+                        ${student.createdBy !== currentUser.id && currentUser.role !== 'admin' ? 
+                            '<p class="text-xs text-gray-500">مُضاف بواسطة معلم آخر</p>' : ''}
                     </div>
                     <div class="flex items-center">
                         ${statusBadge}
@@ -1989,12 +2417,16 @@
                 
                 <div class="flex justify-between items-center">
                     <div class="flex space-x-2 space-x-reverse">
-                        <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteStudent('${student.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        ${canEdit ? `
+                            <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteStudent('${student.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : `
+                            <span class="text-gray-400 text-xs">عرض فقط</span>
+                        `}
                     </div>
                     ${whatsappBtn}
                 </div>
@@ -2022,78 +2454,6 @@
 
         function filterStudents() {
             displayStudents();
-        }
-
-        // Enhanced search to include sections
-        function filterPlansBySearch() {
-            let filteredPlans = [...allPlans];
-            
-            // Filter by grade
-            if (currentSearchFilters.grade) {
-                filteredPlans = filteredPlans.filter(plan => plan.grade === currentSearchFilters.grade);
-            }
-            
-            // Filter by section
-            if (currentSearchFilters.section) {
-                filteredPlans = filteredPlans.filter(plan => plan.section === currentSearchFilters.section);
-            }
-            
-            // Other filters remain the same...
-            if (currentSearchFilters.subject) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.subject.toLowerCase().includes(currentSearchFilters.subject)
-                );
-            }
-            
-            if (currentSearchFilters.topic) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.topic.toLowerCase().includes(currentSearchFilters.topic)
-                );
-            }
-            
-            if (currentSearchFilters.teacher) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    (plan.teacherName || '').toLowerCase().includes(currentSearchFilters.teacher)
-                );
-            }
-            
-            if (currentSearchFilters.dateFrom) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.planDate >= currentSearchFilters.dateFrom
-                );
-            }
-            
-            if (currentSearchFilters.dateTo) {
-                filteredPlans = filteredPlans.filter(plan => 
-                    plan.planDate <= currentSearchFilters.dateTo
-                );
-            }
-            
-            if (currentSearchFilters.status) {
-                if (currentSearchFilters.status === 'active') {
-                    filteredPlans = filteredPlans.filter(plan => !plan.archived);
-                } else if (currentSearchFilters.status === 'archived') {
-                    filteredPlans = filteredPlans.filter(plan => plan.archived);
-                }
-            }
-            
-            return filteredPlans;
-        }
-
-        function searchPlans() {
-            const filters = {
-                grade: document.getElementById('plans-grade-select').value,
-                section: document.getElementById('plans-section-select').value,
-                subject: document.getElementById('plans-subject-search').value.toLowerCase(),
-                topic: document.getElementById('plans-topic-search').value.toLowerCase(),
-                teacher: document.getElementById('plans-teacher-search').value.toLowerCase(),
-                dateFrom: document.getElementById('plans-date-from').value,
-                dateTo: document.getElementById('plans-date-to').value,
-                status: document.getElementById('plans-status-filter').value
-            };
-            
-            currentSearchFilters = filters;
-            displayPlans();
         }
 
         // Enhanced plan submission with section
@@ -2214,7 +2574,7 @@
             }
         }
 
-        // Report generation and management
+        // Report generation and management - FIXED VERSION
         function populateStudentSelects() {
             const studentSelect = document.getElementById('report-student');
             if (!studentSelect) return;
@@ -2335,20 +2695,15 @@
                         break;
                 }
                 
-                // Get reports for the specified period, grade, and section
-                const reportsQuery = await db.collection('studentReports')
-                    .where('grade', '==', grade)
-                    .where('section', '==', section)
-                    .where('date', '>=', startDate.toISOString().split('T')[0])
-                    .where('date', '<=', endDate.toISOString().split('T')[0])
-                    .get();
+                const startDateStr = startDate.toISOString().split('T')[0];
+                const endDateStr = endDate.toISOString().split('T')[0];
                 
-                const periodReports = [];
-                reportsQuery.forEach(doc => {
-                    periodReports.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
+                // Filter reports from allReports instead of querying Firebase directly
+                const periodReports = allReports.filter(report => {
+                    return report.grade === grade && 
+                           report.section === section && 
+                           report.date >= startDateStr && 
+                           report.date <= endDateStr;
                 });
                 
                 // Get students for this grade and section
@@ -2356,6 +2711,7 @@
                 
                 if (sectionStudents.length === 0) {
                     showErrorMessage('لا يوجد طلاب في هذا الصف والشعبة');
+                    loadingDiv.classList.add('hidden');
                     return;
                 }
                 
@@ -2385,7 +2741,6 @@
             } catch (error) {
                 console.error('Error generating report:', error);
                 showErrorMessage('حدث خطأ في إنشاء التقرير');
-            } finally {
                 loadingDiv.classList.add('hidden');
             }
         }
@@ -2394,6 +2749,9 @@
             const containerDiv = document.getElementById('reports-container');
             const gridDiv = document.getElementById('reports-grid');
             const emptyDiv = document.getElementById('reports-empty');
+            const loadingDiv = document.getElementById('reports-loading');
+            
+            loadingDiv.classList.add('hidden');
             
             if (summaries.length === 0) {
                 containerDiv.classList.add('hidden');
@@ -2763,91 +3121,7 @@
             }
         }
 
-        // Activities functionality remains the same...
-        function displayActivities() {
-            const filteredActivities = filterActivitiesBySearch();
-            const activitiesGrid = document.getElementById('activities-grid');
-            const emptyState = document.getElementById('activities-empty');
-            
-            if (filteredActivities.length === 0) {
-                activitiesGrid.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            
-            emptyState.classList.add('hidden');
-            activitiesGrid.classList.remove('hidden');
-            
-            activitiesGrid.innerHTML = '';
-            
-            // Sort activities by date (newest first)
-            filteredActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            filteredActivities.forEach(activity => {
-                const activityCard = createActivityCard(activity);
-                activitiesGrid.appendChild(activityCard);
-            });
-        }
-
-        function createActivityCard(activity) {
-            const card = document.createElement('div');
-            card.className = 'activity-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
-            
-            const status = getActivityStatus(activity.date);
-            const statusClass = getActivityStatusClass(status);
-            const statusText = getActivityStatusText(status);
-            
-            const targetText = getTargetText(activity.target);
-            
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex-1">
-                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">${activity.name}</h4>
-                        <span class="px-3 py-1 rounded-full text-xs font-medium ${statusClass}">${statusText}</span>
-                    </div>
-                    <div class="flex space-x-1 space-x-reverse">
-                        <button onclick="editActivity('${activity.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 p-2">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteActivity('${activity.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 p-2">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">${activity.description}</p>
-                
-                <div class="space-y-2 text-sm">
-                    <div class="flex items-center text-gray-600 dark:text-gray-400">
-                        <i class="fas fa-calendar ml-2 text-primary"></i>
-                        <span>${formatDate(activity.date)}</span>
-                    </div>
-                    <div class="flex items-center text-gray-600 dark:text-gray-400">
-                        <i class="fas fa-clock ml-2 text-primary"></i>
-                        <span>${activity.time}</span>
-                    </div>
-                    ${activity.location ? `
-                        <div class="flex items-center text-gray-600 dark:text-gray-400">
-                            <i class="fas fa-map-marker-alt ml-2 text-primary"></i>
-                            <span>${activity.location}</span>
-                        </div>
-                    ` : ''}
-                    <div class="flex items-center text-gray-600 dark:text-gray-400">
-                        <i class="fas fa-users ml-2 text-primary"></i>
-                        <span>${targetText}</span>
-                    </div>
-                </div>
-                
-                ${activity.notes ? `
-                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-600 rounded-lg">
-                        <p class="text-sm text-gray-600 dark:text-gray-400"><i class="fas fa-sticky-note ml-2"></i>${activity.notes}</p>
-                    </div>
-                ` : ''}
-            `;
-            
-            return card;
-        }
-
+        // Activities functionality
         function getActivityStatus(activityDate) {
             const today = new Date();
             const activity = new Date(activityDate);
@@ -2898,55 +3172,6 @@
             });
         }
 
-        function searchActivities() {
-            const filters = {
-                search: document.getElementById('activities-search').value.toLowerCase(),
-                date: document.getElementById('activities-date-filter').value,
-                status: document.getElementById('activities-status-filter').value
-            };
-            
-            currentActivityFilters = filters;
-            displayActivities();
-        }
-
-        function clearActivitySearchFilters() {
-            document.getElementById('activities-search').value = '';
-            document.getElementById('activities-date-filter').value = '';
-            document.getElementById('activities-status-filter').value = '';
-            
-            currentActivityFilters = {};
-            displayActivities();
-        }
-
-        function filterActivitiesBySearch() {
-            let filteredActivities = [...allActivities];
-            
-            // Filter by search term
-            if (currentActivityFilters.search) {
-                filteredActivities = filteredActivities.filter(activity => 
-                    activity.name.toLowerCase().includes(currentActivityFilters.search) ||
-                    activity.description.toLowerCase().includes(currentActivityFilters.search)
-                );
-            }
-            
-            // Filter by date
-            if (currentActivityFilters.date) {
-                filteredActivities = filteredActivities.filter(activity => 
-                    activity.date === currentActivityFilters.date
-                );
-            }
-            
-            // Filter by status
-            if (currentActivityFilters.status) {
-                filteredActivities = filteredActivities.filter(activity => {
-                    const status = getActivityStatus(activity.date);
-                    return status === currentActivityFilters.status;
-                });
-            }
-            
-            return filteredActivities;
-        }
-
         async function handleActivitySubmit(e) {
             e.preventDefault();
             
@@ -2972,6 +3197,7 @@
                     target: document.getElementById('activity-target').value,
                     notes: document.getElementById('activity-notes').value || '',
                     createdBy: currentUser.id,
+                    archived: false,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
@@ -3136,7 +3362,13 @@
 
         async function deleteStudent(studentId) {
             const student = allStudents.find(s => s.id === studentId);
-            if (student && !hasPermissionForGradeAndSection(student.grade, student.section)) {
+            if (!student) {
+                showErrorMessage('الطالب غير موجود');
+                return;
+            }
+            
+            // Enhanced privacy check: Only creator or admin can delete
+            if (student.createdBy !== currentUser.id && currentUser.role !== 'admin') {
                 showErrorMessage('ليس لديك صلاحية لحذف هذا الطالب');
                 return;
             }
@@ -3279,9 +3511,11 @@
             document.getElementById('modal-user-password').required = true;
         }
 
-        // Statistics updates
+        // Statistics updates - Updated with current week count
         function updatePlansCount() {
-            document.getElementById('plans-count').textContent = allPlans.length;
+            // Update current week plans count
+            const currentWeekPlans = allPlans.filter(plan => isDateInCurrentWeek(plan.planDate) && !plan.archived);
+            document.getElementById('current-week-plans-count').textContent = currentWeekPlans.length;
         }
 
         function updateTeachersCount() {
@@ -3293,7 +3527,7 @@
         }
 
         function updateActivitiesCount() {
-            document.getElementById('activities-count').textContent = allActivities.length;
+            document.getElementById('activities-count').textContent = allActivities.filter(a => !a.archived).length;
         }
 
         function updateReportsCount() {
@@ -3399,20 +3633,32 @@
             document.body.appendChild(modal);
         }
 
-        // Global functions for button clicks
-        window.editPlan = editPlan;
-        window.deletePlan = deletePlan;
-        window.archivePlan = archivePlan;
-        window.unarchivePlan = unarchivePlan;
-        window.editStudent = editStudent;
-        window.deleteStudent = deleteStudent;
-        window.editActivity = editActivity;
-        window.deleteActivity = deleteActivity;
-        window.editUser = editUser;
-        window.deleteUser = deleteUser;
-        window.sendWhatsAppToParent = sendWhatsAppToParent;
-        window.sendStudentReportViaWhatsApp = sendStudentReportViaWhatsApp;
-        window.switchTab = switchTab;
+        // Activity archive functions
+        async function archiveActivity(activityId) {
+            try {
+                await db.collection('activities').doc(activityId).update({
+                    archived: true,
+                    archivedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showSuccessMessage('تم أرشفة النشاط بنجاح');
+            } catch (error) {
+                console.error('Error archiving activity:', error);
+                showErrorMessage('حدث خطأ في أرشفة النشاط');
+            }
+        }
+
+        async function unarchiveActivity(activityId) {
+            try {
+                await db.collection('activities').doc(activityId).update({
+                    archived: false,
+                    unarchivedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showSuccessMessage('تم إلغاء أرشفة النشاط بنجاح');
+            } catch (error) {
+                console.error('Error unarchiving activity:', error);
+                showErrorMessage('حدث خطأ في إلغاء أرشفة النشاط');
+            }
+        }
 
         // Enhanced plan functions with sections
         function editPlan(planId) {
@@ -3501,6 +3747,23 @@
                 }
             });
         }
+
+        // Global functions for button clicks
+        window.editPlan = editPlan;
+        window.deletePlan = deletePlan;
+        window.archivePlan = archivePlan;
+        window.unarchivePlan = unarchivePlan;
+        window.editStudent = editStudent;
+        window.deleteStudent = deleteStudent;
+        window.editActivity = editActivity;
+        window.deleteActivity = deleteActivity;
+        window.archiveActivity = archiveActivity;
+        window.unarchiveActivity = unarchiveActivity;
+        window.editUser = editUser;
+        window.deleteUser = deleteUser;
+        window.sendWhatsAppToParent = sendWhatsAppToParent;
+        window.sendStudentReportViaWhatsApp = sendStudentReportViaWhatsApp;
+        window.switchTab = switchTab;
     </script>
 </body>
 </html>
