@@ -285,6 +285,93 @@
             font-size: 0.75rem;
             font-weight: 500;
         }
+
+        .evaluation-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .evaluation-type-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .attendance-student-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .attendance-student-card.selected {
+            border-color: #5D5CDE;
+            box-shadow: 0 4px 12px rgba(93, 92, 222, 0.2);
+        }
+
+        .absence-reason-input {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            width: 100%;
+        }
+
+        .evaluation-grade-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star-rating .star {
+            cursor: pointer;
+            color: #ddd;
+            font-size: 1.5rem;
+            transition: color 0.2s;
+        }
+
+        .star-rating .star.active,
+        .star-rating .star:hover {
+            color: #fbbf24;
+        }
+
+        .attendance-record-card {
+            border-left: 4px solid #5D5CDE;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .attendance-record-card.absent {
+            border-left-color: #EF4444;
+            background: #fef2f2;
+        }
+
+        .attendance-record-card.late {
+            border-left-color: #F59E0B;
+            background: #fffbeb;
+        }
+
+        .attendance-record-card.present {
+            border-left-color: #10B981;
+            background: #f0fdf4;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -418,9 +505,9 @@
                             <div class="text-sm opacity-90">نسبة الحضور</div>
                         </div>
                         <div class="stats-card">
-                            <i class="fas fa-file-alt text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold" id="reports-count">0</div>
-                            <div class="text-sm opacity-90">تقرير أداء</div>
+                            <i class="fas fa-star text-3xl mb-2"></i>
+                            <div class="text-2xl font-bold" id="evaluations-count">0</div>
+                            <div class="text-sm opacity-90">تقييم طالب</div>
                         </div>
                     </div>
                 </div>
@@ -443,9 +530,9 @@
                         <i class="fas fa-user-check ml-2"></i>
                         الحضور والغياب
                     </button>
-                    <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="reports">
-                        <i class="fas fa-chart-bar ml-2"></i>
-                        تقارير الأداء
+                    <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="evaluations">
+                        <i class="fas fa-star ml-2"></i>
+                        تقييم الطلاب
                     </button>
                     <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="activities">
                         <i class="fas fa-calendar-day ml-2"></i>
@@ -667,18 +754,62 @@
             </div>
         </section>
 
-        <!-- Attendance Tab -->
+        <!-- Enhanced Attendance Tab -->
         <section id="attendance-tab" class="tab-content hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">إدارة الحضور والغياب</h3>
-                        <button id="send-whatsapp-btn" class="whatsapp-btn text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
-                            <i class="fab fa-whatsapp ml-2"></i>
-                            إرسال تقرير للأولياء
-                        </button>
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-2">إدارة الحضور والغياب</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">تسجيل الحضور مع إرسال تلقائي لأولياء الأمور عند الغياب</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="send-attendance-whatsapp-btn" class="whatsapp-btn text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                <i class="fab fa-whatsapp ml-2"></i>
+                                إرسال تقرير شامل
+                            </button>
+                            <button id="attendance-history-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-history ml-2"></i>
+                                تاريخ الحضور
+                            </button>
+                        </div>
                     </div>
                     
+                    <!-- Attendance Statistics -->
+                    <div id="attendance-stats" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-green-100 dark:bg-green-900 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="present-count">0</div>
+                            <div class="text-sm text-green-700 dark:text-green-300">حاضر</div>
+                        </div>
+                        <div class="bg-red-100 dark:bg-red-900 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-red-600 dark:text-red-400" id="absent-count">0</div>
+                            <div class="text-sm text-red-700 dark:text-red-300">غائب</div>
+                        </div>
+                        <div class="bg-yellow-100 dark:bg-yellow-900 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400" id="late-count">0</div>
+                            <div class="text-sm text-yellow-700 dark:text-yellow-300">متأخر</div>
+                        </div>
+                        <div class="bg-blue-100 dark:bg-blue-900 p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="attendance-percentage">0%</div>
+                            <div class="text-sm text-blue-700 dark:text-blue-300">نسبة الحضور</div>
+                        </div>
+                    </div>
+                    
+                    <!-- طريقة التسجيل -->
+                    <div class="bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-400 p-4 mb-6">
+                        <h4 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-4">طريقة تسجيل الحضور</h4>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="flex items-center space-x-2 space-x-reverse">
+                                <input type="radio" name="attendance-mode" value="bulk" checked class="text-primary">
+                                <span class="text-sm">تسجيل جماعي لجميع الطلاب</span>
+                            </label>
+                            <label class="flex items-center space-x-2 space-x-reverse">
+                                <input type="radio" name="attendance-mode" value="individual" class="text-primary">
+                                <span class="text-sm">تسجيل فردي لطالب محدد</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="grid md:grid-cols-3 gap-6 mb-6">
                         <div>
                             <label for="attendance-grade-select" class="block text-sm font-medium mb-2">اختر الصف:</label>
@@ -707,20 +838,79 @@
                             <input type="date" id="attendance-date" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                         </div>
                     </div>
+
+                    <!-- التسجيل الفردي -->
+                    <div id="individual-attendance-section" class="hidden bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                        <h4 class="text-lg font-semibold mb-4">تسجيل حضور طالب محدد</h4>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                            <div>
+                                <label for="individual-student-select" class="block text-sm font-medium mb-2">اختر الطالب:</label>
+                                <select id="individual-student-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">اختر الطالب</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="individual-status-select" class="block text-sm font-medium mb-2">الحالة:</label>
+                                <select id="individual-status-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">اختر الحالة</option>
+                                    <option value="present">حاضر</option>
+                                    <option value="absent">غائب</option>
+                                    <option value="late">متأخر</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="individual-reason" class="block text-sm font-medium mb-2">السبب (للغياب والتأخير):</label>
+                                <input type="text" id="individual-reason" placeholder="اذكر السبب" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            </div>
+                            <div class="flex items-end">
+                                <button id="save-individual-attendance" class="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                    <i class="fas fa-save ml-2"></i>
+                                    حفظ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- عرض سجلات الحضور المحفوظة -->
+                    <div id="saved-attendance-records" class="hidden bg-white dark:bg-gray-800 border rounded-lg p-4 mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="text-lg font-semibold">سجلات الحضور المحفوظة</h4>
+                            <button id="send-saved-attendance-whatsapp" class="whatsapp-btn text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                <i class="fab fa-whatsapp ml-2"></i>
+                                إرسال التقارير
+                            </button>
+                        </div>
+                        <div id="attendance-records-list" class="space-y-2">
+                            <!-- سيتم ملء السجلات هنا -->
+                        </div>
+                    </div>
                     
                     <div id="attendance-container" class="hidden">
-                        <div class="mb-4 flex flex-wrap gap-4">
-                            <div class="flex items-center space-x-2 space-x-reverse">
-                                <div class="w-4 h-4 attendance-present rounded"></div>
-                                <span class="text-sm">حاضر</span>
+                        <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-lg font-semibold">أدوات الحضور</h4>
+                                <div class="flex gap-2">
+                                    <button id="mark-all-present" class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
+                                        تحديد الكل حاضر
+                                    </button>
+                                    <button id="mark-all-absent" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                        تحديد الكل غائب
+                                    </button>
+                                </div>
                             </div>
-                            <div class="flex items-center space-x-2 space-x-reverse">
-                                <div class="w-4 h-4 attendance-absent rounded"></div>
-                                <span class="text-sm">غائب</span>
-                            </div>
-                            <div class="flex items-center space-x-2 space-x-reverse">
-                                <div class="w-4 h-4 attendance-late rounded"></div>
-                                <span class="text-sm">متأخر</span>
+                            <div class="flex flex-wrap gap-4">
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="w-4 h-4 attendance-present rounded"></div>
+                                    <span class="text-sm">حاضر</span>
+                                </div>
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="w-4 h-4 attendance-absent rounded"></div>
+                                    <span class="text-sm">غائب</span>
+                                </div>
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="w-4 h-4 attendance-late rounded"></div>
+                                    <span class="text-sm">متأخر</span>
+                                </div>
                             </div>
                         </div>
                         
@@ -733,10 +923,14 @@
                             <!-- Students will be loaded here -->
                         </div>
                         
-                        <div class="mt-6 text-center">
+                        <div class="mt-6 flex justify-center gap-4">
                             <button id="save-attendance-btn" class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-colors">
                                 <i class="fas fa-save ml-2"></i>
-                                حفظ الحضور
+                                حفظ الحضور وإرسال للأولياء
+                            </button>
+                            <button id="save-attendance-only-btn" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                                <i class="fas fa-save ml-2"></i>
+                                حفظ فقط
                             </button>
                         </div>
                     </div>
@@ -744,32 +938,35 @@
             </div>
         </section>
 
-        <!-- Reports Tab -->
-        <section id="reports-tab" class="tab-content hidden py-8">
+        <!-- Enhanced Student Evaluations Tab -->
+        <section id="evaluations-tab" class="tab-content hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">تقارير أداء الطلاب</h3>
-                        <button id="add-report-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-2">تقييم الطلاب الاحترافي</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">نظام تقييم شامل مع إرسال التقييمات لأولياء الأمور</p>
+                        </div>
+                        <button id="add-evaluation-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
                             <i class="fas fa-plus ml-2"></i>
-                            إضافة تقرير جديد
+                            إضافة تقييم جديد
                         </button>
                     </div>
                     
-                    <!-- Report Type Selection -->
+                    <!-- Evaluation Type Selection -->
                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
-                        <h4 class="text-lg font-semibold mb-4">نوع التقرير</h4>
+                        <h4 class="text-lg font-semibold mb-4">فلترة التقييمات</h4>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                             <div>
-                                <label for="report-grade-select" class="block text-sm font-medium mb-2">الصف:</label>
-                                <select id="report-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                                    <option value="">اختر الصف</option>
+                                <label for="eval-grade-select" class="block text-sm font-medium mb-2">الصف:</label>
+                                <select id="eval-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">جميع الصفوف</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="report-section-select" class="block text-sm font-medium mb-2">الشعبة:</label>
-                                <select id="report-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                                    <option value="">اختر الشعبة</option>
+                                <label for="eval-section-select" class="block text-sm font-medium mb-2">الشعبة:</label>
+                                <select id="eval-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">جميع الشعب</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -783,54 +980,52 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="report-period-select" class="block text-sm font-medium mb-2">فترة التقرير:</label>
-                                <select id="report-period-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                                    <option value="">اختر الفترة</option>
+                                <label for="eval-type-filter" class="block text-sm font-medium mb-2">نوع التقييم:</label>
+                                <select id="eval-type-filter" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                    <option value="">جميع الأنواع</option>
+                                    <option value="daily">يومي</option>
                                     <option value="weekly">أسبوعي</option>
                                     <option value="monthly">شهري</option>
-                                    <option value="yearly">سنوي</option>
+                                    <option value="semester">فصلي</option>
                                 </select>
                             </div>
                             <div>
-                                <button id="generate-report-btn" class="mt-7 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                                    <i class="fas fa-chart-bar ml-2"></i>
-                                    إنشاء التقرير
+                                <button id="filter-evaluations-btn" class="mt-7 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                    <i class="fas fa-filter ml-2"></i>
+                                    تطبيق الفلتر
                                 </button>
                             </div>
                         </div>
+                        <div class="flex gap-2">
+                            <button id="send-all-evaluations-whatsapp" class="whatsapp-btn text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                <i class="fab fa-whatsapp ml-2"></i>
+                                إرسال جميع التقييمات
+                            </button>
+                            <button id="export-evaluations-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                <i class="fas fa-file-excel ml-2"></i>
+                                تصدير التقييمات
+                            </button>
+                        </div>
                     </div>
                     
-                    <div id="reports-loading" class="text-center py-8 hidden">
+                    <div id="evaluations-loading" class="text-center py-8">
                         <div class="loading-spinner mx-auto mb-4"></div>
-                        <p>جاري إنشاء التقرير...</p>
+                        <p>جاري تحميل التقييمات...</p>
                     </div>
                     
-                    <div id="reports-container" class="hidden">
-                        <div class="mb-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h4 class="text-xl font-semibold">نتائج التقرير</h4>
-                                <div class="flex gap-2">
-                                    <button id="send-reports-whatsapp" class="whatsapp-btn text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
-                                        <i class="fab fa-whatsapp ml-2"></i>
-                                        إرسال عبر الواتساب
-                                    </button>
-                                    <button id="export-reports-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                                        <i class="fas fa-file-excel ml-2"></i>
-                                        تصدير Excel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div id="reports-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Reports will be loaded here -->
+                    <div id="evaluations-container" class="hidden">
+                        <div id="evaluations-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Evaluations will be loaded here -->
                         </div>
                     </div>
                     
-                    <div id="reports-empty" class="empty-state">
-                        <i class="fas fa-chart-bar text-6xl mb-4"></i>
-                        <h4 class="text-xl font-semibold mb-2">لا توجد تقارير</h4>
-                        <p class="mb-4">اختر الصف والشعبة وفترة التقرير لإنشاء تقرير أداء الطلاب</p>
+                    <div id="evaluations-empty" class="empty-state">
+                        <i class="fas fa-star text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا توجد تقييمات</h4>
+                        <p class="mb-4">ابدأ بإضافة تقييمات للطلاب</p>
+                        <button onclick="document.getElementById('add-evaluation-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة تقييم جديد
+                        </button>
                     </div>
                 </div>
             </div>
@@ -975,7 +1170,7 @@
                         <ul class="space-y-2">
                             <li><a href="#" onclick="switchTab('plans')" class="hover:text-primary transition-colors">الخطط الأسبوعية</a></li>
                             <li><a href="#" onclick="switchTab('students')" class="hover:text-primary transition-colors">إدارة الطلاب</a></li>
-                            <li><a href="#" onclick="switchTab('reports')" class="hover:text-primary transition-colors">تقارير الأداء</a></li>
+                            <li><a href="#" onclick="switchTab('evaluations')" class="hover:text-primary transition-colors">تقييم الطلاب</a></li>
                             <li><a href="#" onclick="switchTab('activities')" class="hover:text-primary transition-colors">إدارة الأنشطة</a></li>
                             <li><a href="#" onclick="switchTab('attendance')" class="hover:text-primary transition-colors">الحضور والغياب</a></li>
                             <li id="footer-users-link" class="admin-only"><a href="#" onclick="switchTab('users')" class="hover:text-primary transition-colors">إدارة المستخدمين</a></li>
@@ -1100,8 +1295,8 @@
             <form id="student-form" class="space-y-4">
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2">رقم الأساس <span class="text-red-500">*</span></label>
-                        <input type="text" id="student-id" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="رقم الأساس">
+                        <label class="block text-sm font-medium mb-2">رقم الاسيس <span class="text-red-500">*</span></label>
+                        <input type="text" id="student-id" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="رقم الاسيس">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">اسم الطالب <span class="text-red-500">*</span></label>
@@ -1159,59 +1354,140 @@
         </div>
     </div>
 
-    <!-- Add Report Modal -->
-    <div id="add-report-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <!-- Enhanced Evaluation Modal -->
+    <div id="add-evaluation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-primary">إضافة تقرير أداء طالب</h3>
-                <button id="close-report-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <h3 class="text-2xl font-bold text-primary">تقييم طالب</h3>
+                <button id="close-evaluation-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
             </div>
             
-            <form id="report-form" class="space-y-6">
-                <div class="grid md:grid-cols-4 gap-4">
+            <form id="evaluation-form" class="space-y-6">
+                <!-- Student and Basic Info -->
+                <div class="grid md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium mb-2">الطالب <span class="text-red-500">*</span></label>
-                        <select id="report-student" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        <select id="eval-student" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                             <option value="">اختر الطالب</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">المادة <span class="text-red-500">*</span></label>
-                        <input type="text" id="report-subject" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المادة">
+                        <input type="text" id="eval-subject" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المادة">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2">الدرجة <span class="text-red-500">*</span></label>
-                        <input type="number" id="report-grade" required min="0" max="100" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="الدرجة من 100">
+                        <label class="block text-sm font-medium mb-2">نوع التقييم <span class="text-red-500">*</span></label>
+                        <select id="eval-type" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر النوع</option>
+                            <option value="daily">تقييم يومي</option>
+                            <option value="weekly">تقييم أسبوعي</option>
+                            <option value="monthly">تقييم شهري</option>
+                            <option value="semester">تقييم فصلي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Grading System -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-4">نظام التقييم</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الدرجة العددية</label>
+                            <div class="flex items-center space-x-4 space-x-reverse">
+                                <input type="number" id="eval-grade" min="0" max="100" class="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <span class="text-sm text-gray-600">من 100</span>
+                                <div class="evaluation-grade-circle bg-gray-400" id="grade-circle">--</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">التقييم بالنجوم</label>
+                            <div class="star-rating" id="star-rating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <input type="hidden" id="eval-stars" value="">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Assessment -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">نقاط القوة</label>
+                        <textarea id="eval-strengths" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اذكر نقاط القوة لدى الطالب"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2">التاريخ <span class="text-red-500">*</span></label>
-                        <input type="date" id="report-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        <label class="block text-sm font-medium mb-2">نقاط التحسين</label>
+                        <textarea id="eval-improvements" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اذكر النقاط التي تحتاج إلى تحسين"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Behavioral Assessment -->
+                <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-4">التقييم السلوكي</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">المشاركة</label>
+                            <select id="eval-participation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر</option>
+                                <option value="excellent">ممتاز</option>
+                                <option value="good">جيد</option>
+                                <option value="average">متوسط</option>
+                                <option value="needs_improvement">يحتاج تحسين</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الانضباط</label>
+                            <select id="eval-discipline" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر</option>
+                                <option value="excellent">ممتاز</option>
+                                <option value="good">جيد</option>
+                                <option value="average">متوسط</option>
+                                <option value="needs_improvement">يحتاج تحسين</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">التعاون</label>
+                            <select id="eval-cooperation" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر</option>
+                                <option value="excellent">ممتاز</option>
+                                <option value="good">جيد</option>
+                                <option value="average">متوسط</option>
+                                <option value="needs_improvement">يحتاج تحسين</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2">نقاط القوة</label>
-                        <textarea id="report-strengths" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اذكر نقاط القوة لدى الطالب"></textarea>
+                        <label class="block text-sm font-medium mb-2">ملاحظات المعلم</label>
+                        <textarea id="eval-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية من المعلم"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2">نقاط التحسين</label>
-                        <textarea id="report-improvements" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اذكر النقاط التي تحتاج إلى تحسين"></textarea>
+                        <label class="block text-sm font-medium mb-2">التاريخ</label>
+                        <input type="date" id="eval-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2 space-x-reverse">
+                                <input type="checkbox" id="send-evaluation-whatsapp" checked class="text-primary">
+                                <span class="text-sm">إرسال التقييم لولي الأمر عبر الواتساب</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">ملاحظات المعلم</label>
-                    <textarea id="report-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية من المعلم"></textarea>
                 </div>
                 
                 <div class="flex justify-end space-x-4 space-x-reverse">
-                    <button type="button" id="cancel-report" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="button" id="cancel-evaluation" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
                     <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
-                        <span id="report-submit-text">حفظ التقرير</span>
-                        <div id="report-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                        <span id="evaluation-submit-text">حفظ التقييم</span>
+                        <div id="evaluation-submit-spinner" class="hidden loading-spinner mx-auto"></div>
                     </button>
                 </div>
             </form>
@@ -1408,10 +1684,12 @@
         let allUsers = [];
         let allStudents = [];
         let allActivities = [];
-        let allReports = [];
+        let allEvaluations = [];
         let currentExcelData = [];
         let currentSearchFilters = {};
         let currentActivityFilters = {};
+        let currentEvaluationFilters = {};
+        let savedAttendanceRecords = [];
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -1429,7 +1707,7 @@
             document.getElementById('attendance-date').value = today;
             document.getElementById('plan-date').value = today;
             document.getElementById('activity-date').value = today;
-            document.getElementById('report-date').value = today;
+            document.getElementById('eval-date').value = today;
         }
 
         // Get current week date range
@@ -1537,13 +1815,13 @@
             document.getElementById('students-grade-select').addEventListener('change', filterStudents);
             document.getElementById('students-section-select').addEventListener('change', filterStudents);
             
-            // Reports functionality
-            document.getElementById('add-report-btn').addEventListener('click', openReportModal);
-            document.getElementById('close-report-modal').addEventListener('click', closeReportModal);
-            document.getElementById('cancel-report').addEventListener('click', closeReportModal);
-            document.getElementById('report-form').addEventListener('submit', handleReportSubmit);
-            document.getElementById('generate-report-btn').addEventListener('click', generateReport);
-            document.getElementById('send-reports-whatsapp').addEventListener('click', sendReportsViaWhatsApp);
+            // Evaluations functionality
+            document.getElementById('add-evaluation-btn').addEventListener('click', openEvaluationModal);
+            document.getElementById('close-evaluation-modal').addEventListener('click', closeEvaluationModal);
+            document.getElementById('cancel-evaluation').addEventListener('click', closeEvaluationModal);
+            document.getElementById('evaluation-form').addEventListener('submit', handleEvaluationSubmit);
+            document.getElementById('filter-evaluations-btn').addEventListener('click', filterEvaluations);
+            document.getElementById('send-all-evaluations-whatsapp').addEventListener('click', sendAllEvaluationsViaWhatsApp);
             
             // Activities functionality
             document.getElementById('add-activity-btn').addEventListener('click', openActivityModal);
@@ -1557,10 +1835,32 @@
             document.getElementById('cancel-user').addEventListener('click', closeUserModal);
             document.getElementById('user-form').addEventListener('submit', handleUserSubmit);
             
-            // Attendance functionality
+            // Enhanced Attendance functionality
             document.getElementById('attendance-grade-select').addEventListener('change', handleAttendanceGradeSelect);
             document.getElementById('attendance-section-select').addEventListener('change', handleAttendanceGradeSelect);
-            document.getElementById('save-attendance-btn').addEventListener('click', saveAttendance);
+            document.getElementById('save-attendance-btn').addEventListener('click', () => saveAttendance(true));
+            document.getElementById('save-attendance-only-btn').addEventListener('click', () => saveAttendance(false));
+            
+            // Attendance mode switching
+            document.querySelectorAll('input[name="attendance-mode"]').forEach(radio => {
+                radio.addEventListener('change', handleAttendanceModeChange);
+            });
+            
+            // Individual attendance functionality
+            document.getElementById('save-individual-attendance').addEventListener('click', saveIndividualAttendance);
+            document.getElementById('send-saved-attendance-whatsapp').addEventListener('click', sendSavedAttendanceViaWhatsApp);
+            
+            // Attendance helper buttons
+            document.getElementById('mark-all-present')?.addEventListener('click', markAllAttendance.bind(null, 'present'));
+            document.getElementById('mark-all-absent')?.addEventListener('click', markAllAttendance.bind(null, 'absent'));
+            
+            // Evaluation grade and star rating
+            document.getElementById('eval-grade')?.addEventListener('input', updateGradeDisplay);
+            document.querySelectorAll('#star-rating .star').forEach(star => {
+                star.addEventListener('click', handleStarRating);
+                star.addEventListener('mouseover', highlightStars);
+            });
+            document.getElementById('star-rating')?.addEventListener('mouseleave', resetStarHighlight);
             
             // Search functionality for plans
             const searchInputs = ['plans-grade-select', 'plans-section-select', 'plans-subject-search', 'plans-topic-search', 'plans-teacher-search', 'plans-date-from', 'plans-date-to', 'plans-status-filter'];
@@ -1577,6 +1877,365 @@
             // Clear search buttons
             document.getElementById('clear-search-btn').addEventListener('click', clearSearchFilters);
             document.getElementById('clear-activities-search-btn').addEventListener('click', clearActivitySearchFilters);
+        }
+
+        // New attendance mode handling
+        function handleAttendanceModeChange() {
+            const selectedMode = document.querySelector('input[name="attendance-mode"]:checked').value;
+            const individualSection = document.getElementById('individual-attendance-section');
+            const savedRecordsSection = document.getElementById('saved-attendance-records');
+            const bulkContainer = document.getElementById('attendance-container');
+            
+            if (selectedMode === 'individual') {
+                individualSection.classList.remove('hidden');
+                savedRecordsSection.classList.remove('hidden');
+                populateIndividualStudentSelect();
+                loadSavedAttendanceRecords();
+                // Hide bulk attendance if shown
+                if (!bulkContainer.classList.contains('hidden')) {
+                    bulkContainer.classList.add('hidden');
+                }
+            } else {
+                individualSection.classList.add('hidden');
+                savedRecordsSection.classList.add('hidden');
+            }
+        }
+
+        function populateIndividualStudentSelect() {
+            const grade = document.getElementById('attendance-grade-select').value;
+            const section = document.getElementById('attendance-section-select').value;
+            const studentSelect = document.getElementById('individual-student-select');
+            
+            // Clear existing options
+            studentSelect.innerHTML = '<option value="">اختر الطالب</option>';
+            
+            if (!grade || !section) return;
+            
+            const students = allStudents.filter(s => s.grade === grade && s.section === section);
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = student.name;
+                studentSelect.appendChild(option);
+            });
+        }
+
+        async function saveIndividualAttendance() {
+            const grade = document.getElementById('attendance-grade-select').value;
+            const section = document.getElementById('attendance-section-select').value;
+            const date = document.getElementById('attendance-date').value;
+            const studentId = document.getElementById('individual-student-select').value;
+            const status = document.getElementById('individual-status-select').value;
+            const reason = document.getElementById('individual-reason').value;
+            
+            if (!grade || !section || !date || !studentId || !status) {
+                showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            if (!hasPermissionForGradeAndSection(grade, section)) {
+                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف والشعبة');
+                return;
+            }
+            
+            if ((status === 'absent' || status === 'late') && !reason.trim()) {
+                showErrorMessage('يرجى ذكر سبب الغياب أو التأخير');
+                return;
+            }
+            
+            try {
+                const student = allStudents.find(s => s.id === studentId);
+                if (!student) {
+                    showErrorMessage('الطالب غير موجود');
+                    return;
+                }
+                
+                const recordData = {
+                    studentId: studentId,
+                    studentName: student.name,
+                    grade: grade,
+                    section: section,
+                    date: date,
+                    status: status,
+                    reason: reason || '',
+                    teacherId: currentUser.id,
+                    teacherName: currentUser.name,
+                    parentPhone: student.parentPhone,
+                    parentName: student.parentName,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                // Save to individual attendance records
+                await db.collection('individualAttendance').add(recordData);
+                
+                // Send WhatsApp notification if absent or late
+                if ((status === 'absent' || status === 'late') && student.parentPhone) {
+                    sendIndividualAbsenceNotification(student, status, reason, date);
+                }
+                
+                showSuccessMessage('تم حفظ الحضور بنجاح');
+                
+                // Reset form
+                document.getElementById('individual-student-select').value = '';
+                document.getElementById('individual-status-select').value = '';
+                document.getElementById('individual-reason').value = '';
+                
+                // Reload saved records
+                loadSavedAttendanceRecords();
+                
+            } catch (error) {
+                console.error('Error saving individual attendance:', error);
+                showErrorMessage('حدث خطأ في حفظ الحضور');
+            }
+        }
+
+        function sendIndividualAbsenceNotification(student, status, reason, date) {
+            if (!student.parentPhone) return;
+            
+            const formattedDate = formatDate(date);
+            const statusText = status === 'absent' ? 'غائب' : 'متأخر';
+            const reasonText = reason ? `السبب: ${reason}` : 'لم يتم تحديد السبب';
+            
+            const message = `مرحباً ${student.parentName || 'ولي الأمر'},
+
+⚠️ إشعار ${statusText}
+
+👤 اسم الطالب: ${student.name}
+🏫 الصف: ${getGradeName(student.grade)} - الشعبة ${student.section}
+📅 التاريخ: ${formattedDate}
+⏰ الحالة: ${statusText}
+📝 ${reasonText}
+
+يرجى التواصل مع إدارة المدرسة لمتابعة حالة الطالب.
+
+مدرسة الثروات الوطنية الخاصة
+المعلم: ${currentUser.name}`;
+            
+            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        async function loadSavedAttendanceRecords() {
+            const grade = document.getElementById('attendance-grade-select').value;
+            const section = document.getElementById('attendance-section-select').value;
+            const date = document.getElementById('attendance-date').value;
+            
+            if (!grade || !section || !date) return;
+            
+            try {
+                // Load individual attendance records for today
+                const recordsQuery = await db.collection('individualAttendance')
+                    .where('grade', '==', grade)
+                    .where('section', '==', section)
+                    .where('date', '==', date)
+                    .orderBy('timestamp', 'desc')
+                    .get();
+                
+                savedAttendanceRecords = [];
+                recordsQuery.forEach(doc => {
+                    savedAttendanceRecords.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                displaySavedAttendanceRecords();
+                
+            } catch (error) {
+                console.error('Error loading saved attendance records:', error);
+            }
+        }
+
+        function displaySavedAttendanceRecords() {
+            const recordsList = document.getElementById('attendance-records-list');
+            
+            if (savedAttendanceRecords.length === 0) {
+                recordsList.innerHTML = '<p class="text-gray-500 text-center py-4">لا توجد سجلات حضور محفوظة لهذا التاريخ</p>';
+                return;
+            }
+            
+            recordsList.innerHTML = '';
+            
+            savedAttendanceRecords.forEach(record => {
+                const recordCard = document.createElement('div');
+                recordCard.className = `attendance-record-card ${record.status}`;
+                
+                const statusText = record.status === 'present' ? 'حاضر' : record.status === 'absent' ? 'غائب' : 'متأخر';
+                const reasonText = record.reason ? `السبب: ${record.reason}` : '';
+                
+                recordCard.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h5 class="font-semibold">${record.studentName}</h5>
+                            <p class="text-sm text-gray-600">الحالة: ${statusText}</p>
+                            ${reasonText ? `<p class="text-sm text-gray-600">${reasonText}</p>` : ''}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="resendIndividualAttendanceWhatsApp('${record.id}')" class="text-green-600 hover:text-green-800 text-sm">
+                                <i class="fab fa-whatsapp"></i>
+                                إعادة إرسال
+                            </button>
+                            <button onclick="deleteAttendanceRecord('${record.id}')" class="text-red-600 hover:text-red-800 text-sm">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                recordsList.appendChild(recordCard);
+            });
+        }
+
+        async function deleteAttendanceRecord(recordId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا السجل؟', async () => {
+                try {
+                    await db.collection('individualAttendance').doc(recordId).delete();
+                    showSuccessMessage('تم حذف السجل بنجاح');
+                    loadSavedAttendanceRecords();
+                } catch (error) {
+                    console.error('Error deleting attendance record:', error);
+                    showErrorMessage('حدث خطأ في حذف السجل');
+                }
+            });
+        }
+
+        function resendIndividualAttendanceWhatsApp(recordId) {
+            const record = savedAttendanceRecords.find(r => r.id === recordId);
+            if (!record || !record.parentPhone) {
+                showErrorMessage('لا يمكن إرسال الرسالة - رقم ولي الأمر غير متوفر');
+                return;
+            }
+            
+            const student = {
+                name: record.studentName,
+                parentPhone: record.parentPhone,
+                parentName: record.parentName,
+                grade: record.grade,
+                section: record.section
+            };
+            
+            sendIndividualAbsenceNotification(student, record.status, record.reason, record.date);
+            showSuccessMessage('تم إرسال الإشعار عبر الواتساب');
+        }
+
+        function sendSavedAttendanceViaWhatsApp() {
+            if (savedAttendanceRecords.length === 0) {
+                showErrorMessage('لا توجد سجلات حضور لإرسالها');
+                return;
+            }
+            
+            let sentCount = 0;
+            savedAttendanceRecords.forEach((record, index) => {
+                if ((record.status === 'absent' || record.status === 'late') && record.parentPhone) {
+                    setTimeout(() => {
+                        const student = {
+                            name: record.studentName,
+                            parentPhone: record.parentPhone,
+                            parentName: record.parentName,
+                            grade: record.grade,
+                            section: record.section
+                        };
+                        sendIndividualAbsenceNotification(student, record.status, record.reason, record.date);
+                    }, index * 1000);
+                    sentCount++;
+                }
+            });
+            
+            if (sentCount > 0) {
+                showSuccessMessage(`سيتم فتح ${sentCount} محادثة واتساب`);
+            } else {
+                showErrorMessage('لا توجد سجلات غياب أو تأخير مع أرقام هواتف متاحة');
+            }
+        }
+
+        // Enhanced Star Rating System
+        function handleStarRating(event) {
+            const rating = parseInt(event.target.dataset.value);
+            document.getElementById('eval-stars').value = rating;
+            updateStarDisplay(rating);
+            
+            // Update numeric grade based on star rating
+            const numericGrade = rating * 20; // 5 stars = 100, 4 stars = 80, etc.
+            document.getElementById('eval-grade').value = numericGrade;
+            updateGradeDisplay();
+        }
+
+        function highlightStars(event) {
+            const rating = parseInt(event.target.dataset.value);
+            updateStarDisplay(rating);
+        }
+
+        function resetStarHighlight() {
+            const currentRating = parseInt(document.getElementById('eval-stars').value) || 0;
+            updateStarDisplay(currentRating);
+        }
+
+        function updateStarDisplay(rating) {
+            document.querySelectorAll('#star-rating .star').forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function updateGradeDisplay() {
+            const grade = parseInt(document.getElementById('eval-grade').value) || 0;
+            const gradeCircle = document.getElementById('grade-circle');
+            
+            if (gradeCircle) {
+                gradeCircle.textContent = grade;
+                
+                // Update circle color based on grade
+                gradeCircle.className = 'evaluation-grade-circle';
+                if (grade >= 90) {
+                    gradeCircle.classList.add('grade-excellent');
+                } else if (grade >= 80) {
+                    gradeCircle.classList.add('grade-good');
+                } else if (grade >= 60) {
+                    gradeCircle.classList.add('grade-average');
+                } else {
+                    gradeCircle.classList.add('grade-poor');
+                }
+            }
+            
+            // Update star rating based on numeric grade
+            const starRating = Math.ceil(grade / 20);
+            document.getElementById('eval-stars').value = starRating;
+            updateStarDisplay(starRating);
+        }
+
+        // Enhanced Attendance Functions
+        function markAllAttendance(status) {
+            document.querySelectorAll('.attendance-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-white');
+            });
+            
+            document.querySelectorAll(`[data-status="${status}"]`).forEach(btn => {
+                btn.classList.add('ring-2', 'ring-white');
+            });
+            
+            updateAttendanceStats();
+        }
+
+        function updateAttendanceStats() {
+            const presentCount = document.querySelectorAll('[data-status="present"].ring-2').length;
+            const absentCount = document.querySelectorAll('[data-status="absent"].ring-2').length;
+            const lateCount = document.querySelectorAll('[data-status="late"].ring-2').length;
+            const totalStudents = document.querySelectorAll('.attendance-student-card').length;
+            
+            document.getElementById('present-count').textContent = presentCount;
+            document.getElementById('absent-count').textContent = absentCount;
+            document.getElementById('late-count').textContent = lateCount;
+            
+            const attendancePercentage = totalStudents > 0 ? 
+                Math.round(((presentCount + lateCount) / totalStudents) * 100) : 0;
+            document.getElementById('attendance-percentage').textContent = attendancePercentage + '%';
+            
+            // Show stats
+            document.getElementById('attendance-stats').classList.remove('hidden');
         }
 
         // Clear search filters function
@@ -1679,7 +2338,7 @@
             // Get all grade select elements
             const gradeSelects = [
                 'plans-grade-select', 'students-grade-select', 'attendance-grade-select',
-                'report-grade-select', 'plan-grade', 'student-grade'
+                'eval-grade-select', 'plan-grade', 'student-grade'
             ];
 
             gradeSelects.forEach(selectId => {
@@ -1879,7 +2538,7 @@
             loadUsersRealtime();
             loadStudentsRealtime();
             loadActivitiesRealtime();
-            loadReportsRealtime();
+            loadEvaluationsRealtime();
             // Auto-archive old plans when data loads
             setTimeout(autoArchiveOldPlans, 2000);
         }
@@ -1952,38 +2611,39 @@
             });
         }
 
-        function loadReportsRealtime() {
-            let query = db.collection('studentReports');
+        function loadEvaluationsRealtime() {
+            let query = db.collection('studentEvaluations');
             
-            // Enhanced privacy: Teachers only see their own reports
+            // Enhanced privacy: Teachers only see their own evaluations
             if (currentUser && currentUser.role === 'teacher') {
                 query = query.where('teacherId', '==', currentUser.id);
             }
             
             query.onSnapshot((snapshot) => {
-                allReports = [];
+                allEvaluations = [];
                 snapshot.forEach((doc) => {
-                    const reportData = doc.data();
+                    const evaluationData = doc.data();
                     
                     if (currentUser && currentUser.role === 'teacher') {
-                        // Double check: Only load reports created by current teacher
-                        if (reportData.teacherId === currentUser.id) {
-                            allReports.push({
+                        // Double check: Only load evaluations created by current teacher
+                        if (evaluationData.teacherId === currentUser.id) {
+                            allEvaluations.push({
                                 id: doc.id,
-                                ...reportData
+                                ...evaluationData
                             });
                         }
                     } else if (currentUser && currentUser.role === 'admin') {
-                        // Admins can see all reports
-                        allReports.push({
+                        // Admins can see all evaluations
+                        allEvaluations.push({
                             id: doc.id,
-                            ...reportData
+                            ...evaluationData
                         });
                     }
                 });
                 
-                updateReportsCount();
-                hideLoading('reports');
+                updateEvaluationsCount();
+                displayEvaluations();
+                hideLoading('evaluations');
             });
         }
 
@@ -2020,6 +2680,354 @@
                 displayActivities();
                 hideLoading('activities');
             });
+        }
+
+        // Enhanced Evaluation System
+        function populateStudentSelects() {
+            const studentSelect = document.getElementById('eval-student');
+            if (!studentSelect) return;
+            
+            // Clear existing options except first
+            const firstOption = studentSelect.children[0];
+            studentSelect.innerHTML = '';
+            studentSelect.appendChild(firstOption);
+            
+            // Add students based on user permissions
+            const availableStudents = allStudents.filter(student => {
+                if (currentUser.role === 'admin') return true;
+                return hasPermissionForGradeAndSection(student.grade, student.section);
+            });
+            
+            availableStudents.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} - ${getGradeName(student.grade)} ${student.section}`;
+                studentSelect.appendChild(option);
+            });
+        }
+
+        async function handleEvaluationSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('evaluation-submit-text');
+            const submitSpinner = document.getElementById('evaluation-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const studentId = document.getElementById('eval-student').value;
+                const student = allStudents.find(s => s.id === studentId);
+                
+                if (!student) {
+                    showErrorMessage('الطالب غير موجود');
+                    return;
+                }
+                
+                // Check permissions
+                if (!hasPermissionForGradeAndSection(student.grade, student.section)) {
+                    showErrorMessage('ليس لديك صلاحية لإنشاء تقييمات لهذا الطالب');
+                    return;
+                }
+                
+                const evaluationData = {
+                    studentId: studentId,
+                    studentName: student.name,
+                    grade: student.grade,
+                    section: student.section,
+                    subject: document.getElementById('eval-subject').value,
+                    evaluationType: document.getElementById('eval-type').value,
+                    numericGrade: parseInt(document.getElementById('eval-grade').value) || 0,
+                    starRating: parseInt(document.getElementById('eval-stars').value) || 0,
+                    date: document.getElementById('eval-date').value,
+                    strengths: document.getElementById('eval-strengths').value || '',
+                    improvements: document.getElementById('eval-improvements').value || '',
+                    participation: document.getElementById('eval-participation').value || '',
+                    discipline: document.getElementById('eval-discipline').value || '',
+                    cooperation: document.getElementById('eval-cooperation').value || '',
+                    notes: document.getElementById('eval-notes').value || '',
+                    teacherId: currentUser.id,
+                    teacherName: currentUser.name,
+                    sendWhatsApp: document.getElementById('send-evaluation-whatsapp').checked,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('studentEvaluations').add(evaluationData);
+                
+                // Send WhatsApp if requested
+                if (evaluationData.sendWhatsApp) {
+                    await sendEvaluationViaWhatsApp(student, evaluationData);
+                }
+                
+                showSuccessMessage('تم حفظ التقييم بنجاح');
+                closeEvaluationModal();
+                document.getElementById('evaluation-form').reset();
+                
+            } catch (error) {
+                console.error('Error saving evaluation:', error);
+                showErrorMessage('حدث خطأ في حفظ التقييم');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        async function sendEvaluationViaWhatsApp(student, evaluation) {
+            if (!student.parentPhone) {
+                showErrorMessage('رقم ولي الأمر غير متوفر');
+                return;
+            }
+            
+            const typeNames = {
+                'daily': 'يومي',
+                'weekly': 'أسبوعي', 
+                'monthly': 'شهري',
+                'semester': 'فصلي'
+            };
+            
+            const behaviorNames = {
+                'excellent': 'ممتاز',
+                'good': 'جيد',
+                'average': 'متوسط',
+                'needs_improvement': 'يحتاج تحسين'
+            };
+            
+            let gradeText = 'ضعيف';
+            if (evaluation.numericGrade >= 90) gradeText = 'ممتاز';
+            else if (evaluation.numericGrade >= 80) gradeText = 'جيد جداً';
+            else if (evaluation.numericGrade >= 70) gradeText = 'جيد';
+            else if (evaluation.numericGrade >= 60) gradeText = 'مقبول';
+            
+            const message = `مرحباً ${student.parentName || 'ولي الأمر'},
+
+📋 تقييم الطالب: ${student.name}
+📚 المادة: ${evaluation.subject}
+🔍 نوع التقييم: ${typeNames[evaluation.evaluationType] || evaluation.evaluationType}
+📅 التاريخ: ${evaluation.date}
+
+📊 النتائج:
+• الدرجة: ${evaluation.numericGrade}/100 (${gradeText})
+• التقييم بالنجوم: ${'⭐'.repeat(evaluation.starRating)} (${evaluation.starRating}/5)
+
+🎯 السلوكيات:
+${evaluation.participation ? `• المشاركة: ${behaviorNames[evaluation.participation] || evaluation.participation}` : ''}
+${evaluation.discipline ? `• الانضباط: ${behaviorNames[evaluation.discipline] || evaluation.discipline}` : ''}
+${evaluation.cooperation ? `• التعاون: ${behaviorNames[evaluation.cooperation] || evaluation.cooperation}` : ''}
+
+${evaluation.strengths ? `💪 نقاط القوة:
+${evaluation.strengths}` : ''}
+
+${evaluation.improvements ? `📈 نقاط التحسين:
+${evaluation.improvements}` : ''}
+
+${evaluation.notes ? `📝 ملاحظات المعلم:
+${evaluation.notes}` : ''}
+
+شكراً لمتابعتكم المستمرة.
+
+مدرسة الثروات الوطنية الخاصة
+المعلم: ${evaluation.teacherName}`;
+            
+            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function filterEvaluations() {
+            const grade = document.getElementById('eval-grade-select').value;
+            const section = document.getElementById('eval-section-select').value;
+            const type = document.getElementById('eval-type-filter').value;
+            
+            currentEvaluationFilters = { grade, section, type };
+            displayEvaluations();
+        }
+
+        function displayEvaluations() {
+            let filteredEvaluations = [...allEvaluations];
+            
+            // Apply filters
+            if (currentEvaluationFilters.grade) {
+                filteredEvaluations = filteredEvaluations.filter(eval => eval.grade === currentEvaluationFilters.grade);
+            }
+            
+            if (currentEvaluationFilters.section) {
+                filteredEvaluations = filteredEvaluations.filter(eval => eval.section === currentEvaluationFilters.section);
+            }
+            
+            if (currentEvaluationFilters.type) {
+                filteredEvaluations = filteredEvaluations.filter(eval => eval.evaluationType === currentEvaluationFilters.type);
+            }
+            
+            const container = document.getElementById('evaluations-container');
+            const grid = document.getElementById('evaluations-grid');
+            const empty = document.getElementById('evaluations-empty');
+            const loading = document.getElementById('evaluations-loading');
+            
+            loading.classList.add('hidden');
+            
+            if (filteredEvaluations.length === 0) {
+                container.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            
+            empty.classList.add('hidden');
+            container.classList.remove('hidden');
+            
+            grid.innerHTML = '';
+            
+            // Sort evaluations by date (newest first)
+            filteredEvaluations.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            filteredEvaluations.forEach(evaluation => {
+                const evaluationCard = createEvaluationCard(evaluation);
+                grid.appendChild(evaluationCard);
+            });
+        }
+
+        function createEvaluationCard(evaluation) {
+            const card = document.createElement('div');
+            card.className = 'evaluation-card text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300';
+            
+            const typeNames = {
+                'daily': 'يومي',
+                'weekly': 'أسبوعي',
+                'monthly': 'شهري', 
+                'semester': 'فصلي'
+            };
+            
+            const behaviorNames = {
+                'excellent': 'ممتاز',
+                'good': 'جيد',
+                'average': 'متوسط',
+                'needs_improvement': 'يحتاج تحسين'
+            };
+            
+            let gradeText = 'ضعيف';
+            let gradeClass = 'bg-red-500';
+            if (evaluation.numericGrade >= 90) {
+                gradeText = 'ممتاز';
+                gradeClass = 'bg-green-500';
+            } else if (evaluation.numericGrade >= 80) {
+                gradeText = 'جيد جداً';
+                gradeClass = 'bg-blue-500';
+            } else if (evaluation.numericGrade >= 70) {
+                gradeText = 'جيد';
+                gradeClass = 'bg-yellow-500';
+            } else if (evaluation.numericGrade >= 60) {
+                gradeText = 'مقبول';
+                gradeClass = 'bg-orange-500';
+            }
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold mb-1">${evaluation.studentName}</h4>
+                        <p class="text-sm opacity-90">${getGradeName(evaluation.grade)} - شعبة ${evaluation.section}</p>
+                        <span class="evaluation-type-badge">${typeNames[evaluation.evaluationType] || evaluation.evaluationType}</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 rounded-full ${gradeClass} flex items-center justify-center font-bold text-lg mb-1">
+                            ${evaluation.numericGrade}
+                        </div>
+                        <div class="text-xs">${'⭐'.repeat(evaluation.starRating)}</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-3">
+                    <div class="text-sm mb-2"><strong>المادة:</strong> ${evaluation.subject}</div>
+                    <div class="text-sm mb-2"><strong>التاريخ:</strong> ${formatDate(evaluation.date)}</div>
+                    <div class="text-sm"><strong>التقييم:</strong> ${gradeText} (${evaluation.numericGrade}/100)</div>
+                </div>
+                
+                ${evaluation.participation || evaluation.discipline || evaluation.cooperation ? `
+                    <div class="bg-white bg-opacity-10 rounded-lg p-3 mb-3">
+                        <div class="text-sm font-semibold mb-2">التقييم السلوكي:</div>
+                        ${evaluation.participation ? `<div class="text-xs">• المشاركة: ${behaviorNames[evaluation.participation] || evaluation.participation}</div>` : ''}
+                        ${evaluation.discipline ? `<div class="text-xs">• الانضباط: ${behaviorNames[evaluation.discipline] || evaluation.discipline}</div>` : ''}
+                        ${evaluation.cooperation ? `<div class="text-xs">• التعاون: ${behaviorNames[evaluation.cooperation] || evaluation.cooperation}</div>` : ''}
+                    </div>
+                ` : ''}
+                
+                ${evaluation.strengths || evaluation.improvements ? `
+                    <div class="text-xs mb-3">
+                        ${evaluation.strengths ? `<div class="mb-1"><strong>نقاط القوة:</strong> ${evaluation.strengths}</div>` : ''}
+                        ${evaluation.improvements ? `<div><strong>نقاط التحسين:</strong> ${evaluation.improvements}</div>` : ''}
+                    </div>
+                ` : ''}
+                
+                <div class="flex justify-between items-center">
+                    <div class="text-xs opacity-75">المعلم: ${evaluation.teacherName}</div>
+                    <div class="flex gap-2">
+                        <button onclick="resendEvaluationViaWhatsApp('${evaluation.id}')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition-colors">
+                            <i class="fab fa-whatsapp mr-1"></i>
+                            إعادة إرسال
+                        </button>
+                        <button onclick="deleteEvaluation('${evaluation.id}')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs transition-colors">
+                            <i class="fas fa-trash mr-1"></i>
+                            حذف
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        async function resendEvaluationViaWhatsApp(evaluationId) {
+            const evaluation = allEvaluations.find(e => e.id === evaluationId);
+            const student = allStudents.find(s => s.id === evaluation.studentId);
+            
+            if (evaluation && student) {
+                await sendEvaluationViaWhatsApp(student, evaluation);
+                showSuccessMessage('تم إرسال التقييم عبر الواتساب');
+            } else {
+                showErrorMessage('لم يتم العثور على بيانات التقييم أو الطالب');
+            }
+        }
+
+        async function deleteEvaluation(evaluationId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا التقييم؟', async () => {
+                try {
+                    await db.collection('studentEvaluations').doc(evaluationId).delete();
+                    showSuccessMessage('تم حذف التقييم بنجاح');
+                } catch (error) {
+                    console.error('Error deleting evaluation:', error);
+                    showErrorMessage('حدث خطأ في حذف التقييم');
+                }
+            });
+        }
+
+        async function sendAllEvaluationsViaWhatsApp() {
+            const filteredEvaluations = allEvaluations.filter(evaluation => {
+                if (currentEvaluationFilters.grade && evaluation.grade !== currentEvaluationFilters.grade) return false;
+                if (currentEvaluationFilters.section && evaluation.section !== currentEvaluationFilters.section) return false;
+                if (currentEvaluationFilters.type && evaluation.evaluationType !== currentEvaluationFilters.type) return false;
+                return true;
+            });
+            
+            if (filteredEvaluations.length === 0) {
+                showErrorMessage('لا توجد تقييمات لإرسالها');
+                return;
+            }
+            
+            let sentCount = 0;
+            filteredEvaluations.forEach((evaluation, index) => {
+                const student = allStudents.find(s => s.id === evaluation.studentId);
+                if (student && student.parentPhone) {
+                    setTimeout(() => {
+                        sendEvaluationViaWhatsApp(student, evaluation);
+                    }, index * 1000); // 1 second delay between each message
+                    sentCount++;
+                }
+            });
+            
+            if (sentCount > 0) {
+                showSuccessMessage(`سيتم فتح ${sentCount} محادثة واتساب`);
+            } else {
+                showErrorMessage('لا توجد أرقام هواتف متاحة للإرسال');
+            }
         }
 
         // FIXED FILTER FUNCTIONS FOR PLANS AND ACTIVITIES
@@ -2394,7 +3402,7 @@
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">رقم الأساس: ${student.studentId}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">رقم الاسيس: ${student.studentId}</p>
                         ${student.createdBy !== currentUser.id && currentUser.role !== 'admin' ? 
                             '<p class="text-xs text-gray-500">مُضاف بواسطة معلم آخر</p>' : ''}
                     </div>
@@ -2574,362 +3582,23 @@
             }
         }
 
-        // Report generation and management - FIXED VERSION
-        function populateStudentSelects() {
-            const studentSelect = document.getElementById('report-student');
-            if (!studentSelect) return;
-            
-            // Clear existing options except first
-            const firstOption = studentSelect.children[0];
-            studentSelect.innerHTML = '';
-            studentSelect.appendChild(firstOption);
-            
-            // Add students based on user permissions
-            const availableStudents = allStudents.filter(student => {
-                if (currentUser.role === 'admin') return true;
-                return hasPermissionForGradeAndSection(student.grade, student.section);
-            });
-            
-            availableStudents.forEach(student => {
-                const option = document.createElement('option');
-                option.value = student.id;
-                option.textContent = `${student.name} - ${getGradeName(student.grade)} ${student.section}`;
-                studentSelect.appendChild(option);
-            });
-        }
-
-        async function handleReportSubmit(e) {
-            e.preventDefault();
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const submitText = document.getElementById('report-submit-text');
-            const submitSpinner = document.getElementById('report-submit-spinner');
-            
-            // Show loading
-            submitText.classList.add('hidden');
-            submitSpinner.classList.remove('hidden');
-            
-            try {
-                const studentId = document.getElementById('report-student').value;
-                const student = allStudents.find(s => s.id === studentId);
-                
-                if (!student) {
-                    showErrorMessage('الطالب غير موجود');
-                    return;
-                }
-                
-                // Check permissions
-                if (!hasPermissionForGradeAndSection(student.grade, student.section)) {
-                    showErrorMessage('ليس لديك صلاحية لإنشاء تقارير لهذا الطالب');
-                    return;
-                }
-                
-                const reportData = {
-                    studentId: studentId,
-                    studentName: student.name,
-                    grade: student.grade,
-                    section: student.section,
-                    subject: document.getElementById('report-subject').value,
-                    gradeScore: parseInt(document.getElementById('report-grade').value),
-                    date: document.getElementById('report-date').value,
-                    strengths: document.getElementById('report-strengths').value || '',
-                    improvements: document.getElementById('report-improvements').value || '',
-                    notes: document.getElementById('report-notes').value || '',
-                    teacherId: currentUser.id,
-                    teacherName: currentUser.name,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                await db.collection('studentReports').add(reportData);
-                
-                showSuccessMessage('تم حفظ التقرير بنجاح');
-                closeReportModal();
-                document.getElementById('report-form').reset();
-                
-            } catch (error) {
-                console.error('Error saving report:', error);
-                showErrorMessage('حدث خطأ في حفظ التقرير');
-            } finally {
-                submitText.classList.remove('hidden');
-                submitSpinner.classList.add('hidden');
-            }
-        }
-
-        async function generateReport() {
-            const grade = document.getElementById('report-grade-select').value;
-            const section = document.getElementById('report-section-select').value;
-            const period = document.getElementById('report-period-select').value;
-            
-            if (!grade || !section || !period) {
-                showErrorMessage('يرجى اختيار الصف والشعبة وفترة التقرير');
-                return;
-            }
-            
-            if (!hasPermissionForGradeAndSection(grade, section)) {
-                showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف والشعبة');
-                return;
-            }
-            
-            const loadingDiv = document.getElementById('reports-loading');
-            const containerDiv = document.getElementById('reports-container');
-            const emptyDiv = document.getElementById('reports-empty');
-            
-            loadingDiv.classList.remove('hidden');
-            containerDiv.classList.add('hidden');
-            emptyDiv.classList.add('hidden');
-            
-            try {
-                // Calculate date range based on period
-                const endDate = new Date();
-                const startDate = new Date();
-                
-                switch (period) {
-                    case 'weekly':
-                        startDate.setDate(endDate.getDate() - 7);
-                        break;
-                    case 'monthly':
-                        startDate.setMonth(endDate.getMonth() - 1);
-                        break;
-                    case 'yearly':
-                        startDate.setFullYear(endDate.getFullYear() - 1);
-                        break;
-                }
-                
-                const startDateStr = startDate.toISOString().split('T')[0];
-                const endDateStr = endDate.toISOString().split('T')[0];
-                
-                // Filter reports from allReports instead of querying Firebase directly
-                const periodReports = allReports.filter(report => {
-                    return report.grade === grade && 
-                           report.section === section && 
-                           report.date >= startDateStr && 
-                           report.date <= endDateStr;
-                });
-                
-                // Get students for this grade and section
-                const sectionStudents = allStudents.filter(s => s.grade === grade && s.section === section);
-                
-                if (sectionStudents.length === 0) {
-                    showErrorMessage('لا يوجد طلاب في هذا الصف والشعبة');
-                    loadingDiv.classList.add('hidden');
-                    return;
-                }
-                
-                // Generate summary report for each student
-                const studentSummaries = sectionStudents.map(student => {
-                    const studentReports = periodReports.filter(r => r.studentId === student.id);
-                    
-                    let averageGrade = 0;
-                    let subjectCount = 0;
-                    
-                    if (studentReports.length > 0) {
-                        const totalGrades = studentReports.reduce((sum, report) => sum + (report.gradeScore || 0), 0);
-                        averageGrade = Math.round(totalGrades / studentReports.length);
-                        subjectCount = studentReports.length;
-                    }
-                    
-                    return {
-                        student: student,
-                        averageGrade: averageGrade,
-                        subjectCount: subjectCount,
-                        reports: studentReports
-                    };
-                });
-                
-                displayReportSummaries(studentSummaries, period, grade, section);
-                
-            } catch (error) {
-                console.error('Error generating report:', error);
-                showErrorMessage('حدث خطأ في إنشاء التقرير');
-                loadingDiv.classList.add('hidden');
-            }
-        }
-
-        function displayReportSummaries(summaries, period, grade, section) {
-            const containerDiv = document.getElementById('reports-container');
-            const gridDiv = document.getElementById('reports-grid');
-            const emptyDiv = document.getElementById('reports-empty');
-            const loadingDiv = document.getElementById('reports-loading');
-            
-            loadingDiv.classList.add('hidden');
-            
-            if (summaries.length === 0) {
-                containerDiv.classList.add('hidden');
-                emptyDiv.classList.remove('hidden');
-                return;
-            }
-            
-            emptyDiv.classList.add('hidden');
-            containerDiv.classList.remove('hidden');
-            
-            gridDiv.innerHTML = '';
-            
-            summaries.forEach(summary => {
-                const reportCard = createReportCard(summary, period);
-                gridDiv.appendChild(reportCard);
-            });
-        }
-
-        function createReportCard(summary, period) {
-            const { student, averageGrade, subjectCount, reports } = summary;
-            
-            let gradeClass = 'grade-poor';
-            let gradeText = 'ضعيف';
-            
-            if (averageGrade >= 90) {
-                gradeClass = 'grade-excellent';
-                gradeText = 'ممتاز';
-            } else if (averageGrade >= 80) {
-                gradeClass = 'grade-good';
-                gradeText = 'جيد';
-            } else if (averageGrade >= 60) {
-                gradeClass = 'grade-average';
-                gradeText = 'متوسط';
-            }
-            
-            const periodText = {
-                'weekly': 'الأسبوع الماضي',
-                'monthly': 'الشهر الماضي',
-                'yearly': 'السنة الماضية'
-            };
-            
-            const card = document.createElement('div');
-            card.className = 'report-card dark:bg-gray-700';
-            
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">${getGradeName(student.grade)} - الشعبة ${student.section}</p>
-                        <p class="text-xs text-gray-500">رقم الأساس: ${student.studentId}</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 rounded-full ${gradeClass} flex items-center justify-center text-white font-bold text-lg mb-2">
-                            ${averageGrade}
-                        </div>
-                        <span class="text-xs text-gray-600 dark:text-gray-400">${gradeText}</span>
-                    </div>
-                </div>
-                
-                <div class="space-y-2 mb-4">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-600 dark:text-gray-400">فترة التقرير:</span>
-                        <span class="font-medium">${periodText[period]}</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-600 dark:text-gray-400">عدد المواد:</span>
-                        <span class="font-medium">${subjectCount}</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-600 dark:text-gray-400">المعدل العام:</span>
-                        <span class="font-medium">${averageGrade}/100</span>
-                    </div>
-                </div>
-                
-                ${reports.length > 0 ? `
-                    <div class="border-t border-gray-200 dark:border-gray-600 pt-4">
-                        <h5 class="text-sm font-medium mb-2">تفاصيل المواد:</h5>
-                        <div class="space-y-1 max-h-32 overflow-y-auto">
-                            ${reports.map(report => `
-                                <div class="flex justify-between text-xs">
-                                    <span>${report.subject}</span>
-                                    <span class="font-medium">${report.gradeScore}/100</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                ` : `
-                    <div class="text-center py-4 text-gray-500 text-sm">
-                        لا توجد تقارير للفترة المحددة
-                    </div>
-                `}
-                
-                <div class="flex justify-center mt-4">
-                    <button onclick="sendStudentReportViaWhatsApp('${student.id}', '${averageGrade}', '${subjectCount}')" 
-                            class="whatsapp-btn text-white px-4 py-2 rounded text-sm hover:bg-opacity-90 transition-colors">
-                        <i class="fab fa-whatsapp ml-2"></i>
-                        إرسال للولي
-                    </button>
-                </div>
-            `;
-            
-            return card;
-        }
-
-        async function sendStudentReportViaWhatsApp(studentId, averageGrade, subjectCount) {
-            const student = allStudents.find(s => s.id === studentId);
-            if (!student || !student.parentPhone) {
-                showErrorMessage('رقم ولي الأمر غير متوفر');
-                return;
-            }
-            
-            const period = document.getElementById('report-period-select').value;
-            const periodText = {
-                'weekly': 'الأسبوع الماضي',
-                'monthly': 'الشهر الماضي', 
-                'yearly': 'السنة الماضية'
-            };
-            
-            let gradeText = 'ضعيف';
-            if (averageGrade >= 90) gradeText = 'ممتاز';
-            else if (averageGrade >= 80) gradeText = 'جيد';
-            else if (averageGrade >= 60) gradeText = 'متوسط';
-            
-            const message = `مرحباً ${student.parentName || 'ولي الأمر'},
-
-هذا تقرير أداء الطالب ${student.name} للفترة ${periodText[period]}:
-
-📊 المعدل العام: ${averageGrade}/100 (${gradeText})
-📚 عدد المواد المُقيمة: ${subjectCount}
-🏫 الصف: ${getGradeName(student.grade)} - الشعبة ${student.section}
-
-نشكركم على متابعتكم وثقتكم.
-
-مدرسة الثروات الوطنية الخاصة`;
-            
-            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        async function sendReportsViaWhatsApp() {
-            const grade = document.getElementById('report-grade-select').value;
-            const section = document.getElementById('report-section-select').value;
-            
-            if (!grade || !section) {
-                showErrorMessage('يرجى إنشاء التقرير أولاً');
-                return;
-            }
-            
-            // Get all students in the current report
-            const reportCards = document.querySelectorAll('#reports-grid .report-card');
-            let sentCount = 0;
-            
-            reportCards.forEach((card, index) => {
-                const whatsappBtn = card.querySelector('[onclick*="sendStudentReportViaWhatsApp"]');
-                if (whatsappBtn) {
-                    setTimeout(() => {
-                        whatsappBtn.click();
-                    }, index * 1000); // 1 second delay between each message
-                    sentCount++;
-                }
-            });
-            
-            if (sentCount > 0) {
-                showSuccessMessage(`سيتم فتح ${sentCount} محادثة واتساب`);
-            } else {
-                showErrorMessage('لا توجد تقارير لإرسالها');
-            }
-        }
-
-        // Enhanced attendance with sections
+        // Enhanced attendance with sections and reasons
         function handleAttendanceGradeSelect() {
             const selectedGrade = document.getElementById('attendance-grade-select').value;
             const selectedSection = document.getElementById('attendance-section-select').value;
             const container = document.getElementById('attendance-container');
+            const selectedMode = document.querySelector('input[name="attendance-mode"]:checked').value;
             
             if (selectedGrade && selectedSection && hasPermissionForGradeAndSection(selectedGrade, selectedSection)) {
-                container.classList.remove('hidden');
-                loadStudentsForAttendance(selectedGrade, selectedSection);
+                // Handle individual mode
+                if (selectedMode === 'individual') {
+                    populateIndividualStudentSelect();
+                    loadSavedAttendanceRecords();
+                } else {
+                    // Handle bulk mode
+                    container.classList.remove('hidden');
+                    loadStudentsForAttendance(selectedGrade, selectedSection);
+                }
             } else if (selectedGrade && selectedSection && !hasPermissionForGradeAndSection(selectedGrade, selectedSection)) {
                 showErrorMessage('ليس لديك صلاحية للوصول إلى هذا الصف والشعبة');
                 container.classList.add('hidden');
@@ -2950,20 +3619,24 @@
                 studentsContainer.innerHTML = '';
                 students.forEach((student, index) => {
                     const studentCard = document.createElement('div');
-                    studentCard.className = 'bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border';
+                    studentCard.className = 'attendance-student-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border transition-all duration-300';
                     studentCard.innerHTML = `
                         <h4 class="font-semibold mb-3">${student.name}</h4>
-                        <p class="text-xs text-gray-500 mb-3">رقم الأساس: ${student.studentId}</p>
-                        <div class="flex space-x-2 space-x-reverse">
-                            <button class="attendance-btn attendance-present text-white px-3 py-1 rounded text-sm" data-status="present" data-student="${student.id}">
+                        <p class="text-xs text-gray-500 mb-3">رقم الاسيس: ${student.studentId}</p>
+                        <div class="flex space-x-2 space-x-reverse mb-3">
+                            <button class="attendance-btn attendance-present text-white px-3 py-1 rounded text-sm transition-colors" data-status="present" data-student="${student.id}">
                                 حاضر
                             </button>
-                            <button class="attendance-btn attendance-absent text-white px-3 py-1 rounded text-sm" data-status="absent" data-student="${student.id}">
+                            <button class="attendance-btn attendance-absent text-white px-3 py-1 rounded text-sm transition-colors" data-status="absent" data-student="${student.id}">
                                 غائب
                             </button>
-                            <button class="attendance-btn attendance-late text-white px-3 py-1 rounded text-sm" data-status="late" data-student="${student.id}">
+                            <button class="attendance-btn attendance-late text-white px-3 py-1 rounded text-sm transition-colors" data-status="late" data-student="${student.id}">
                                 متأخر
                             </button>
+                        </div>
+                        <div class="absence-reason-container hidden">
+                            <label class="block text-xs font-medium mb-1">سبب الغياب:</label>
+                            <input type="text" class="absence-reason-input" placeholder="اذكر سبب الغياب" data-student="${student.id}">
                         </div>
                     `;
                     studentsContainer.appendChild(studentCard);
@@ -2974,14 +3647,28 @@
                     btn.addEventListener('click', function() {
                         const studentId = this.getAttribute('data-student');
                         const status = this.getAttribute('data-status');
+                        const card = this.closest('.attendance-student-card');
                         
                         // Remove active state from all buttons for this student
-                        document.querySelectorAll(`[data-student="${studentId}"]`).forEach(button => {
+                        card.querySelectorAll('.attendance-btn').forEach(button => {
                             button.classList.remove('ring-2', 'ring-white');
                         });
                         
                         // Add active state to clicked button
                         this.classList.add('ring-2', 'ring-white');
+                        card.classList.add('selected');
+                        
+                        // Show/hide reason input for absent students
+                        const reasonContainer = card.querySelector('.absence-reason-container');
+                        if (status === 'absent') {
+                            reasonContainer.classList.remove('hidden');
+                        } else {
+                            reasonContainer.classList.add('hidden');
+                            const reasonInput = reasonContainer.querySelector('.absence-reason-input');
+                            reasonInput.value = '';
+                        }
+                        
+                        updateAttendanceStats();
                     });
                 });
                 
@@ -2989,7 +3676,7 @@
             }, 1000);
         }
 
-        async function saveAttendance() {
+        async function saveAttendance(sendWhatsApp = false) {
             const grade = document.getElementById('attendance-grade-select').value;
             const section = document.getElementById('attendance-section-select').value;
             const date = document.getElementById('attendance-date').value;
@@ -3006,11 +3693,27 @@
             
             try {
                 const attendanceData = [];
+                const absentStudents = [];
+                
                 document.querySelectorAll('.attendance-btn.ring-2').forEach(btn => {
+                    const studentId = btn.getAttribute('data-student');
+                    const status = btn.getAttribute('data-status');
+                    const card = btn.closest('.attendance-student-card');
+                    const reasonInput = card.querySelector('.absence-reason-input');
+                    const reason = reasonInput ? reasonInput.value : '';
+                    
                     attendanceData.push({
-                        studentId: btn.getAttribute('data-student'),
-                        status: btn.getAttribute('data-status')
+                        studentId: studentId,
+                        status: status,
+                        reason: reason
                     });
+                    
+                    if (status === 'absent' && sendWhatsApp) {
+                        const student = allStudents.find(s => s.id === studentId);
+                        if (student && student.parentPhone) {
+                            absentStudents.push({ student, reason });
+                        }
+                    }
                 });
                 
                 const docData = {
@@ -3025,12 +3728,45 @@
                 
                 await db.collection('attendance').doc(`${grade}_${section}_${date}`).set(docData);
                 
-                showSuccessMessage('تم حفظ بيانات الحضور بنجاح');
+                if (sendWhatsApp && absentStudents.length > 0) {
+                    absentStudents.forEach((absent, index) => {
+                        setTimeout(() => {
+                            sendAbsenceNotification(absent.student, absent.reason, date);
+                        }, index * 1000);
+                    });
+                    showSuccessMessage(`تم حفظ الحضور وإرسال ${absentStudents.length} إشعار غياب`);
+                } else {
+                    showSuccessMessage('تم حفظ بيانات الحضور بنجاح');
+                }
                 
             } catch (error) {
                 console.error('Error saving attendance:', error);
                 showErrorMessage('حدث خطأ في حفظ بيانات الحضور');
             }
+        }
+
+        function sendAbsenceNotification(student, reason, date) {
+            if (!student.parentPhone) return;
+            
+            const formattedDate = formatDate(date);
+            const reasonText = reason ? `السبب: ${reason}` : 'لم يتم تحديد السبب';
+            
+            const message = `مرحباً ${student.parentName || 'ولي الأمر'},
+
+⚠️ إشعار غياب الطالب
+
+👤 اسم الطالب: ${student.name}
+🏫 الصف: ${getGradeName(student.grade)} - الشعبة ${student.section}
+📅 التاريخ: ${formattedDate}
+📝 ${reasonText}
+
+يرجى التواصل مع إدارة المدرسة لمتابعة حالة الطالب.
+
+مدرسة الثروات الوطنية الخاصة
+المعلم: ${currentUser.name}`;
+            
+            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
         }
 
         // Enhanced user submission with section permissions
@@ -3445,15 +4181,23 @@
             document.getElementById('student-form').reset();
         }
 
-        function openReportModal() {
-            document.getElementById('add-report-modal').classList.remove('hidden');
-            document.getElementById('add-report-modal').classList.add('flex');
+        function openEvaluationModal() {
+            document.getElementById('add-evaluation-modal').classList.remove('hidden');
+            document.getElementById('add-evaluation-modal').classList.add('flex');
         }
 
-        function closeReportModal() {
-            document.getElementById('add-report-modal').classList.add('hidden');
-            document.getElementById('add-report-modal').classList.remove('flex');
-            document.getElementById('report-form').reset();
+        function closeEvaluationModal() {
+            document.getElementById('add-evaluation-modal').classList.add('hidden');
+            document.getElementById('add-evaluation-modal').classList.remove('flex');
+            document.getElementById('evaluation-form').reset();
+            // Reset star rating and grade circle
+            document.getElementById('eval-stars').value = '';
+            updateStarDisplay(0);
+            const gradeCircle = document.getElementById('grade-circle');
+            if (gradeCircle) {
+                gradeCircle.textContent = '--';
+                gradeCircle.className = 'evaluation-grade-circle bg-gray-400';
+            }
         }
 
         function openActivityModal() {
@@ -3530,8 +4274,8 @@
             document.getElementById('activities-count').textContent = allActivities.filter(a => !a.archived).length;
         }
 
-        function updateReportsCount() {
-            document.getElementById('reports-count').textContent = allReports.length;
+        function updateEvaluationsCount() {
+            document.getElementById('evaluations-count').textContent = allEvaluations.length;
         }
 
         // Utility functions
@@ -3761,9 +4505,12 @@
         window.unarchiveActivity = unarchiveActivity;
         window.editUser = editUser;
         window.deleteUser = deleteUser;
+        window.resendEvaluationViaWhatsApp = resendEvaluationViaWhatsApp;
+        window.deleteEvaluation = deleteEvaluation;
         window.sendWhatsAppToParent = sendWhatsAppToParent;
-        window.sendStudentReportViaWhatsApp = sendStudentReportViaWhatsApp;
         window.switchTab = switchTab;
+        window.deleteAttendanceRecord = deleteAttendanceRecord;
+        window.resendIndividualAttendanceWhatsApp = resendIndividualAttendanceWhatsApp;
     </script>
 </body>
 </html>
