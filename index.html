@@ -376,6 +376,68 @@
             padding: 1rem;
             margin-bottom: 1rem;
         }
+
+        /* Weekly Plan Specific Styles */
+        .weekly-plan-card {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .weekly-plan-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+        }
+
+        .weekly-plan-cell {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            vertical-align: top;
+            min-height: 100px;
+            position: relative;
+        }
+
+        .weekly-plan-cell textarea {
+            width: 100%;
+            height: 80px;
+            resize: none;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+        }
+
+        .subject-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .teacher-protection-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .protected-cell {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+        }
+
+        .editable-cell {
+            background: #f0fdf4;
+            border: 1px solid #10b981;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -548,11 +610,11 @@
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                         <div>
                             <h3 class="text-2xl font-bold text-primary mb-2">إدارة الخطط الأسبوعية</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">يتم عرض خطط الأسبوع الحالي، والأسابيع السابقة في الأرشيف</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">خطط أسبوعية شاملة لجميع المواد والصفوف مع حماية الخصوصية للمعلمين</p>
                         </div>
                         <button id="add-plan-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
                             <i class="fas fa-plus ml-2"></i>
-                            إضافة خطة جديدة
+                            إضافة خطة أسبوعية
                         </button>
                     </div>
                     
@@ -572,28 +634,8 @@
                         <p>جاري تحميل الخطط الأسبوعية...</p>
                     </div>
                     
-                    <div id="plans-table-container" class="hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
-                                <thead>
-                                    <tr class="bg-primary text-white">
-                                        <th class="border border-gray-300 px-4 py-2">الصف</th>
-                                        <th class="border border-gray-300 px-4 py-2">الشعبة</th>
-                                        <th class="border border-gray-300 px-4 py-2">التاريخ</th>
-                                        <th class="border border-gray-300 px-4 py-2">اليوم</th>
-                                        <th class="border border-gray-300 px-4 py-2">المادة</th>
-                                        <th class="border border-gray-300 px-4 py-2">الموضوع</th>
-                                        <th class="border border-gray-300 px-4 py-2">الأنشطة</th>
-                                        <th class="border border-gray-300 px-4 py-2">المعلم</th>
-                                        <th class="border border-gray-300 px-4 py-2">الحالة</th>
-                                        <th class="border border-gray-300 px-4 py-2">إجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="plans-table-body">
-                                    <!-- Plans will be loaded here -->
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="plans-grid" class="hidden grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Weekly plans will be loaded here -->
                     </div>
                     
                     <div id="plans-empty" class="hidden empty-state">
@@ -855,7 +897,7 @@
 
     <!-- Add Plan Modal -->
     <div id="add-plan-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[95vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="plan-modal-title" class="text-2xl font-bold text-primary">إضافة خطة أسبوعية</h3>
                 <button id="close-plan-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
@@ -863,67 +905,84 @@
                 </button>
             </div>
             
-            <form id="plan-form" class="space-y-4">
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">الصف</label>
-                        <select id="plan-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                            <option value="">اختر الصف</option>
-                        </select>
+            <form id="plan-form" class="space-y-6">
+                <!-- Week Selection -->
+                <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
+                            <select id="plan-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر الصف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
+                            <select id="plan-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر الشعبة</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">بداية الأسبوع <span class="text-red-500">*</span></label>
+                            <input type="date" id="plan-week-start" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">نهاية الأسبوع</label>
+                            <input type="date" id="plan-week-end" readonly class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-600 text-base">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">الشعبة</label>
-                        <select id="plan-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                            <option value="">اختر الشعبة</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">التاريخ</label>
-                        <input type="date" id="plan-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-blue-800 dark:text-blue-200" id="week-title">خطة أسبوع...</p>
                     </div>
                 </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">اليوم</label>
-                    <select id="plan-day" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                        <option value="">اختر اليوم</option>
-                        <option value="الاتنين">الاتنين</option>
-                        <option value="الثلاثاء">الثلاثاء</option>
-                        <option value="الاربعاء">الاربعاء</option>
-                        <option value="الخميس">الخميس</option>
-                        <option value="الجمعة">الجمعة</option>
-                    </select>
+
+                <!-- Teacher Subjects Setup -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-4">المواد التي تدرسها</h4>
+                    <div id="teacher-subjects-list" class="space-y-2">
+                        <!-- Teacher subjects will be populated here -->
+                    </div>
+                    <button type="button" id="add-subject-btn" class="mt-3 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-plus ml-2"></i>
+                        إضافة مادة
+                    </button>
                 </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">المادة</label>
-                    <input type="text" id="plan-subject" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المادة">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">الموضوع</label>
-                    <input type="text" id="plan-topic" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="موضوع الدرس">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium mb-2">الأنشطة</label>
-                    <textarea id="plan-activities" required rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="وصف الأنشطة المخططة"></textarea>
+
+                <!-- Weekly Plan Grid -->
+                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border">
+                    <h4 class="text-lg font-semibold mb-4">الخطة الأسبوعية</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 dark:border-gray-600" id="weekly-plan-table">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="border border-gray-300 px-3 py-2 text-sm">المادة</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="monday-header">الإثنين</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="tuesday-header">الثلاثاء</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="wednesday-header">الأربعاء</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="thursday-header">الخميس</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="friday-header">الجمعة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="weekly-plan-body">
+                                <!-- Plan rows will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 <div class="flex justify-end space-x-4 space-x-reverse">
                     <button type="button" id="cancel-plan" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
                     <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
-                        <span id="plan-submit-text">حفظ الخطة</span>
+                        <span id="plan-submit-text">حفظ الخطة الأسبوعية</span>
                         <div id="plan-submit-spinner" class="hidden loading-spinner mx-auto"></div>
                     </button>
                 </div>
@@ -1313,6 +1372,7 @@
         let allActivities = [];
         let allSchedules = [];
         let currentExcelData = [];
+        let teacherSubjects = [];
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -1329,8 +1389,18 @@
             const attendanceDateInput = document.getElementById('attendance-date');
             if (attendanceDateInput) attendanceDateInput.value = today;
             
-            document.getElementById('plan-date').value = today;
+            const mondayDate = getMondayOfCurrentWeek();
+            document.getElementById('plan-week-start').value = mondayDate;
+            
             document.getElementById('activity-date').value = today;
+        }
+
+        function getMondayOfCurrentWeek() {
+            const today = new Date();
+            const day = today.getDay();
+            const diff = today.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+            const monday = new Date(today.setDate(diff));
+            return monday.toISOString().split('T')[0];
         }
 
         function setupEventListeners() {
@@ -1350,6 +1420,12 @@
             document.getElementById('close-plan-modal').addEventListener('click', closePlanModal);
             document.getElementById('cancel-plan').addEventListener('click', closePlanModal);
             document.getElementById('plan-form').addEventListener('submit', handlePlanSubmit);
+            
+            // Week start date change
+            document.getElementById('plan-week-start').addEventListener('change', updateWeekEnd);
+            
+            // Add subject button
+            document.getElementById('add-subject-btn').addEventListener('click', addSubjectInput);
             
             // Students functionality
             document.getElementById('add-student-btn').addEventListener('click', openStudentModal);
@@ -1668,16 +1744,140 @@
             });
         }
 
-        // Plan Management Functions
+        // Weekly Plan Management Functions
         function openPlanModal() {
             document.getElementById('add-plan-modal').classList.remove('hidden');
             document.getElementById('add-plan-modal').classList.add('flex');
+            
+            // Reset subjects list
+            teacherSubjects = [];
+            updateSubjectsList();
+            updateWeeklyPlanTable();
         }
 
         function closePlanModal() {
             document.getElementById('add-plan-modal').classList.add('hidden');
             document.getElementById('add-plan-modal').classList.remove('flex');
             document.getElementById('plan-form').reset();
+            teacherSubjects = [];
+        }
+
+        function updateWeekEnd() {
+            const startDate = document.getElementById('plan-week-start').value;
+            if (startDate) {
+                const start = new Date(startDate);
+                const end = new Date(start);
+                end.setDate(start.getDate() + 4); // Friday
+                
+                document.getElementById('plan-week-end').value = end.toISOString().split('T')[0];
+                
+                // Update week title
+                const weekTitle = document.getElementById('week-title');
+                const gradeName = getGradeName(document.getElementById('plan-grade').value) || 'الصف';
+                const section = document.getElementById('plan-section').value || 'الشعبة';
+                weekTitle.textContent = `خطة أسبوع ${gradeName} - ${section} من ${formatDateArabic(start)} إلى ${formatDateArabic(end)}`;
+                
+                // Update day headers
+                updateDayHeaders(start);
+            }
+        }
+
+        function updateDayHeaders(startDate) {
+            const days = ['الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+            const headers = ['monday-header', 'tuesday-header', 'wednesday-header', 'thursday-header', 'friday-header'];
+            
+            headers.forEach((headerId, index) => {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + index);
+                const header = document.getElementById(headerId);
+                if (header) {
+                    header.innerHTML = `${days[index]}<br><small>${formatDateShort(date)}</small>`;
+                }
+            });
+        }
+
+        function addSubjectInput() {
+            const subjectName = prompt('اسم المادة:');
+            if (subjectName && subjectName.trim()) {
+                teacherSubjects.push({
+                    id: Date.now().toString(),
+                    name: subjectName.trim(),
+                    teacherId: currentUser.id,
+                    teacherName: currentUser.name
+                });
+                updateSubjectsList();
+                updateWeeklyPlanTable();
+            }
+        }
+
+        function updateSubjectsList() {
+            const container = document.getElementById('teacher-subjects-list');
+            container.innerHTML = '';
+            
+            teacherSubjects.forEach((subject, index) => {
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'subject-input-group';
+                subjectDiv.innerHTML = `
+                    <input type="text" value="${subject.name}" 
+                           onchange="updateSubjectName(${index}, this.value)"
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-base">
+                    <span class="teacher-protection-badge">${subject.teacherName}</span>
+                    <button type="button" onclick="removeSubject(${index})" 
+                            class="text-red-600 hover:text-red-800 px-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                container.appendChild(subjectDiv);
+            });
+        }
+
+        function updateSubjectName(index, newName) {
+            if (teacherSubjects[index]) {
+                teacherSubjects[index].name = newName;
+                updateWeeklyPlanTable();
+            }
+        }
+
+        function removeSubject(index) {
+            teacherSubjects.splice(index, 1);
+            updateSubjectsList();
+            updateWeeklyPlanTable();
+        }
+
+        function updateWeeklyPlanTable() {
+            const tbody = document.getElementById('weekly-plan-body');
+            tbody.innerHTML = '';
+            
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            
+            teacherSubjects.forEach((subject, subjectIndex) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">
+                        ${subject.name}
+                        <br><small class="teacher-protection-badge">${subject.teacherName}</small>
+                    </td>
+                    ${days.map(day => `
+                        <td class="weekly-plan-cell border border-gray-300 ${subject.teacherId === currentUser.id ? 'editable-cell' : 'protected-cell'}">
+                            <textarea data-subject="${subject.id}" data-day="${day}" 
+                                     placeholder="موضوع الدرس والأنشطة..."
+                                     ${subject.teacherId !== currentUser.id ? 'readonly' : ''}
+                                     class="w-full h-20 p-2 border-none bg-transparent resize-none text-sm"></textarea>
+                        </td>
+                    `).join('')}
+                `;
+                tbody.appendChild(row);
+            });
+            
+            if (teacherSubjects.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6" class="border border-gray-300 px-3 py-8 text-center text-gray-500">
+                        يرجى إضافة المواد التي تدرسها أولاً
+                    </td>
+                `;
+                tbody.appendChild(row);
+            }
         }
 
         async function handlePlanSubmit(e) {
@@ -1692,28 +1892,62 @@
             submitSpinner.classList.remove('hidden');
             
             try {
+                const grade = document.getElementById('plan-grade').value;
+                const section = document.getElementById('plan-section').value;
+                const weekStart = document.getElementById('plan-week-start').value;
+                const weekEnd = document.getElementById('plan-week-end').value;
+                
+                if (!grade || !section || !weekStart) {
+                    showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
+                    return;
+                }
+                
+                if (teacherSubjects.length === 0) {
+                    showErrorMessage('يرجى إضافة مادة واحدة على الأقل');
+                    return;
+                }
+                
+                // Collect weekly plan data
+                const weeklyData = {};
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+                
+                teacherSubjects.forEach(subject => {
+                    weeklyData[subject.id] = {
+                        subjectName: subject.name,
+                        teacherId: subject.teacherId,
+                        teacherName: subject.teacherName,
+                        days: {}
+                    };
+                    
+                    days.forEach(day => {
+                        const textarea = document.querySelector(`textarea[data-subject="${subject.id}"][data-day="${day}"]`);
+                        if (textarea) {
+                            weeklyData[subject.id].days[day] = textarea.value;
+                        }
+                    });
+                });
+                
                 const planData = {
-                    grade: document.getElementById('plan-grade').value,
-                    section: document.getElementById('plan-section').value,
-                    planDate: document.getElementById('plan-date').value,
-                    day: document.getElementById('plan-day').value,
-                    subject: document.getElementById('plan-subject').value,
-                    topic: document.getElementById('plan-topic').value,
-                    activities: document.getElementById('plan-activities').value,
-                    teacherName: currentUser.name,
-                    teacherId: currentUser.id,
+                    grade: grade,
+                    section: section,
+                    weekStart: weekStart,
+                    weekEnd: weekEnd,
+                    weeklyData: weeklyData,
+                    subjects: teacherSubjects,
+                    createdBy: currentUser.id,
+                    createdByName: currentUser.name,
                     archived: false,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
                 await db.collection('weeklyPlans').add(planData);
-                showSuccessMessage('تمت إضافة الخطة بنجاح');
+                showSuccessMessage('تمت إضافة الخطة الأسبوعية بنجاح');
                 closePlanModal();
                 
             } catch (error) {
-                console.error('Error saving plan:', error);
-                showErrorMessage('حدث خطأ في إضافة الخطة');
+                console.error('Error saving weekly plan:', error);
+                showErrorMessage('حدث خطأ في حفظ الخطة الأسبوعية');
             } finally {
                 submitText.classList.remove('hidden');
                 submitSpinner.classList.add('hidden');
@@ -1721,63 +1955,187 @@
         }
 
         function displayPlans() {
-            const tableBody = document.getElementById('plans-table-body');
-            const tableContainer = document.getElementById('plans-table-container');
+            const plansGrid = document.getElementById('plans-grid');
             const emptyState = document.getElementById('plans-empty');
             
             if (allPlans.length === 0) {
-                tableContainer.classList.add('hidden');
+                plansGrid.classList.add('hidden');
                 emptyState.classList.remove('hidden');
                 return;
             }
             
             emptyState.classList.add('hidden');
-            tableContainer.classList.remove('hidden');
+            plansGrid.classList.remove('hidden');
             
-            tableBody.innerHTML = '';
+            plansGrid.innerHTML = '';
+            
+            // Sort plans by week start date (newest first)
+            allPlans.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
+            
             allPlans.forEach(plan => {
-                const row = tableBody.insertRow();
-                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
-                row.innerHTML = `
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${getGradeName(plan.grade)}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.section}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.planDate || ''}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 font-medium">${plan.day}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.subject}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.topic}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.activities}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${plan.teacherName || 'غير محدد'}</td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                        <span class="px-2 py-1 rounded text-xs bg-green-100 text-green-600">نشط</span>
-                    </td>
-                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
-                        <div class="flex space-x-1 space-x-reverse">
-                            <button onclick="editPlan('${plan.id}')" class="text-blue-600 hover:text-blue-800">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deletePlan('${plan.id}')" class="text-red-600 hover:text-red-800">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
+                const planCard = createWeeklyPlanCard(plan);
+                plansGrid.appendChild(planCard);
             });
         }
 
-        function editPlan(planId) {
+        function createWeeklyPlanCard(plan) {
+            const card = document.createElement('div');
+            card.className = 'weekly-plan-card';
+            
+            const subjectsCount = plan.subjects ? plan.subjects.length : 0;
+            const canEdit = currentUser.role === 'admin' || plan.createdBy === currentUser.id;
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold">${getGradeName(plan.grade)} - شعبة ${plan.section}</h4>
+                        <p class="opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
+                        <p class="opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="viewWeeklyPlan('${plan.id}')" class="text-white hover:text-blue-200 p-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${canEdit ? `
+                            <button onclick="editWeeklyPlan('${plan.id}')" class="text-white hover:text-yellow-200 p-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteWeeklyPlan('${plan.id}')" class="text-white hover:text-red-200 p-2">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="text-sm opacity-90">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-user ml-2"></i>
+                        <span>أنشأه: ${plan.createdByName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock ml-2"></i>
+                        <span>آخر تحديث: ${plan.updatedAt ? formatDateArabic(plan.updatedAt.toDate()) : 'غير محدد'}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function viewWeeklyPlan(planId) {
             const plan = allPlans.find(p => p.id === planId);
-            if (!plan) return;
+            if (!plan) {
+                showErrorMessage('لم يتم العثور على الخطة');
+                return;
+            }
+            
+            // Create view modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary">
+                            خطة أسبوع ${getGradeName(plan.grade)} - شعبة ${plan.section}
+                        </h3>
+                        <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                        <p class="text-blue-800 dark:text-blue-200 font-medium">
+                            من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}
+                        </p>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        ${generateWeeklyPlanViewTable(plan)}
+                    </div>
+                </div>
+            `;
+            
+            modal.querySelector('.close-view-modal').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            document.body.appendChild(modal);
+        }
+
+        function generateWeeklyPlanViewTable(plan) {
+            if (!plan.subjects || plan.subjects.length === 0) {
+                return '<p class="text-center text-gray-500 py-8">لا توجد مواد في هذه الخطة</p>';
+            }
+            
+            const days = [
+                {key: 'monday', name: 'الإثنين'},
+                {key: 'tuesday', name: 'الثلاثاء'},
+                {key: 'wednesday', name: 'الأربعاء'},
+                {key: 'thursday', name: 'الخميس'},
+                {key: 'friday', name: 'الجمعة'}
+            ];
+            
+            let tableHTML = `
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-primary text-white">
+                            <th class="border border-gray-300 px-3 py-2">المادة</th>
+                            ${days.map(day => `<th class="border border-gray-300 px-3 py-2">${day.name}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            plan.subjects.forEach(subject => {
+                const subjectData = plan.weeklyData[subject.id] || {};
+                tableHTML += `
+                    <tr>
+                        <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">
+                            ${subject.name}
+                            <br><small class="teacher-protection-badge">${subject.teacherName}</small>
+                        </td>
+                        ${days.map(day => `
+                            <td class="border border-gray-300 px-3 py-2 text-sm">
+                                ${subjectData.days ? (subjectData.days[day.key] || '-') : '-'}
+                            </td>
+                        `).join('')}
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table>';
+            return tableHTML;
+        }
+
+        function editWeeklyPlan(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (!plan) {
+                showErrorMessage('لم يتم العثور على الخطة');
+                return;
+            }
+            
+            // Check permissions
+            if (currentUser.role !== 'admin' && plan.createdBy !== currentUser.id) {
+                showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
+                return;
+            }
             
             // Fill form with existing data
             document.getElementById('plan-grade').value = plan.grade;
             document.getElementById('plan-section').value = plan.section;
-            document.getElementById('plan-date').value = plan.planDate;
-            document.getElementById('plan-day').value = plan.day;
-            document.getElementById('plan-subject').value = plan.subject;
-            document.getElementById('plan-topic').value = plan.topic;
-            document.getElementById('plan-activities').value = plan.activities;
+            document.getElementById('plan-week-start').value = plan.weekStart;
+            document.getElementById('plan-week-end').value = plan.weekEnd;
             
-            // Update modal title and form behavior
+            // Load subjects
+            teacherSubjects = plan.subjects || [];
+            
+            // Update modal title
             document.getElementById('plan-modal-title').textContent = 'تعديل الخطة الأسبوعية';
             document.getElementById('plan-submit-text').textContent = 'حفظ التعديلات';
             
@@ -1785,16 +2143,37 @@
             document.getElementById('plan-form').dataset.editId = planId;
             
             openPlanModal();
+            
+            // Fill the table with existing data
+            setTimeout(() => {
+                updateWeekEnd();
+                updateSubjectsList();
+                updateWeeklyPlanTable();
+                
+                // Fill existing data
+                if (plan.weeklyData) {
+                    Object.entries(plan.weeklyData).forEach(([subjectId, subjectData]) => {
+                        if (subjectData.days) {
+                            Object.entries(subjectData.days).forEach(([day, content]) => {
+                                const textarea = document.querySelector(`textarea[data-subject="${subjectId}"][data-day="${day}"]`);
+                                if (textarea) {
+                                    textarea.value = content;
+                                }
+                            });
+                        }
+                    });
+                }
+            }, 100);
         }
 
-        async function deletePlan(planId) {
-            showConfirmDialog('هل أنت متأكد من حذف هذه الخطة؟', async () => {
+        async function deleteWeeklyPlan(planId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذه الخطة الأسبوعية؟', async () => {
                 try {
                     await db.collection('weeklyPlans').doc(planId).delete();
-                    showSuccessMessage('تم حذف الخطة بنجاح');
+                    showSuccessMessage('تم حذف الخطة الأسبوعية بنجاح');
                 } catch (error) {
-                    console.error('Error deleting plan:', error);
-                    showErrorMessage('حدث خطأ في حذف الخطة');
+                    console.error('Error deleting weekly plan:', error);
+                    showErrorMessage('حدث خطأ في حذف الخطة الأسبوعية');
                 }
             });
         }
@@ -3151,6 +3530,22 @@
             return 'غير محدد';
         }
 
+        function formatDateArabic(date) {
+            return date.toLocaleDateString('ar-AE', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function formatDateShort(date) {
+            return date.toLocaleDateString('ar-AE', {
+                month: 'numeric',
+                day: 'numeric'
+            });
+        }
+
         function hideLoading(section) {
             const loadingElement = document.getElementById(`${section}-loading`);
             if (loadingElement) {
@@ -3240,8 +3635,6 @@
         window.editSchedule = editSchedule;
         window.viewSchedule = viewSchedule;
         window.deleteSchedule = deleteSchedule;
-        window.editPlan = editPlan;
-        window.deletePlan = deletePlan;
         window.editStudent = editStudent;
         window.deleteStudent = deleteStudent;
         window.editActivity = editActivity;
@@ -3251,6 +3644,11 @@
         window.sendWhatsAppToParent = sendWhatsAppToParent;
         window.sendAbsenceWhatsApp = sendAbsenceWhatsApp;
         window.switchTab = switchTab;
+        window.viewWeeklyPlan = viewWeeklyPlan;
+        window.editWeeklyPlan = editWeeklyPlan;
+        window.deleteWeeklyPlan = deleteWeeklyPlan;
+        window.updateSubjectName = updateSubjectName;
+        window.removeSubject = removeSubject;
     </script>
 </body>
 </html>
