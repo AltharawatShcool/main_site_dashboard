@@ -908,27 +908,11 @@
             <form id="plan-form" class="space-y-6">
                 <!-- Week Selection -->
                 <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
-                    <div class="grid md:grid-cols-4 gap-4">
+                    <div class="grid md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
                             <select id="plan-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                                 <option value="">اختر الصف</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
-                            <select id="plan-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
-                                <option value="">اختر الشعبة</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
                             </select>
                         </div>
                         <div>
@@ -1774,8 +1758,7 @@
                 // Update week title
                 const weekTitle = document.getElementById('week-title');
                 const gradeName = getGradeName(document.getElementById('plan-grade').value) || 'الصف';
-                const section = document.getElementById('plan-section').value || 'الشعبة';
-                weekTitle.textContent = `خطة أسبوع ${gradeName} - ${section} من ${formatDateArabic(start)} إلى ${formatDateArabic(end)}`;
+                weekTitle.textContent = `خطة أسبوع ${gradeName} (جميع الشعب) من ${formatDateArabic(start)} إلى ${formatDateArabic(end)}`;
                 
                 // Update day headers
                 updateDayHeaders(start);
@@ -1893,11 +1876,10 @@
             
             try {
                 const grade = document.getElementById('plan-grade').value;
-                const section = document.getElementById('plan-section').value;
                 const weekStart = document.getElementById('plan-week-start').value;
                 const weekEnd = document.getElementById('plan-week-end').value;
                 
-                if (!grade || !section || !weekStart) {
+                if (!grade || !weekStart) {
                     showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
                     return;
                 }
@@ -1929,7 +1911,6 @@
                 
                 const planData = {
                     grade: grade,
-                    section: section,
                     weekStart: weekStart,
                     weekEnd: weekEnd,
                     weeklyData: weeklyData,
@@ -1988,7 +1969,7 @@
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="text-xl font-bold">${getGradeName(plan.grade)} - شعبة ${plan.section}</h4>
+                        <h4 class="text-xl font-bold">${getGradeName(plan.grade)} (جميع الشعب)</h4>
                         <p class="opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
                         <p class="opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
                     </div>
@@ -2036,7 +2017,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-primary">
-                            خطة أسبوع ${getGradeName(plan.grade)} - شعبة ${plan.section}
+                            خطة أسبوع ${getGradeName(plan.grade)} (جميع الشعب)
                         </h3>
                         <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                             <i class="fas fa-times text-2xl"></i>
@@ -2128,7 +2109,6 @@
             
             // Fill form with existing data
             document.getElementById('plan-grade').value = plan.grade;
-            document.getElementById('plan-section').value = plan.section;
             document.getElementById('plan-week-start').value = plan.weekStart;
             document.getElementById('plan-week-end').value = plan.weekEnd;
             
@@ -2807,15 +2787,13 @@
         function generateScheduleGrid() {
             const scheduleGrid = document.getElementById('schedule-grid');
             const timeSlots = [
-                '7:30 - 8:15',
-                '8:15 - 9:00', 
-                '9:00 - 9:45',
-                '9:45 - 10:00', // استراحة
-                '10:00 - 10:45',
-                '10:45 - 11:30',
-                '11:30 - 12:15',
-                '12:15 - 1:00',
-                '1:00 - 1:45'
+                '8:45 - 9:30',
+                '9:30 - 10:15', 
+                '10:15 - 11:00',
+                '11:00 - 11:15', // استراحة
+                '11:15 - 12:00',
+                '12:00 - 12:45',
+                '12:45 - 1:30'
             ];
 
             scheduleGrid.innerHTML = '';
@@ -2823,7 +2801,7 @@
             timeSlots.forEach((timeSlot, index) => {
                 const row = document.createElement('tr');
                 
-                if (timeSlot === '9:45 - 10:00') {
+                if (timeSlot === '11:00 - 11:15') {
                     // استراحة
                     row.className = 'break-row';
                     row.innerHTML = `
@@ -2879,14 +2857,14 @@
 
         function generatePreviewTable(scheduleData) {
             const timeSlots = [
-                '7:30 - 8:15', '8:15 - 9:00', '9:00 - 9:45', '9:45 - 10:00',
-                '10:00 - 10:45', '10:45 - 11:30', '11:30 - 12:15', '12:15 - 1:00', '1:00 - 1:45'
+                '8:45 - 9:30', '9:30 - 10:15', '10:15 - 11:00', '11:00 - 11:15',
+                '11:15 - 12:00', '12:00 - 12:45', '12:45 - 1:30'
             ];
 
             let tableRows = '';
 
             timeSlots.forEach((timeSlot, index) => {
-                if (timeSlot === '9:45 - 10:00') {
+                if (timeSlot === '11:00 - 11:15') {
                     tableRows += `
                         <tr class="break-row">
                             <td>${timeSlot}</td>
