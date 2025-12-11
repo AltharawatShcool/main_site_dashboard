@@ -880,9 +880,9 @@
                     <div>
                         <h5 class="text-lg font-semibold mb-4">ساعات العمل</h5>
                         <ul class="space-y-2">
-                            <li>الاتنين - الجمعه</li>
+                            <li>الاثنين - الجمعة</li>
                             <li>7:30 ص - 2:30 م</li>
-                            <li> الاحد: إجازة</li>
+                            <li>الأحد: إجازة</li>
                         </ul>
                     </div>
                 </div>
@@ -1214,11 +1214,11 @@
                             <thead>
                                 <tr>
                                     <th>الوقت</th>
-                                    <th>الأحد</th>
-                                    <th>الاثنين</th>
+                                    <th>الإثنين</th>
                                     <th>الثلاثاء</th>
                                     <th>الأربعاء</th>
                                     <th>الخميس</th>
+                                    <th>الجمعة</th>
                                 </tr>
                             </thead>
                             <tbody id="schedule-grid">
@@ -2811,11 +2811,11 @@
                 } else {
                     row.innerHTML = `
                         <td class="font-medium">${timeSlot}</td>
-                        <td><input type="text" class="w-full p-2 border rounded" data-day="sunday" data-slot="${index}" placeholder="المادة"></td>
                         <td><input type="text" class="w-full p-2 border rounded" data-day="monday" data-slot="${index}" placeholder="المادة"></td>
                         <td><input type="text" class="w-full p-2 border rounded" data-day="tuesday" data-slot="${index}" placeholder="المادة"></td>
                         <td><input type="text" class="w-full p-2 border rounded" data-day="wednesday" data-slot="${index}" placeholder="المادة"></td>
                         <td><input type="text" class="w-full p-2 border rounded" data-day="thursday" data-slot="${index}" placeholder="المادة"></td>
+                        <td><input type="text" class="w-full p-2 border rounded" data-day="friday" data-slot="${index}" placeholder="المادة"></td>
                     `;
                 }
                 
@@ -2839,11 +2839,11 @@
                     <thead>
                         <tr>
                             <th>الوقت</th>
-                            <th>الأحد</th>
-                            <th>الاثنين</th>
+                            <th>الإثنين</th>
                             <th>الثلاثاء</th>
                             <th>الأربعاء</th>
                             <th>الخميس</th>
+                            <th>الجمعة</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2872,7 +2872,7 @@
                         </tr>
                     `;
                 } else {
-                    const daySchedules = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday'].map(day => {
+                    const daySchedules = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].map(day => {
                         const dayData = scheduleData.find(item => item.day === day && item.timeSlot === index);
                         return dayData ? dayData.subject : '-';
                     });
@@ -3093,11 +3093,11 @@
                             <thead>
                                 <tr>
                                     <th>الوقت</th>
-                                    <th>الأحد</th>
-                                    <th>الاثنين</th>
+                                    <th>الإثنين</th>
                                     <th>الثلاثاء</th>
                                     <th>الأربعاء</th>
                                     <th>الخميس</th>
+                                    <th>الجمعة</th>
                                 </tr>
                             </thead>
                             <tbody>
