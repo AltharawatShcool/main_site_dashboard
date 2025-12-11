@@ -183,9 +183,9 @@
         }
 
         .archived-plan {
-            background-color: #f9f9f9;
-            opacity: 0.8;
-            border-left: 4px solid #fbbf24;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            opacity: 0.9;
+            border-left: 4px solid #d97706;
         }
 
         .archived-activity {
@@ -438,6 +438,23 @@
             background: #f0fdf4;
             border: 1px solid #10b981;
         }
+
+        .archived-plans-view {
+            background: #fff7ed;
+            border: 2px solid #fb923c;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .archive-action-btn {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: white;
+        }
+
+        .unarchive-action-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -612,10 +629,16 @@
                             <h3 class="text-2xl font-bold text-primary mb-2">إدارة الخطط الأسبوعية</h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">خطط أسبوعية شاملة لجميع المواد والصفوف مع حماية الخصوصية للمعلمين</p>
                         </div>
-                        <button id="add-plan-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
-                            <i class="fas fa-plus ml-2"></i>
-                            إضافة خطة أسبوعية
-                        </button>
+                        <div class="flex gap-2">
+                            <button id="add-plan-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                <i class="fas fa-plus ml-2"></i>
+                                إضافة خطة أسبوعية
+                            </button>
+                            <button id="view-archived-plans-btn" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                                <i class="fas fa-archive ml-2"></i>
+                                الخطط المؤرشفة
+                            </button>
+                        </div>
                     </div>
                     
                     <!-- Week Info Banner -->
@@ -649,6 +672,43 @@
                 </div>
             </div>
         </section>
+
+        <!-- Archived Plans View Modal -->
+        <div id="archived-plans-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-orange-600">الخطط المؤرشفة</h3>
+                    <button id="close-archived-plans-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <div class="bg-orange-50 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg p-4 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle text-orange-500 ml-3"></i>
+                        <div>
+                            <h4 class="font-semibold text-orange-800 dark:text-orange-200">الخطط المؤرشفة</h4>
+                            <p class="text-sm text-orange-700 dark:text-orange-300">هذه الخطط تم أرشفتها ولا تظهر في العرض الرئيسي</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="archived-plans-loading" class="text-center py-8">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p>جاري تحميل الخطط المؤرشفة...</p>
+                </div>
+                
+                <div id="archived-plans-grid" class="hidden grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Archived plans will be loaded here -->
+                </div>
+                
+                <div id="archived-plans-empty" class="hidden empty-state">
+                    <i class="fas fa-archive text-6xl mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2">لا توجد خطط مؤرشفة</h4>
+                    <p class="mb-4">لم يتم أرشفة أي خطط بعد</p>
+                </div>
+            </div>
+        </div>
 
         <!-- Students Management Tab -->
         <section id="students-tab" class="tab-content hidden py-8">
@@ -1351,6 +1411,7 @@
         // Global variables
         let currentUser = null;
         let allPlans = [];
+        let archivedPlans = [];
         let allUsers = [];
         let allStudents = [];
         let allActivities = [];
@@ -1404,6 +1465,10 @@
             document.getElementById('close-plan-modal').addEventListener('click', closePlanModal);
             document.getElementById('cancel-plan').addEventListener('click', closePlanModal);
             document.getElementById('plan-form').addEventListener('submit', handlePlanSubmit);
+            
+            // Archived plans functionality
+            document.getElementById('view-archived-plans-btn').addEventListener('click', openArchivedPlansModal);
+            document.getElementById('close-archived-plans-modal').addEventListener('click', closeArchivedPlansModal);
             
             // Week start date change
             document.getElementById('plan-week-start').addEventListener('change', updateWeekEnd);
@@ -1639,11 +1704,18 @@
             
             query.onSnapshot((snapshot) => {
                 allPlans = [];
+                archivedPlans = [];
                 snapshot.forEach((doc) => {
-                    allPlans.push({
+                    const planData = {
                         id: doc.id,
                         ...doc.data()
-                    });
+                    };
+                    
+                    if (planData.archived) {
+                        archivedPlans.push(planData);
+                    } else {
+                        allPlans.push(planData);
+                    }
                 });
                 
                 updatePlansCount();
@@ -1726,6 +1798,139 @@
                 displaySchedules();
                 hideLoading('schedules');
             });
+        }
+
+        // Archive functionality
+        function openArchivedPlansModal() {
+            document.getElementById('archived-plans-modal').classList.remove('hidden');
+            document.getElementById('archived-plans-modal').classList.add('flex');
+            displayArchivedPlans();
+        }
+
+        function closeArchivedPlansModal() {
+            document.getElementById('archived-plans-modal').classList.add('hidden');
+            document.getElementById('archived-plans-modal').classList.remove('flex');
+        }
+
+        function displayArchivedPlans() {
+            const archivedPlansGrid = document.getElementById('archived-plans-grid');
+            const emptyState = document.getElementById('archived-plans-empty');
+            const loadingState = document.getElementById('archived-plans-loading');
+            
+            loadingState.classList.add('hidden');
+            
+            if (archivedPlans.length === 0) {
+                archivedPlansGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            archivedPlansGrid.classList.remove('hidden');
+            
+            archivedPlansGrid.innerHTML = '';
+            
+            // Sort archived plans by week start date (newest first)
+            archivedPlans.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
+            
+            archivedPlans.forEach(plan => {
+                const planCard = createArchivedPlanCard(plan);
+                archivedPlansGrid.appendChild(planCard);
+            });
+        }
+
+        function createArchivedPlanCard(plan) {
+            const card = document.createElement('div');
+            card.className = 'archived-plan rounded-lg p-6 shadow-lg';
+            
+            const subjectsCount = plan.subjects ? plan.subjects.length : 0;
+            const canManage = currentUser.role === 'admin' || plan.createdBy === currentUser.id;
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold text-white">${getGradeName(plan.grade)} (جميع الشعب)</h4>
+                        <p class="text-white opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
+                        <p class="text-white opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
+                        <div class="mt-2">
+                            <span class="bg-white bg-opacity-20 text-white px-2 py-1 rounded-full text-xs">
+                                <i class="fas fa-archive ml-1"></i>
+                                مؤرشفة
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="viewWeeklyPlan('${plan.id}')" class="text-white hover:text-blue-200 p-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${canManage ? `
+                            <button onclick="unarchiveWeeklyPlan('${plan.id}')" class="text-white hover:text-green-200 p-2" title="إلغاء الأرشفة">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button onclick="deleteWeeklyPlan('${plan.id}')" class="text-white hover:text-red-200 p-2">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="text-sm text-white opacity-90">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-user ml-2"></i>
+                        <span>أنشأه: ${plan.createdByName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock ml-2"></i>
+                        <span>آخر تحديث: ${plan.updatedAt ? formatDateArabic(plan.updatedAt.toDate()) : 'غير محدد'}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        async function archiveWeeklyPlan(planId) {
+            showConfirmDialog('هل أنت متأكد من أرشفة هذه الخطة؟ سيتم إخفاؤها من العرض الرئيسي.', async () => {
+                try {
+                    await db.collection('weeklyPlans').doc(planId).update({
+                        archived: true,
+                        archivedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        archivedBy: currentUser.id
+                    });
+                    showSuccessMessage('تم أرشفة الخطة الأسبوعية بنجاح');
+                } catch (error) {
+                    console.error('Error archiving weekly plan:', error);
+                    showErrorMessage('حدث خطأ في أرشفة الخطة الأسبوعية');
+                }
+            });
+        }
+
+        async function unarchiveWeeklyPlan(planId) {
+            showConfirmDialog('هل أنت متأكد من إلغاء أرشفة هذه الخطة؟ ستظهر مرة أخرى في العرض الرئيسي.', async () => {
+                try {
+                    await db.collection('weeklyPlans').doc(planId).update({
+                        archived: false,
+                        unarchivedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        unarchivedBy: currentUser.id
+                    });
+                    showSuccessMessage('تم إلغاء أرشفة الخطة الأسبوعية بنجاح');
+                } catch (error) {
+                    console.error('Error unarchiving weekly plan:', error);
+                    showErrorMessage('حدث خطأ في إلغاء أرشفة الخطة الأسبوعية');
+                }
+            });
+        }
+
+        function shouldShowArchiveButton(plan) {
+            if (!plan.weekEnd) return false;
+            
+            const today = new Date();
+            const weekEnd = new Date(plan.weekEnd);
+            today.setHours(0, 0, 0, 0);
+            weekEnd.setHours(23, 59, 59, 999);
+            
+            // Show archive button if the week has ended
+            return today > weekEnd;
         }
 
         // Weekly Plan Management Functions
@@ -1965,6 +2170,7 @@
             
             const subjectsCount = plan.subjects ? plan.subjects.length : 0;
             const canEdit = currentUser.role === 'admin' || plan.createdBy === currentUser.id;
+            const showArchive = shouldShowArchiveButton(plan) && canEdit;
             
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
@@ -1981,6 +2187,11 @@
                             <button onclick="editWeeklyPlan('${plan.id}')" class="text-white hover:text-yellow-200 p-2">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            ${showArchive ? `
+                                <button onclick="archiveWeeklyPlan('${plan.id}')" class="text-white hover:text-orange-200 p-2" title="أرشفة الخطة">
+                                    <i class="fas fa-archive"></i>
+                                </button>
+                            ` : ''}
                             <button onclick="deleteWeeklyPlan('${plan.id}')" class="text-white hover:text-red-200 p-2">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -2004,7 +2215,8 @@
         }
 
         function viewWeeklyPlan(planId) {
-            const plan = allPlans.find(p => p.id === planId);
+            // Look in both active and archived plans
+            const plan = allPlans.find(p => p.id === planId) || archivedPlans.find(p => p.id === planId);
             if (!plan) {
                 showErrorMessage('لم يتم العثور على الخطة');
                 return;
@@ -2018,14 +2230,15 @@
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-primary">
                             خطة أسبوع ${getGradeName(plan.grade)} (جميع الشعب)
+                            ${plan.archived ? '<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-sm mr-2">مؤرشفة</span>' : ''}
                         </h3>
                         <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                             <i class="fas fa-times text-2xl"></i>
                         </button>
                     </div>
                     
-                    <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-                        <p class="text-blue-800 dark:text-blue-200 font-medium">
+                    <div class="mb-4 p-4 ${plan.archived ? 'bg-orange-50 dark:bg-orange-900' : 'bg-blue-50 dark:bg-blue-900'} rounded-lg">
+                        <p class="${plan.archived ? 'text-orange-800 dark:text-orange-200' : 'text-blue-800 dark:text-blue-200'} font-medium">
                             من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}
                         </p>
                     </div>
@@ -2157,6 +2370,9 @@
                 }
             });
         }
+
+        // Continue with other functions...
+        // I'll continue with the remaining functions to ensure functionality is preserved
 
         // Student Management Functions
         function openStudentModal() {
@@ -3625,6 +3841,8 @@
         window.viewWeeklyPlan = viewWeeklyPlan;
         window.editWeeklyPlan = editWeeklyPlan;
         window.deleteWeeklyPlan = deleteWeeklyPlan;
+        window.archiveWeeklyPlan = archiveWeeklyPlan;
+        window.unarchiveWeeklyPlan = unarchiveWeeklyPlan;
         window.updateSubjectName = updateSubjectName;
         window.removeSubject = removeSubject;
     </script>
