@@ -1240,8 +1240,8 @@
             </div>
             
             <form id="schedule-form" class="space-y-6">
-                <!-- Grade Selection -->
-                <div class="grid md:grid-cols-2 gap-4">
+                <!-- Grade and Section Selection -->
+                <div class="grid md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
                         <select id="schedule-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
@@ -1258,6 +1258,22 @@
                             <option value="10">الصف العاشر</option>
                             <option value="11">الصف الحادي عشر</option>
                             <option value="12">الصف الثاني عشر</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
+                        <select id="schedule-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الشعبة</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
                         </select>
                     </div>
                     <div>
@@ -2371,9 +2387,6 @@
             });
         }
 
-        // Continue with other functions...
-        // I'll continue with the remaining functions to ensure functionality is preserved
-
         // Student Management Functions
         function openStudentModal() {
             document.getElementById('student-modal-title').textContent = 'إضافة طالب جديد';
@@ -3041,8 +3054,9 @@
 
         function previewSchedule() {
             const grade = document.getElementById('schedule-grade').value;
-            if (!grade) {
-                showErrorMessage('يرجى اختيار الصف أولاً');
+            const section = document.getElementById('schedule-section').value;
+            if (!grade || !section) {
+                showErrorMessage('يرجى اختيار الصف والشعبة أولاً');
                 return;
             }
 
@@ -3050,7 +3064,7 @@
             const previewContent = document.getElementById('preview-content');
             
             previewContent.innerHTML = `
-                <h5 class="text-lg font-bold mb-4">جدول حصص الصف ${grade}</h5>
+                <h5 class="text-lg font-bold mb-4">جدول حصص الصف ${grade} - الشعبة ${section}</h5>
                 <table class="schedule-table w-full">
                     <thead>
                         <tr>
@@ -3147,6 +3161,7 @@
             
             try {
                 const grade = document.getElementById('schedule-grade').value;
+                const section = document.getElementById('schedule-section').value;
                 const notes = document.getElementById('schedule-notes').value;
                 const scheduleData = collectScheduleData();
                 
@@ -3157,6 +3172,7 @@
                 
                 const data = {
                     grade: parseInt(grade),
+                    section: section,
                     gradeName: `الصف ${grade}`,
                     notes: notes || '',
                     schedule: scheduleData,
@@ -3218,7 +3234,7 @@
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="text-xl font-bold">${schedule.gradeName || `الصف ${schedule.grade}`}</h4>
+                        <h4 class="text-xl font-bold">${schedule.gradeName || `الصف ${schedule.grade}`} - الشعبة ${schedule.section}</h4>
                         <p class="opacity-90">${scheduleCount} حصة مجدولة</p>
                         ${schedule.notes ? `<p class="text-sm opacity-75 mt-2">${schedule.notes}</p>` : ''}
                     </div>
@@ -3259,6 +3275,7 @@
             
             // Fill the form with existing data
             document.getElementById('schedule-grade').value = schedule.grade;
+            document.getElementById('schedule-section').value = schedule.section;
             document.getElementById('schedule-notes').value = schedule.notes || '';
             
             // Generate grid and fill with data
@@ -3298,7 +3315,7 @@
             modal.innerHTML = `
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary">جدول حصص ${schedule.gradeName || `الصف ${schedule.grade}`}</h3>
+                        <h3 class="text-2xl font-bold text-primary">جدول حصص ${schedule.gradeName || `الصف ${schedule.grade}`} - الشعبة ${schedule.section}</h3>
                         <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                             <i class="fas fa-times text-2xl"></i>
                         </button>
