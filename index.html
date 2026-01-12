@@ -3014,76 +3014,97 @@
         }
 
         function generateScheduleGrid() {
-            const scheduleGrid = document.getElementById('schedule-grid');
-            const timeSlots = [
-                '8:45 - 9:30',
-                '9:30 - 10:15', 
-                '10:15 - 11:00',
-                '11:00 - 11:15', // استراحة
-                '11:15 - 12:00',
-                '12:00 - 12:45',
-                '12:45 - 1:30'
-            ];
+    const scheduleGrid = document.getElementById('schedule-grid');
+    
+    // مواعيد الحصص المحدثة - 8 حصص مع الاستراحات
+    const timeSlots = [
+        { time: '8:00 - 8:45', isBreak: false, breakType: null },      // الحصة 1
+        { time: '8:45 - 9:30', isBreak: false, breakType: null },      // الحصة 2
+        { time: '9:30 - 9:45', isBreak: true, breakType: 'استراحة' },  // استراحة 15 دقيقة
+        { time: '9:45 - 10:30', isBreak: false, breakType: null },     // الحصة 3
+        { time: '10:30 - 11:15', isBreak: false, breakType: null },    // الحصة 4
+        { time: '11:15 - 12:00', isBreak: false, breakType: null },    // الحصة 5
+        { time: '12:00 - 12:15', isBreak: true, breakType: 'فسحة' },   // فسحة 15 دقيقة
+        { time: '12:15 - 1:00', isBreak: false, breakType: null },     // الحصة 6
+        { time: '1:00 - 1:45', isBreak: false, breakType: null },      // الحصة 7
+        { time: '1:45 - 2:30', isBreak: false, breakType: null }       // الحصة 8
+    ];
 
-            scheduleGrid.innerHTML = '';
+    scheduleGrid.innerHTML = '';
 
-            timeSlots.forEach((timeSlot, index) => {
-                const row = document.createElement('tr');
-                
-                if (timeSlot === '11:00 - 11:15') {
-                    // استراحة
-                    row.className = 'break-row';
-                    row.innerHTML = `
-                        <td>${timeSlot}</td>
-                        <td colspan="5" class="text-center font-bold">استراحة</td>
-                    `;
-                } else {
-                    row.innerHTML = `
-                        <td class="font-medium">${timeSlot}</td>
-                        <td><input type="text" class="w-full p-2 border rounded" data-day="monday" data-slot="${index}" placeholder="المادة"></td>
-                        <td><input type="text" class="w-full p-2 border rounded" data-day="tuesday" data-slot="${index}" placeholder="المادة"></td>
-                        <td><input type="text" class="w-full p-2 border rounded" data-day="wednesday" data-slot="${index}" placeholder="المادة"></td>
-                        <td><input type="text" class="w-full p-2 border rounded" data-day="thursday" data-slot="${index}" placeholder="المادة"></td>
-                        <td><input type="text" class="w-full p-2 border rounded" data-day="friday" data-slot="${index}" placeholder="المادة"></td>
-                    `;
-                }
-                
-                scheduleGrid.appendChild(row);
-            });
-        }
-
-        function previewSchedule() {
-            const grade = document.getElementById('schedule-grade').value;
-            const section = document.getElementById('schedule-section').value;
-            if (!grade || !section) {
-                showErrorMessage('يرجى اختيار الصف والشعبة أولاً');
-                return;
-            }
-
-            const scheduleData = collectScheduleData();
-            const previewContent = document.getElementById('preview-content');
-            
-            previewContent.innerHTML = `
-                <h5 class="text-lg font-bold mb-4">جدول حصص الصف ${grade} - الشعبة ${section}</h5>
-                <table class="schedule-table w-full">
-                    <thead>
-                        <tr>
-                            <th>الوقت</th>
-                            <th>الإثنين</th>
-                            <th>الثلاثاء</th>
-                            <th>الأربعاء</th>
-                            <th>الخميس</th>
-                            <th>الجمعة</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${generatePreviewTable(scheduleData)}
-                    </tbody>
-                </table>
+    timeSlots.forEach((slot, index) => {
+        const row = document.createElement('tr');
+        
+        if (slot.isBreak) {
+            // صف الاستراحة أو الفسحة
+            const breakColor = slot.breakType === 'استراحة' ? 'bg-orange-100' : 'bg-yellow-100';
+            row.className = `break-row ${breakColor}`;
+            row.innerHTML = `
+                <td class="font-bold">${slot.time}</td>
+                <td colspan="5" class="text-center font-bold text-lg">${slot.breakType}</td>
             `;
-            
-            document.getElementById('schedule-preview').classList.remove('hidden');
+        } else {
+            // صف عادي للحصة
+            row.innerHTML = `
+                <td class="font-medium">${slot.time}</td>
+                <td><input type="text" class="w-full p-2 border rounded" data-day="monday" data-slot="${index}" placeholder="المادة"></td>
+                <td><input type="text" class="w-full p-2 border rounded" data-day="tuesday" data-slot="${index}" placeholder="المادة"></td>
+                <td><input type="text" class="w-full p-2 border rounded" data-day="wednesday" data-slot="${index}" placeholder="المادة"></td>
+                <td><input type="text" class="w-full p-2 border rounded" data-day="thursday" data-slot="${index}" placeholder="المادة"></td>
+                <td><input type="text" class="w-full p-2 border rounded" data-day="friday" data-slot="${index}" placeholder="المادة"></td>
+            `;
         }
+        
+        scheduleGrid.appendChild(row);
+    });
+}
+
+
+        function generatePreviewTable(scheduleData) {
+    const timeSlots = [
+        { time: '8:00 - 8:45', isBreak: false, breakType: null },      // الحصة 1
+        { time: '8:45 - 9:30', isBreak: false, breakType: null },      // الحصة 2
+        { time: '9:30 - 9:45', isBreak: true, breakType: 'استراحة' },  // استراحة 15 دقيقة
+        { time: '9:45 - 10:30', isBreak: false, breakType: null },     // الحصة 3
+        { time: '10:30 - 11:15', isBreak: false, breakType: null },    // الحصة 4
+        { time: '11:15 - 12:00', isBreak: false, breakType: null },    // الحصة 5
+        { time: '12:00 - 12:15', isBreak: true, breakType: 'فسحة' },   // فسحة 15 دقيقة
+        { time: '12:15 - 1:00', isBreak: false, breakType: null },     // الحصة 6
+        { time: '1:00 - 1:45', isBreak: false, breakType: null },      // الحصة 7
+        { time: '1:45 - 2:30', isBreak: false, breakType: null }       // الحصة 8
+    ];
+
+    let tableRows = '';
+
+    timeSlots.forEach((slot, index) => {
+        if (slot.isBreak) {
+            tableRows += `
+                <tr class="break-row">
+                    <td>${slot.time}</td>
+                    <td colspan="5" class="text-center font-bold">${slot.breakType}</td>
+                </tr>
+            `;
+        } else {
+            const daySchedules = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].map(day => {
+                const dayData = scheduleData.find(item => item.day === day && item.timeSlot === index);
+                return dayData ? dayData.subject : '-';
+            });
+
+            tableRows += `
+                <tr>
+                    <td class="font-medium">${slot.time}</td>
+                    <td>${daySchedules[0]}</td>
+                    <td>${daySchedules[1]}</td>
+                    <td>${daySchedules[2]}</td>
+                    <td>${daySchedules[3]}</td>
+                    <td>${daySchedules[4]}</td>
+                </tr>
+            `;
+        }
+    });
+
+    return tableRows;
+}
 
         function generatePreviewTable(scheduleData) {
             const timeSlots = [
