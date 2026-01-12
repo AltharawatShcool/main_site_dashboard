@@ -867,7 +867,7 @@
             </div>
         </section>
 
-        <!-- Users Management Tab - الآن مخفي عن المعلمين فقط -->
+        <!-- Users Management Tab - للمدير فقط -->
         <section id="users-tab" class="tab-content admin-only hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -1343,7 +1343,7 @@
         </div>
     </div>
 
-    <!-- Add User Modal - للمدير فقط -->
+    <!-- Add User Modal -->
     <div id="add-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
@@ -1457,7 +1457,6 @@
         let allStudents = [];
         let allActivities = [];
         let allSchedules = [];
-        let currentExcelData = [];
         let teacherSubjects = [];
 
         // Initialize the app
@@ -1635,7 +1634,7 @@
             const isAdmin = currentUser.role === 'admin';
             const adminOnlyElements = document.querySelectorAll('.admin-only');
             
-            // Show/hide admin-only elements - هذا هو الحل للمشكلة الثانية
+            // Show/hide admin-only elements
             adminOnlyElements.forEach(element => {
                 if (isAdmin) {
                     element.classList.remove('teacher-hidden');
@@ -1696,7 +1695,7 @@
             });
         }
 
-        // Tab functionality - التحقق من الصلاحيات
+        // Tab functionality
         function handleTabClick() {
             const tabName = this.getAttribute('data-tab');
             
@@ -1737,7 +1736,7 @@
             }
         }
 
-        // Real-time data loading - تصفية البيانات حسب صلاحيات المعلم
+        // Real-time data loading
         function loadRealtimeData() {
             loadPlansRealtime();
             loadUsersRealtime();
@@ -1749,7 +1748,7 @@
         function loadPlansRealtime() {
             let query = db.collection('weeklyPlans');
             
-            // Filter plans based on user role - المعلم يرى خططه فقط
+            // Filter plans based on user role
             if (currentUser && currentUser.role !== 'admin') {
                 query = query.where('createdBy', '==', currentUser.id);
             }
@@ -1891,7 +1890,6 @@
             
             archivedPlansGrid.innerHTML = '';
             
-            // Sort archived plans by week start date (newest first)
             archivedPlans.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
             
             archivedPlans.forEach(plan => {
@@ -1910,7 +1908,7 @@
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="text-xl font-bold text-white">${getGradeName(plan.grade)} (جميع الشعب)</h4>
+                        <h4 class="text-xl font-bold text-white">${getGradeName(plan.grade)}</h4>
                         <p class="text-white opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
                         <p class="text-white opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
                         <div class="mt-2">
@@ -1990,7 +1988,6 @@
             today.setHours(0, 0, 0, 0);
             weekEnd.setHours(23, 59, 59, 999);
             
-            // Show archive button if the week has ended
             return today > weekEnd;
         }
 
@@ -1999,7 +1996,6 @@
             document.getElementById('add-plan-modal').classList.remove('hidden');
             document.getElementById('add-plan-modal').classList.add('flex');
             
-            // Reset subjects list
             teacherSubjects = [];
             updateSubjectsList();
             updateWeeklyPlanTable();
@@ -2017,16 +2013,14 @@
             if (startDate) {
                 const start = new Date(startDate);
                 const end = new Date(start);
-                end.setDate(start.getDate() + 4); // Friday
+                end.setDate(start.getDate() + 4);
                 
                 document.getElementById('plan-week-end').value = end.toISOString().split('T')[0];
                 
-                // Update week title
                 const weekTitle = document.getElementById('week-title');
                 const gradeName = getGradeName(document.getElementById('plan-grade').value) || 'الصف';
                 weekTitle.textContent = `خطة أسبوع ${gradeName} (جميع الشعب) من ${formatDateArabic(start)} إلى ${formatDateArabic(end)}`;
                 
-                // Update day headers
                 updateDayHeaders(start);
             }
         }
@@ -2136,7 +2130,6 @@
             const submitText = document.getElementById('plan-submit-text');
             const submitSpinner = document.getElementById('plan-submit-spinner');
             
-            // Show loading
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             
@@ -2155,7 +2148,6 @@
                     return;
                 }
                 
-                // Collect weekly plan data
                 const weeklyData = {};
                 const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
                 
@@ -2216,7 +2208,6 @@
             
             plansGrid.innerHTML = '';
             
-            // Sort plans by week start date (newest first)
             allPlans.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
             
             allPlans.forEach(plan => {
@@ -2236,9 +2227,9 @@
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="text-xl font-bold">${getGradeName(plan.grade)} (جميع الشعب)</h4>
-                        <p class="opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
-                        <p class="opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
+                        <h4 class="text-xl font-bold">${getGradeName(plan.grade)}</h4>
+                        <p class="opacity-90">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
+                        <p class="text-sm opacity-75 mt-1">${subjectsCount} مادة</p>
                     </div>
                     <div class="flex space-x-1 space-x-reverse">
                         <button onclick="viewWeeklyPlan('${plan.id}')" class="text-white hover:text-blue-200 p-2">
@@ -2276,21 +2267,19 @@
         }
 
         function viewWeeklyPlan(planId) {
-            // Look in both active and archived plans
             const plan = allPlans.find(p => p.id === planId) || archivedPlans.find(p => p.id === planId);
             if (!plan) {
                 showErrorMessage('لم يتم العثور على الخطة');
                 return;
             }
             
-            // Create view modal
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
             modal.innerHTML = `
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-primary">
-                            خطة أسبوع ${getGradeName(plan.grade)} (جميع الشعب)
+                            خطة أسبوع ${getGradeName(plan.grade)}
                             ${plan.archived ? '<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-sm mr-2">مؤرشفة</span>' : ''}
                         </h3>
                         <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
@@ -2375,36 +2364,29 @@
                 return;
             }
             
-            // Check permissions
             if (currentUser.role !== 'admin' && plan.createdBy !== currentUser.id) {
                 showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
                 return;
             }
             
-            // Fill form with existing data
             document.getElementById('plan-grade').value = plan.grade;
             document.getElementById('plan-week-start').value = plan.weekStart;
             document.getElementById('plan-week-end').value = plan.weekEnd;
             
-            // Load subjects
             teacherSubjects = plan.subjects || [];
             
-            // Update modal title
             document.getElementById('plan-modal-title').textContent = 'تعديل الخطة الأسبوعية';
             document.getElementById('plan-submit-text').textContent = 'حفظ التعديلات';
             
-            // Store plan ID for update
             document.getElementById('plan-form').dataset.editId = planId;
             
             openPlanModal();
             
-            // Fill the table with existing data
             setTimeout(() => {
                 updateWeekEnd();
                 updateSubjectsList();
                 updateWeeklyPlanTable();
                 
-                // Fill existing data
                 if (plan.weeklyData) {
                     Object.entries(plan.weeklyData).forEach(([subjectId, subjectData]) => {
                         if (subjectData.days) {
@@ -2460,7 +2442,6 @@
             const submitText = document.getElementById('student-submit-text');
             const submitSpinner = document.getElementById('student-submit-spinner');
             
-            // Show loading
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             
@@ -2571,7 +2552,6 @@
             const student = allStudents.find(s => s.id === studentId);
             if (!student) return;
             
-            // Fill form with existing data
             document.getElementById('student-id').value = student.studentId;
             document.getElementById('student-name').value = student.name;
             document.getElementById('student-grade').value = student.grade;
@@ -2580,11 +2560,9 @@
             document.getElementById('parent-name').value = student.parentName || '';
             document.getElementById('student-notes').value = student.notes || '';
             
-            // Update modal title and form behavior
             document.getElementById('student-modal-title').textContent = 'تعديل بيانات الطالب';
             document.getElementById('student-submit-text').textContent = 'حفظ التعديلات';
             
-            // Store student ID for update
             document.getElementById('student-form').dataset.editId = studentId;
             
             openStudentModal();
@@ -2725,7 +2703,6 @@
             const submitText = document.getElementById('attendance-submit-text');
             const submitSpinner = document.getElementById('attendance-submit-spinner');
             
-            // Show loading
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             
@@ -2753,7 +2730,6 @@
                     });
                 });
                 
-                // Save all attendance records
                 const batch = db.batch();
                 attendanceRecords.forEach(record => {
                     const docRef = db.collection('attendance').doc();
@@ -2793,7 +2769,6 @@
             const submitText = document.getElementById('activity-submit-text');
             const submitSpinner = document.getElementById('activity-submit-spinner');
             
-            // Show loading
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             
@@ -2840,7 +2815,6 @@
             
             activitiesGrid.innerHTML = '';
             
-            // Sort activities by date (newest first)
             allActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             allActivities.forEach(activity => {
@@ -2902,7 +2876,6 @@
             const activity = allActivities.find(a => a.id === activityId);
             if (!activity) return;
             
-            // Fill form with existing data
             document.getElementById('activity-name').value = activity.name;
             document.getElementById('activity-description').value = activity.description;
             document.getElementById('activity-date').value = activity.date;
@@ -2911,11 +2884,9 @@
             document.getElementById('activity-target').value = activity.target;
             document.getElementById('activity-notes').value = activity.notes || '';
             
-            // Update modal title and form behavior
             document.getElementById('activity-modal-title').textContent = 'تعديل النشاط';
             document.getElementById('activity-submit-text').textContent = 'حفظ التعديلات';
             
-            // Store activity ID for update
             document.getElementById('activity-form').dataset.editId = activityId;
             
             openActivityModal();
@@ -3130,7 +3101,6 @@
             const submitText = document.getElementById('schedule-submit-text');
             const submitSpinner = document.getElementById('schedule-submit-spinner');
             
-            // Show loading
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             
@@ -3191,7 +3161,6 @@
             
             schedulesGrid.innerHTML = '';
             
-            // Sort schedules by grade
             allSchedules.sort((a, b) => (a.grade || 0) - (b.grade || 0));
             
             allSchedules.forEach(schedule => {
@@ -3248,12 +3217,10 @@
                 return;
             }
             
-            // Fill the form with existing data
             document.getElementById('schedule-grade').value = schedule.grade;
             document.getElementById('schedule-section').value = schedule.section;
             document.getElementById('schedule-notes').value = schedule.notes || '';
             
-            // Generate grid and fill with data
             generateScheduleGrid();
             
             setTimeout(() => {
@@ -3267,11 +3234,9 @@
                 }
             }, 100);
             
-            // Change form mode to edit
             document.getElementById('schedule-submit-text').textContent = 'حفظ التعديلات';
             document.getElementById('schedule-modal-title').textContent = 'تعديل جدول الحصص';
             
-            // Store schedule ID for updating
             document.getElementById('schedule-form').dataset.editId = scheduleId;
             
             openScheduleModal();
@@ -3446,7 +3411,6 @@
                     </div>
                 `;
                 
-                // Add click handlers for section selection
                 gradeSection.querySelectorAll('.section-selector').forEach(selector => {
                     selector.addEventListener('click', function() {
                         const checkbox = this.querySelector('input');
@@ -3487,13 +3451,11 @@
                 return;
             }
             
-            // Show loading
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             submitBtn.disabled = true;
             
             try {
-                // Check if username already exists (only for new users or changed usernames)
                 if (!isEdit) {
                     const existingUser = await db.collection('users').where('username', '==', username).get();
                     if (!existingUser.empty) {
@@ -3515,11 +3477,9 @@
                 }
                 
                 if (role === 'teacher') {
-                    // Collect selected grades
                     const selectedGrades = Array.from(document.querySelectorAll('input[name="selectedGrades"]:checked'))
                         .map(input => input.value);
                     
-                    // Collect selected sections for each grade
                     const sectionPermissions = {};
                     selectedGrades.forEach(gradeId => {
                         const selectedSections = Array.from(document.querySelectorAll(`input[name="sections-${gradeId}"]:checked`))
@@ -3618,21 +3578,17 @@
             const user = allUsers.find(u => u.id === userId);
             if (!user) return;
             
-            // Fill form with existing data
             document.getElementById('modal-user-name').value = user.name;
             document.getElementById('modal-user-username').value = user.username;
             document.getElementById('modal-user-password').value = '';
             document.getElementById('modal-user-role').value = user.role;
             
-            // Update modal title and form behavior
             document.getElementById('user-modal-title').textContent = 'تعديل المستخدم';
             document.getElementById('user-submit-text').textContent = 'حفظ التعديلات';
             
-            // Show teacher permissions if teacher
             toggleTeacherPermissions();
             
             if (user.role === 'teacher') {
-                // Set selected grades
                 setTimeout(() => {
                     if (user.permissions && Array.isArray(user.permissions)) {
                         user.permissions.forEach(gradeId => {
@@ -3644,7 +3600,6 @@
                         
                         updateSectionsSelection();
                         
-                        // Set selected sections
                         setTimeout(() => {
                             if (user.sectionPermissions && typeof user.sectionPermissions === 'object') {
                                 Object.entries(user.sectionPermissions).forEach(([gradeId, sections]) => {
@@ -3664,7 +3619,6 @@
                 }, 100);
             }
             
-            // Store user ID for update
             document.getElementById('user-form').dataset.editId = userId;
             
             openUserModal();
@@ -3816,7 +3770,7 @@
             document.body.appendChild(modal);
         }
 
-        // Global functions for button clicks
+        // Global functions
         window.editSchedule = editSchedule;
         window.viewSchedule = viewSchedule;
         window.deleteSchedule = deleteSchedule;
