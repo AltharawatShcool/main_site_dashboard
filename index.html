@@ -141,6 +141,191 @@
             background: linear-gradient(135deg, #EF4444, #DC2626);
         }
         
+        .drag-drop-area {
+            border: 2px dashed #D1D5DB;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .drag-drop-area:hover,
+        .drag-drop-area.drag-over {
+            border-color: #5D5CDE;
+            background-color: #F3F4F6;
+        }
+        
+        .student-card {
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+        
+        .whatsapp-btn:hover {
+            background: linear-gradient(135deg, #128C7E, #075E54);
+        }
+        
+        .admin-only {
+            display: block;
+        }
+        
+        .teacher-hidden {
+            display: none !important;
+        }
+
+        .archived-plan {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            opacity: 0.9;
+            border-left: 4px solid #d97706;
+        }
+
+        .archived-activity {
+            background-color: #f9f9f9;
+            opacity: 0.8;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .current-week-plan {
+            border-left: 4px solid #10B981;
+            background-color: #f0fdf4;
+        }
+
+        .search-highlight {
+            background-color: yellow;
+            padding: 1px 2px;
+            border-radius: 2px;
+        }
+
+        .activity-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #5D5CDE;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(93, 92, 222, 0.15);
+        }
+
+        .activity-status-active {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .activity-status-completed {
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+        }
+
+        .activity-status-upcoming {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+
+        .section-badge {
+            background: linear-gradient(135deg, #8B5CF6, #A855F7);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .schedule-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .schedule-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .schedule-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .time-slot-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .time-slot-card.break-time {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .schedule-preview {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .schedule-table th {
+            background: #5D5CDE;
+            color: white;
+        }
+
+        .schedule-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .schedule-table .break-row {
+            background: #fff3cd !important;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .attendance-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .attendance-status.present {
+            background: #10B981;
+        }
+
+        .attendance-status.absent {
+            background: #EF4444;
+        }
+
+        .attendance-status.late {
+            background: #F59E0B;
+        }
+
         .grade-selector {
             background: white;
             border: 2px solid #e5e7eb;
@@ -150,17 +335,17 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .grade-selector:hover {
             border-color: #5D5CDE;
             transform: translateY(-1px);
         }
-        
+
         .grade-selector.selected {
             border-color: #5D5CDE;
             background: #f3f4f6;
         }
-        
+
         .section-selector {
             background: white;
             border: 1px solid #e5e7eb;
@@ -173,51 +358,102 @@
             min-width: 40px;
             text-align: center;
         }
-        
+
         .section-selector:hover {
             border-color: #5D5CDE;
         }
-        
+
         .section-selector.selected {
             background: #5D5CDE;
             color: white;
             border-color: #5D5CDE;
         }
-        
-        .admin-only {
-            display: block;
+
+        .user-permissions-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
         }
-        
-        .teacher-hidden {
-            display: none !important;
+
+        /* Weekly Plan Specific Styles */
+        .weekly-plan-card {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
-        
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+
+        .weekly-plan-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
         }
-        
-        .schedule-table th,
-        .schedule-table td {
+
+        .weekly-plan-cell {
+            padding: 8px;
             border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: center;
+            vertical-align: top;
+            min-height: 100px;
+            position: relative;
         }
-        
-        .schedule-table th {
-            background: #5D5CDE;
+
+        .weekly-plan-cell textarea {
+            width: 100%;
+            height: 80px;
+            resize: none;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+        }
+
+        .subject-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .teacher-protection-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .protected-cell {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+        }
+
+        .editable-cell {
+            background: #f0fdf4;
+            border: 1px solid #10b981;
+        }
+
+        .archived-plans-view {
+            background: #fff7ed;
+            border: 2px solid #fb923c;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .archive-action-btn {
+            background: linear-gradient(135deg, #fb923c, #f97316);
             color: white;
         }
-        
-        .schedule-table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-        
-        .schedule-table .break-row {
-            background: #fff3cd !important;
-            font-weight: bold;
-            color: #856404;
+
+        .unarchive-action-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
         }
     </style>
     <script>
@@ -231,6 +467,18 @@
                 }
             }
         }
+        
+        // Dark mode support
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
     </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
@@ -279,6 +527,7 @@
         <header class="bg-white dark:bg-gray-800 shadow-lg">
             <nav class="container mx-auto px-4 py-3">
                 <div class="flex items-center justify-between">
+                    <!-- Logo and School Name -->
                     <div class="flex items-center space-x-4 space-x-reverse">
                         <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                             <i class="fas fa-graduation-cap text-white text-xl"></i>
@@ -289,11 +538,13 @@
                         </div>
                     </div>
                     
+                    <!-- User Menu -->
                     <div class="flex items-center space-x-4 space-x-reverse">
                         <div class="hidden md:block">
                             <span class="text-sm text-gray-600 dark:text-gray-400">مرحباً، </span>
                             <span id="user-name" class="font-semibold">المدير</span>
                             <span id="user-role-badge" class="mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"></span>
+                            <span id="user-section-badge" class="hidden mr-2 section-badge text-xs"></span>
                         </div>
                         <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
                             <i class="fas fa-sign-out-alt ml-2"></i>
@@ -353,6 +604,10 @@
                         <i class="fas fa-user-graduate ml-2"></i>
                         إدارة الطلاب
                     </button>
+                    <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="activities">
+                        <i class="fas fa-calendar-day ml-2"></i>
+                        إدارة الأنشطة
+                    </button>
                     <button class="tab-button px-6 py-3 rounded-lg font-semibold transition-colors bg-gray-200 dark:bg-gray-700" data-tab="schedules">
                         <i class="fas fa-calendar-alt ml-2"></i>
                         جداول الحصص
@@ -365,67 +620,232 @@
             </div>
         </section>
 
-        <!-- Plans Tab -->
+        <!-- Weekly Plans Tab -->
         <section id="plans-tab" class="tab-content py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary">إدارة الخطط الأسبوعية</h3>
-                        <button id="add-plan-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
-                            <i class="fas fa-plus ml-2"></i>
-                            إضافة خطة
-                        </button>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-2">إدارة الخطط الأسبوعية</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">خطط أسبوعية شاملة لجميع المواد والصفوف مع حماية الخصوصية للمعلمين</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="add-plan-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                <i class="fas fa-plus ml-2"></i>
+                                إضافة خطة أسبوعية
+                            </button>
+                            <button id="view-archived-plans-btn" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                                <i class="fas fa-archive ml-2"></i>
+                                الخطط المؤرشفة
+                            </button>
+                        </div>
                     </div>
+                    
+                    <!-- Week Info Banner -->
+                    <div class="bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-400 p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-week text-blue-400 ml-3"></i>
+                            <div>
+                                <h4 class="text-lg font-semibold text-blue-800 dark:text-blue-200" id="current-week-info">الأسبوع الحالي</h4>
+                                <p class="text-sm text-blue-600 dark:text-blue-300" id="week-date-range">جاري التحديث...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div id="plans-loading" class="text-center py-8">
                         <div class="loading-spinner mx-auto mb-4"></div>
-                        <p>جاري التحميل...</p>
+                        <p>جاري تحميل الخطط الأسبوعية...</p>
                     </div>
-                    <div id="plans-content" class="hidden">
-                        <p class="text-center text-gray-500">لا توجد خطط حالياً</p>
+                    
+                    <div id="plans-grid" class="hidden grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Weekly plans will be loaded here -->
+                    </div>
+                    
+                    <div id="plans-empty" class="hidden empty-state">
+                        <i class="fas fa-calendar-plus text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا توجد خطط أسبوعية</h4>
+                        <p class="mb-4">ابدأ بإضافة الخطط الأسبوعية للصفوف</p>
+                        <button onclick="document.getElementById('add-plan-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة خطة جديدة
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Students Tab -->
+        <!-- Archived Plans View Modal -->
+        <div id="archived-plans-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-orange-600">الخطط المؤرشفة</h3>
+                    <button id="close-archived-plans-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <div class="bg-orange-50 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg p-4 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle text-orange-500 ml-3"></i>
+                        <div>
+                            <h4 class="font-semibold text-orange-800 dark:text-orange-200">الخطط المؤرشفة</h4>
+                            <p class="text-sm text-orange-700 dark:text-orange-300">هذه الخطط تم أرشفتها ولا تظهر في العرض الرئيسي</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="archived-plans-loading" class="text-center py-8">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p>جاري تحميل الخطط المؤرشفة...</p>
+                </div>
+                
+                <div id="archived-plans-grid" class="hidden grid md:grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Archived plans will be loaded here -->
+                </div>
+                
+                <div id="archived-plans-empty" class="hidden empty-state">
+                    <i class="fas fa-archive text-6xl mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2">لا توجد خطط مؤرشفة</h4>
+                    <p class="mb-4">لم يتم أرشفة أي خطط بعد</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students Management Tab -->
         <section id="students-tab" class="tab-content hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary">إدارة الطلاب</h3>
-                        <button id="add-student-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
-                            <i class="fas fa-user-plus ml-2"></i>
-                            إضافة طالب
-                        </button>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">إدارة الطلاب</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button id="add-student-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                                <i class="fas fa-user-plus ml-2"></i>
+                                إضافة طالب
+                            </button>
+                            <button id="mark-attendance-btn" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                <i class="fas fa-user-check ml-2"></i>
+                                تسجيل الحضور
+                            </button>
+                            <button id="export-students-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-download ml-2"></i>
+                                تصدير البيانات
+                            </button>
+                        </div>
                     </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <label for="students-grade-select" class="block text-sm font-medium mb-2">اختر الصف:</label>
+                            <select id="students-grade-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">جميع الصفوف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="students-section-select" class="block text-sm font-medium mb-2">اختر الشعبة:</label>
+                            <select id="students-section-select" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">جميع الشعب</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="students-search" class="block text-sm font-medium mb-2">البحث:</label>
+                            <input type="text" id="students-search" placeholder="ابحث عن طالب..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        </div>
+                    </div>
+                    
                     <div id="students-loading" class="text-center py-8">
                         <div class="loading-spinner mx-auto mb-4"></div>
-                        <p>جاري التحميل...</p>
+                        <p>جاري تحميل بيانات الطلاب...</p>
                     </div>
-                    <div id="students-content" class="hidden">
-                        <p class="text-center text-gray-500">لا يوجد طلاب حالياً</p>
+                    
+                    <div id="students-grid" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Students will be loaded here -->
+                    </div>
+                    
+                    <div id="students-empty" class="hidden empty-state">
+                        <i class="fas fa-users text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا يوجد طلاب</h4>
+                        <p class="mb-4">ابدأ بإضافة الطلاب للصفوف الدراسية</p>
+                        <button onclick="document.getElementById('add-student-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة طالب جديد
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Schedules Tab -->
+        <!-- Activities Management Tab -->
+        <section id="activities-tab" class="tab-content hidden py-8">
+            <div class="container mx-auto px-4">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">إدارة الأنشطة المدرسية</h3>
+                        <button id="add-activity-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            <i class="fas fa-plus ml-2"></i>
+                            إضافة نشاط جديد
+                        </button>
+                    </div>
+                    
+                    <div id="activities-loading" class="text-center py-8">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p>جاري تحميل الأنشطة...</p>
+                    </div>
+                    
+                    <div id="activities-grid" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                    
+                    <div id="activities-empty" class="hidden empty-state">
+                        <i class="fas fa-calendar-day text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا توجد أنشطة</h4>
+                        <p class="mb-4">ابدأ بإضافة الأنشطة المدرسية</p>
+                        <button onclick="document.getElementById('add-activity-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة نشاط جديد
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedules Management Tab -->
         <section id="schedules-tab" class="tab-content hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary">إدارة جداول الحصص</h3>
-                        <button id="add-schedule-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-2">إدارة جداول الحصص</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">إنشاء وتعديل جداول الحصص لجميع الصفوف الدراسية</p>
+                        </div>
+                        <button id="add-schedule-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
                             <i class="fas fa-plus ml-2"></i>
-                            إضافة جدول
+                            إضافة جدول جديد
                         </button>
                     </div>
+                    
                     <div id="schedules-loading" class="text-center py-8">
                         <div class="loading-spinner mx-auto mb-4"></div>
-                        <p>جاري التحميل...</p>
+                        <p>جاري تحميل جداول الحصص...</p>
                     </div>
-                    <div id="schedules-content" class="hidden">
-                        <p class="text-center text-gray-500">لا توجد جداول حالياً</p>
+                    
+                    <div id="schedules-grid" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Schedules will be loaded here -->
+                    </div>
+                    
+                    <div id="schedules-empty" class="hidden empty-state">
+                        <i class="fas fa-calendar-alt text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا توجد جداول حصص</h4>
+                        <p class="mb-4">ابدأ بإضافة جداول الحصص للصفوف الدراسية</p>
+                        <button onclick="document.getElementById('add-schedule-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة جدول جديد
+                        </button>
                     </div>
                 </div>
             </div>
@@ -435,12 +855,15 @@
         <section id="users-tab" class="tab-content admin-only hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold text-primary">إدارة المستخدمين</h3>
-                        <button id="add-user-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
-                            <i class="fas fa-user-plus ml-2"></i>
-                            إضافة مستخدم
-                        </button>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary mb-4 md:mb-0">إدارة المستخدمين</h3>
+                        <div class="flex gap-2 w-full md:w-auto">
+                            <input type="text" id="users-search" placeholder="البحث عن مستخدم..." class="flex-1 md:flex-none px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <button id="add-user-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                                <i class="fas fa-user-plus ml-2"></i>
+                                إضافة مستخدم جديد
+                            </button>
+                        </div>
                     </div>
                     
                     <div id="users-loading" class="text-center py-8">
@@ -448,25 +871,34 @@
                         <p>جاري تحميل المستخدمين...</p>
                     </div>
                     
-                    <div id="users-table-container" class="hidden overflow-x-auto">
-                        <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
-                            <thead>
-                                <tr class="bg-primary text-white">
-                                    <th class="border border-gray-300 px-4 py-2">الاسم</th>
-                                    <th class="border border-gray-300 px-4 py-2">اسم المستخدم</th>
-                                    <th class="border border-gray-300 px-4 py-2">الدور</th>
-                                    <th class="border border-gray-300 px-4 py-2">الصفوف</th>
-                                    <th class="border border-gray-300 px-4 py-2">الحالة</th>
-                                    <th class="border border-gray-300 px-4 py-2">إجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-table-body">
-                            </tbody>
-                        </table>
+                    <div id="users-table-container" class="hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                                <thead>
+                                    <tr class="bg-primary text-white">
+                                        <th class="border border-gray-300 px-4 py-2 text-right">الاسم</th>
+                                        <th class="border border-gray-300 px-4 py-2 text-right">اسم المستخدم</th>
+                                        <th class="border border-gray-300 px-4 py-2 text-right">الدور</th>
+                                        <th class="border border-gray-300 px-4 py-2 text-right">الصفوف المخصصة</th>
+                                        <th class="border border-gray-300 px-4 py-2 text-right">الشعب المخصصة</th>
+                                        <th class="border border-gray-300 px-4 py-2 text-right">الحالة</th>
+                                        <th class="border border-gray-300 px-4 py-2 text-right">إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <!-- Users will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     
-                    <div id="users-empty" class="hidden text-center py-8 text-gray-500">
-                        <p>لا يوجد مستخدمون</p>
+                    <div id="users-empty" class="hidden empty-state">
+                        <i class="fas fa-users text-6xl mb-4"></i>
+                        <h4 class="text-xl font-semibold mb-2">لا يوجد مستخدمون</h4>
+                        <p class="mb-4">ابدأ بإضافة المعلمين والمستخدمين</p>
+                        <button onclick="document.getElementById('add-user-btn').click()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                            إضافة مستخدم جديد
+                        </button>
                     </div>
                 </div>
             </div>
@@ -474,43 +906,457 @@
 
         <!-- Footer -->
         <footer class="bg-gray-900 text-white py-12 mt-12">
-            <div class="container mx-auto px-4 text-center">
-                <p class="mb-2">جميع الحقوق محفوظة © 2025 مدرسة الثروات الوطنية الخاصة</p>
-                <p class="text-sm text-gray-400">تم التصميم من قبل المهندس حسين نقد</p>
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div>
+                        <h5 class="text-lg font-semibold mb-4">المواقع المهمة</h5>
+                        <ul class="space-y-2">
+                            <li><a href="https://adek.gov.ae" target="_blank" class="hover:text-primary transition-colors">دائرة التعليم والمعرفة</a></li>
+                            <li><a href="https://tam.adek.gov.ae" target="_blank" class="hover:text-primary transition-colors">موقع تم</a></li>
+                            <li><a href="https://adek.gov.ae" target="_blank" class="hover:text-primary transition-colors">ADEK</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h5 class="text-lg font-semibold mb-4">الإدارة</h5>
+                        <ul class="space-y-2">
+                            <li><a href="#" onclick="switchTab('plans')" class="hover:text-primary transition-colors">الخطط الأسبوعية</a></li>
+                            <li><a href="#" onclick="switchTab('students')" class="hover:text-primary transition-colors">إدارة الطلاب</a></li>
+                            <li><a href="#" onclick="switchTab('activities')" class="hover:text-primary transition-colors">إدارة الأنشطة</a></li>
+                            <li><a href="#" onclick="switchTab('schedules')" class="hover:text-primary transition-colors">جداول الحصص</a></li>
+                            <li id="footer-users-link" class="admin-only"><a href="#" onclick="switchTab('users')" class="hover:text-primary transition-colors">إدارة المستخدمين</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h5 class="text-lg font-semibold mb-4">معلومات الاتصال</h5>
+                        <ul class="space-y-2">
+                            <li>+971 5438357551</li>
+                            <li>shcoolsschool2019@gmail.com</li>
+                            <li>بني ياس شرق 9 -ابوظبي، الإمارات</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h5 class="text-lg font-semibold mb-4">ساعات العمل</h5>
+                        <ul class="space-y-2">
+                            <li>الاثنين - الجمعة</li>
+                            <li>7:30 ص - 2:30 م</li>
+                            <li>الأحد: إجازة</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                    <p class="mb-4">جميع الحقوق محفوظة © 2025 مدرسة الثروات الوطنية الخاصة</p>
+                    <p class="text-sm text-gray-400">تم التصميم من قبل المهندس حسين نقد</p>
+                </div>
             </div>
         </footer>
     </div>
 
-    <!-- Add User Modal -->
-    <div id="add-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <!-- Add Plan Modal -->
+    <div id="add-plan-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[95vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h3 id="user-modal-title" class="text-2xl font-bold text-primary">إضافة مستخدم جديد</h3>
-                <button id="close-user-modal" class="text-gray-500 hover:text-gray-700">
+                <h3 id="plan-modal-title" class="text-2xl font-bold text-primary">إضافة خطة أسبوعية</h3>
+                <button id="close-plan-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
             </div>
             
-            <form id="user-form" class="space-y-4">
+            <form id="plan-form" class="space-y-6">
+                <!-- Week Selection -->
+                <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
+                            <select id="plan-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                                <option value="">اختر الصف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">بداية الأسبوع <span class="text-red-500">*</span></label>
+                            <input type="date" id="plan-week-start" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">نهاية الأسبوع</label>
+                            <input type="date" id="plan-week-end" readonly class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-600 text-base">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-blue-800 dark:text-blue-200" id="week-title">خطة أسبوع...</p>
+                    </div>
+                </div>
+
+                <!-- Teacher Subjects Setup -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-4">المواد التي تدرسها</h4>
+                    <div id="teacher-subjects-list" class="space-y-2">
+                        <!-- Teacher subjects will be populated here -->
+                    </div>
+                    <button type="button" id="add-subject-btn" class="mt-3 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-plus ml-2"></i>
+                        إضافة مادة
+                    </button>
+                </div>
+
+                <!-- Weekly Plan Grid -->
+                <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border">
+                    <h4 class="text-lg font-semibold mb-4">الخطة الأسبوعية</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 dark:border-gray-600" id="weekly-plan-table">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="border border-gray-300 px-3 py-2 text-sm">المادة</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="monday-header">الإثنين</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="tuesday-header">الثلاثاء</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="wednesday-header">الأربعاء</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="thursday-header">الخميس</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-sm" id="friday-header">الجمعة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="weekly-plan-body">
+                                <!-- Plan rows will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-plan" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="plan-submit-text">حفظ الخطة الأسبوعية</span>
+                        <div id="plan-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="student-modal-title" class="text-2xl font-bold text-primary">إضافة طالب جديد</h3>
+                <button id="close-student-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="student-form" class="space-y-4">
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2">الاسم <span class="text-red-500">*</span></label>
-                        <input type="text" id="user-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <label class="block text-sm font-medium mb-2">رقم الاسيس <span class="text-red-500">*</span></label>
+                        <input type="text" id="student-id" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="رقم الاسيس">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">اسم الطالب <span class="text-red-500">*</span></label>
+                        <input type="text" id="student-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="الاسم الكامل">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
+                        <select id="student-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الصف</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
+                        <select id="student-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الشعبة</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">رقم ولي الأمر <span class="text-red-500">*</span></label>
+                        <input type="tel" id="parent-phone" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="971501234567" dir="ltr">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">اسم ولي الأمر</label>
+                    <input type="text" id="parent-name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم ولي الأمر">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">ملاحظات</label>
+                    <textarea id="student-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-student" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="student-submit-text">إضافة الطالب</span>
+                        <div id="student-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Attendance Modal -->
+    <div id="attendance-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-primary">تسجيل الحضور والغياب</h3>
+                <button id="close-attendance-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
+                    <select id="attendance-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        <option value="">اختر الصف</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
+                    <select id="attendance-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                        <option value="">اختر الشعبة</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">التاريخ <span class="text-red-500">*</span></label>
+                    <input type="date" id="attendance-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                </div>
+            </div>
+            
+            <button id="load-attendance-students" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors mb-6">
+                <i class="fas fa-users ml-2"></i>
+                تحميل قائمة الطلاب
+            </button>
+            
+            <div id="attendance-students-grid" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <!-- Students attendance grid will be loaded here -->
+            </div>
+            
+            <div class="flex justify-end space-x-4 space-x-reverse">
+                <button type="button" id="cancel-attendance" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                <button id="save-attendance" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                    <span id="attendance-submit-text">حفظ الحضور</span>
+                    <div id="attendance-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Activity Modal -->
+    <div id="add-activity-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="activity-modal-title" class="text-2xl font-bold text-primary">إضافة نشاط جديد</h3>
+                <button id="close-activity-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="activity-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">اسم النشاط <span class="text-red-500">*</span></label>
+                    <input type="text" id="activity-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم النشاط">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">وصف النشاط <span class="text-red-500">*</span></label>
+                    <textarea id="activity-description" required rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="وصف مفصل للنشاط"></textarea>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">تاريخ النشاط <span class="text-red-500">*</span></label>
+                        <input type="date" id="activity-date" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">وقت النشاط <span class="text-red-500">*</span></label>
+                        <input type="time" id="activity-time" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">موقع النشاط</label>
+                        <input type="text" id="activity-location" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="مكان إقامة النشاط">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الفئة المستهدفة</label>
+                        <select id="activity-target" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="all">جميع الصفوف</option>
+                            <option value="primary">المرحلة الابتدائية</option>
+                            <option value="middle">المرحلة المتوسطة</option>
+                            <option value="high">المرحلة الثانوية</option>
+                            <option value="specific">صفوف محددة</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">ملاحظات إضافية</label>
+                    <textarea id="activity-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات أو تعليمات خاصة بالنشاط"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-activity" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="activity-submit-text">إضافة النشاط</span>
+                        <div id="activity-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Schedule Modal -->
+    <div id="add-schedule-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[95vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="schedule-modal-title" class="text-2xl font-bold text-primary">إضافة جدول حصص جديد</h3>
+                <button id="close-schedule-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="schedule-form" class="space-y-6">
+                <!-- Grade and Section Selection -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الصف <span class="text-red-500">*</span></label>
+                        <select id="schedule-grade" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الصف</option>
+                            <option value="1">الصف الأول</option>
+                            <option value="2">الصف الثاني</option>
+                            <option value="3">الصف الثالث</option>
+                            <option value="4">الصف الرابع</option>
+                            <option value="5">الصف الخامس</option>
+                            <option value="6">الصف السادس</option>
+                            <option value="7">الصف السابع</option>
+                            <option value="8">الصف الثامن</option>
+                            <option value="9">الصف التاسع</option>
+                            <option value="10">الصف العاشر</option>
+                            <option value="11">الصف الحادي عشر</option>
+                            <option value="12">الصف الثاني عشر</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الشعبة <span class="text-red-500">*</span></label>
+                        <select id="schedule-section" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
+                            <option value="">اختر الشعبة</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">ملاحظات</label>
+                        <input type="text" id="schedule-notes" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="ملاحظات إضافية">
+                    </div>
+                </div>
+
+                <!-- Schedule Grid -->
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-4">جدول الحصص</h4>
+                    <div class="overflow-x-auto">
+                        <table class="schedule-table w-full">
+                            <thead>
+                                <tr>
+                                    <th>الوقت</th>
+                                    <th>الإثنين</th>
+                                    <th>الثلاثاء</th>
+                                    <th>الأربعاء</th>
+                                    <th>الخميس</th>
+                                    <th>الجمعة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-grid">
+                                <!-- Time slots will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div id="schedule-preview" class="hidden">
+                    <h4 class="text-lg font-semibold mb-4">معاينة الجدول</h4>
+                    <div class="schedule-preview">
+                        <div id="preview-content"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-schedule" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="button" id="preview-schedule-btn" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-eye ml-2"></i>
+                        معاينة
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="schedule-submit-text">حفظ الجدول</span>
+                        <div id="schedule-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="user-modal-title" class="text-2xl font-bold text-primary">إضافة مستخدم جديد</h3>
+                <button id="close-user-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <form id="user-form" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الاسم الكامل <span class="text-red-500">*</span></label>
+                        <input type="text" id="modal-user-name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="الاسم الكامل">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">اسم المستخدم <span class="text-red-500">*</span></label>
-                        <input type="text" id="user-username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <input type="text" id="modal-user-username" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="اسم المستخدم">
                     </div>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium mb-2">كلمة المرور <span class="text-red-500">*</span></label>
-                        <input type="password" id="user-password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <input type="password" id="modal-user-password" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base" placeholder="كلمة المرور">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">الدور <span class="text-red-500">*</span></label>
-                        <select id="user-role" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <select id="modal-user-role" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-base">
                             <option value="">اختر الدور</option>
                             <option value="teacher">معلم</option>
                             <option value="admin">مدير</option>
@@ -518,23 +1364,51 @@
                     </div>
                 </div>
 
-                <!-- Teacher Permissions -->
-                <div id="teacher-permissions-section" class="hidden">
-                    <label class="block text-sm font-medium mb-2">الصفوف المخصصة</label>
-                    <div class="grid grid-cols-3 gap-2" id="grades-list">
+                <!-- Teacher Permissions (only shown for teacher role) -->
+                <div id="teacher-permissions" class="hidden">
+                    <div class="user-permissions-card">
+                        <h4 class="text-lg font-semibold mb-4 text-primary">الصفوف المخصصة للمعلم</h4>
+                        <p class="text-sm text-gray-600 mb-4">اختر الصفوف التي يحق للمعلم الوصول إليها:</p>
+                        
+                        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6" id="grades-selection">
+                            <!-- Grade selection will be populated here -->
+                        </div>
+                        
+                        <div id="sections-selection" class="hidden">
+                            <h5 class="text-md font-semibold mb-3 text-primary">الشعب المخصصة</h5>
+                            <p class="text-sm text-gray-600 mb-3">اختر الشعب لكل صف:</p>
+                            <div id="sections-per-grade">
+                                <!-- Sections per grade will be populated here -->
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                            <div class="flex items-start">
+                                <i class="fas fa-shield-alt text-blue-600 ml-3 mt-1"></i>
+                                <div>
+                                    <h5 class="font-semibold text-blue-800 dark:text-blue-200">حماية الخصوصية</h5>
+                                    <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                                        سيتمكن المعلم من الوصول فقط إلى البيانات المخصصة له، ولن يتمكن من رؤية أو تعديل بيانات المعلمين الآخرين
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="flex justify-end space-x-3 space-x-reverse">
-                    <button type="button" id="cancel-user" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">إلغاء</button>
-                    <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90">حفظ</button>
+                <div class="flex justify-end space-x-4 space-x-reverse">
+                    <button type="button" id="cancel-user" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">إلغاء</button>
+                    <button type="submit" id="user-submit-btn" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+                        <span id="user-submit-text">إضافة المستخدم</span>
+                        <div id="user-submit-spinner" class="hidden loading-spinner mx-auto"></div>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Firebase Config
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC1aGBA8OapqeNy-5mi1bOzcDGEgP-Xsr0",
             authDomain: "thawarat-project.firebaseapp.com",
@@ -542,69 +1416,184 @@
             projectId: "thawarat-project",
             storageBucket: "thawarat-project.firebasestorage.app",
             messagingSenderId: "847469725368",
-            appId: "1:847469725368:web:550889ff05499c30f5564d"
+            appId: "1:847469725368:web:550889ff05499c30f5564d",
+            measurementId: "G-0G7JW998ES"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Global Variables
+        // Global variables
         let currentUser = null;
+        let allPlans = [];
+        let archivedPlans = [];
         let allUsers = [];
+        let allStudents = [];
+        let allActivities = [];
+        let allSchedules = [];
+        let currentExcelData = [];
+        let teacherSubjects = [];
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', init);
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
 
-        function init() {
+        function initializeApp() {
             setupEventListeners();
+            setDefaultDates();
+        }
+
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const attendanceDateInput = document.getElementById('attendance-date');
+            if (attendanceDateInput) attendanceDateInput.value = today;
+            
+            const mondayDate = getMondayOfCurrentWeek();
+            document.getElementById('plan-week-start').value = mondayDate;
+            
+            document.getElementById('activity-date').value = today;
+        }
+
+        function getMondayOfCurrentWeek() {
+            const today = new Date();
+            const day = today.getDay();
+            const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(today.setDate(diff));
+            return monday.toISOString().split('T')[0];
         }
 
         function setupEventListeners() {
-            // Login
+            // Login functionality
             document.getElementById('login-form').addEventListener('submit', handleLogin);
+            
+            // Logout functionality
             document.getElementById('logout-btn').addEventListener('click', handleLogout);
             
-            // Tabs
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.addEventListener('click', handleTabClick);
+            // Tab functionality
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', handleTabClick);
             });
             
-            // Users
+            // Plans functionality
+            document.getElementById('add-plan-btn').addEventListener('click', openPlanModal);
+            document.getElementById('close-plan-modal').addEventListener('click', closePlanModal);
+            document.getElementById('cancel-plan').addEventListener('click', closePlanModal);
+            document.getElementById('plan-form').addEventListener('submit', handlePlanSubmit);
+            
+            // Archived plans functionality
+            document.getElementById('view-archived-plans-btn').addEventListener('click', openArchivedPlansModal);
+            document.getElementById('close-archived-plans-modal').addEventListener('click', closeArchivedPlansModal);
+            
+            // Week start date change
+            document.getElementById('plan-week-start').addEventListener('change', updateWeekEnd);
+            
+            // Add subject button
+            document.getElementById('add-subject-btn').addEventListener('click', addSubjectInput);
+            
+            // Students functionality
+            document.getElementById('add-student-btn').addEventListener('click', openStudentModal);
+            document.getElementById('close-student-modal').addEventListener('click', closeStudentModal);
+            document.getElementById('cancel-student').addEventListener('click', closeStudentModal);
+            document.getElementById('student-form').addEventListener('submit', handleStudentSubmit);
+            document.getElementById('students-grade-select').addEventListener('change', filterStudents);
+            document.getElementById('students-section-select').addEventListener('change', filterStudents);
+            document.getElementById('students-search').addEventListener('input', filterStudents);
+            
+            // Attendance functionality
+            document.getElementById('mark-attendance-btn').addEventListener('click', openAttendanceModal);
+            document.getElementById('close-attendance-modal').addEventListener('click', closeAttendanceModal);
+            document.getElementById('cancel-attendance').addEventListener('click', closeAttendanceModal);
+            document.getElementById('load-attendance-students').addEventListener('click', loadAttendanceStudents);
+            document.getElementById('save-attendance').addEventListener('click', saveAttendance);
+            
+            // Activities functionality
+            document.getElementById('add-activity-btn').addEventListener('click', openActivityModal);
+            document.getElementById('close-activity-modal').addEventListener('click', closeActivityModal);
+            document.getElementById('cancel-activity').addEventListener('click', closeActivityModal);
+            document.getElementById('activity-form').addEventListener('submit', handleActivitySubmit);
+            
+            // Schedule functionality
+            document.getElementById('add-schedule-btn').addEventListener('click', openScheduleModal);
+            document.getElementById('close-schedule-modal').addEventListener('click', closeScheduleModal);
+            document.getElementById('cancel-schedule').addEventListener('click', closeScheduleModal);
+            document.getElementById('schedule-form').addEventListener('submit', handleScheduleSubmit);
+            document.getElementById('preview-schedule-btn').addEventListener('click', previewSchedule);
+            
+            // Users functionality
             document.getElementById('add-user-btn').addEventListener('click', openUserModal);
             document.getElementById('close-user-modal').addEventListener('click', closeUserModal);
             document.getElementById('cancel-user').addEventListener('click', closeUserModal);
             document.getElementById('user-form').addEventListener('submit', handleUserSubmit);
-            document.getElementById('user-role').addEventListener('change', toggleTeacherPermissions);
+            document.getElementById('modal-user-role').addEventListener('change', toggleTeacherPermissions);
+            document.getElementById('users-search').addEventListener('input', filterUsers);
         }
 
-        // ===== AUTH FUNCTIONS =====
+        // Authentication
         async function handleLogin(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('login-btn');
+            const loginText = document.getElementById('login-text');
+            const loginSpinner = document.getElementById('login-spinner');
             const loginError = document.getElementById('login-error');
             
+            // Show loading
+            loginText.classList.add('hidden');
+            loginSpinner.classList.remove('hidden');
+            loginError.classList.add('hidden');
+            
             try {
-                loginError.classList.add('hidden');
+                // Check credentials against Firebase
+                const usersSnapshot = await db.collection('users').where('username', '==', username).get();
                 
-                // Default admin
+                if (!usersSnapshot.empty) {
+                    const userData = usersSnapshot.docs[0].data();
+                    if (userData.password === password) {
+                        // Success
+                        currentUser = {
+                            id: usersSnapshot.docs[0].id,
+                            ...userData
+                        };
+                        
+                        document.getElementById('user-name').textContent = userData.name;
+                        document.getElementById('login-screen').classList.add('hidden');
+                        document.getElementById('dashboard').classList.remove('hidden');
+                        updateUIBasedOnUserRole();
+                        loadRealtimeData();
+                        return;
+                    }
+                }
+                
+                // Try default admin credentials if Firebase fails
                 if (username === 'admin' && password === 'admin123') {
                     currentUser = {
                         id: 'admin',
                         name: 'المدير',
                         username: 'admin',
-                        role: 'admin'
+                        role: 'admin',
+                        permissions: ['all'],
+                        sectionPermissions: ['all']
                     };
                     
-                    showDashboard();
+                    document.getElementById('user-name').textContent = 'المدير';
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    updateUIBasedOnUserRole();
                     loadRealtimeData();
                 } else {
-                    loginError.classList.remove('hidden');
+                    throw new Error('Invalid credentials');
                 }
+                
             } catch (error) {
                 console.error('Login error:', error);
                 loginError.classList.remove('hidden');
+            } finally {
+                loginText.classList.remove('hidden');
+                loginSpinner.classList.add('hidden');
             }
         }
 
@@ -615,31 +1604,67 @@
             document.getElementById('login-form').reset();
         }
 
-        function showDashboard() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+        function updateUIBasedOnUserRole() {
+            if (!currentUser) return;
             
-            document.getElementById('user-name').textContent = currentUser.name;
-            const badge = document.getElementById('user-role-badge');
-            badge.textContent = currentUser.role === 'admin' ? 'مدير' : 'معلم';
-            badge.className = currentUser.role === 'admin' 
-                ? 'mr-2 px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs'
-                : 'mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs';
+            const isAdmin = currentUser.role === 'admin';
+            const adminOnlyElements = document.querySelectorAll('.admin-only');
             
-            // Control admin tabs
-            if (currentUser.role !== 'admin') {
-                document.querySelectorAll('.admin-only').forEach(el => {
-                    el.style.display = 'none';
-                });
+            // Show/hide admin-only elements
+            adminOnlyElements.forEach(element => {
+                if (isAdmin) {
+                    element.classList.remove('teacher-hidden');
+                } else {
+                    element.classList.add('teacher-hidden');
+                }
+            });
+            
+            // Update user role badge
+            const roleBadge = document.getElementById('user-role-badge');
+            if (roleBadge) {
+                roleBadge.textContent = isAdmin ? 'مدير' : 'معلم';
+                roleBadge.className = isAdmin ? 
+                    'mr-2 px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs' :
+                    'mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs';
             }
+            
+            populateGradeSelects();
         }
 
-        // ===== TAB FUNCTIONS =====
+        function populateGradeSelects() {
+            const gradeNames = {
+                'grade1': 'الصف الأول', 'grade2': 'الصف الثاني', 'grade3': 'الصف الثالث', 'grade4': 'الصف الرابع',
+                'grade5': 'الصف الخامس', 'grade6': 'الصف السادس', 'grade7': 'الصف السابع', 'grade8': 'الصف الثامن',
+                'grade9': 'الصف التاسع', 'grade10': 'الصف العاشر', 'grade11': 'الصف الحادي عشر', 'grade12': 'الصف الثاني عشر'
+            };
+
+            const gradeSelects = [
+                'students-grade-select', 'plan-grade', 'student-grade', 'attendance-grade'
+            ];
+
+            gradeSelects.forEach(selectId => {
+                const selectElement = document.getElementById(selectId);
+                if (selectElement) {
+                    const firstOption = selectElement.children[0];
+                    selectElement.innerHTML = '';
+                    selectElement.appendChild(firstOption);
+
+                    Object.entries(gradeNames).forEach(([gradeId, gradeName]) => {
+                        const option = document.createElement('option');
+                        option.value = gradeId;
+                        option.textContent = gradeName;
+                        selectElement.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // Tab functionality
         function handleTabClick() {
             const tabName = this.getAttribute('data-tab');
             
-            if (tabName === 'users' && currentUser.role !== 'admin') {
-                showErrorMessage('لا توجد صلاحية');
+            if (tabName === 'users' && currentUser && currentUser.role !== 'admin') {
+                showErrorMessage('ليس لديك صلاحية للوصول إلى إدارة المستخدمين');
                 return;
             }
             
@@ -647,32 +1672,1721 @@
         }
 
         function switchTab(tabName) {
-            // Update buttons
+            if (tabName === 'users' && currentUser && currentUser.role !== 'admin') {
+                return;
+            }
+            
+            // Update button states
             document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active', 'bg-gray-200');
-                btn.classList.add('dark:bg-gray-700');
+                btn.classList.remove('active');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700');
             });
             
-            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-                activeBtn.classList.remove('bg-gray-200', 'dark:bg-gray-700');
+            const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+                activeButton.classList.remove('bg-gray-200', 'dark:bg-gray-700');
             }
             
             // Update content
-            document.querySelectorAll('.tab-content').forEach(section => {
-                section.classList.add('hidden');
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
             });
             
-            const targetSection = document.getElementById(`${tabName}-tab`);
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
+            const targetTab = document.getElementById(tabName + '-tab');
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
             }
         }
 
-        // ===== USER MANAGEMENT =====
+        // Real-time data loading
+        function loadRealtimeData() {
+            loadPlansRealtime();
+            loadUsersRealtime();
+            loadStudentsRealtime();
+            loadActivitiesRealtime();
+            loadSchedulesRealtime();
+        }
+
+        function loadPlansRealtime() {
+            let query = db.collection('weeklyPlans');
+            
+            // Filter by user permissions if not admin
+            if (currentUser && currentUser.role !== 'admin') {
+                if (currentUser.permissions && !currentUser.permissions.includes('all')) {
+                    query = query.where('grade', 'in', currentUser.permissions);
+                }
+            }
+            
+            query.onSnapshot((snapshot) => {
+                allPlans = [];
+                archivedPlans = [];
+                snapshot.forEach((doc) => {
+                    const planData = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                    
+                    if (planData.archived) {
+                        archivedPlans.push(planData);
+                    } else {
+                        allPlans.push(planData);
+                    }
+                });
+                
+                updatePlansCount();
+                displayPlans();
+                hideLoading('plans');
+            });
+        }
+
+        function loadStudentsRealtime() {
+            let query = db.collection('students');
+            
+            // Filter by user permissions if not admin
+            if (currentUser && currentUser.role !== 'admin') {
+                if (currentUser.permissions && !currentUser.permissions.includes('all')) {
+                    query = query.where('grade', 'in', currentUser.permissions);
+                }
+            }
+            
+            query.onSnapshot((snapshot) => {
+                allStudents = [];
+                snapshot.forEach((doc) => {
+                    allStudents.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                updateStudentsCount();
+                displayStudents();
+                hideLoading('students');
+            });
+        }
+
+        function loadActivitiesRealtime() {
+            db.collection('activities').onSnapshot((snapshot) => {
+                allActivities = [];
+                snapshot.forEach((doc) => {
+                    allActivities.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                updateActivitiesCount();
+                displayActivities();
+                hideLoading('activities');
+            });
+        }
+
+        function loadUsersRealtime() {
+            db.collection('users').onSnapshot((snapshot) => {
+                allUsers = [];
+                snapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    if (userData.role === 'teacher') {
+                        allUsers.push({
+                            id: doc.id,
+                            ...userData
+                        });
+                    }
+                });
+                
+                updateTeachersCount();
+                displayUsers();
+                hideLoading('users');
+            }, (error) => {
+                console.error('Error loading users:', error);
+                hideLoading('users');
+                showErrorMessage('حدث خطأ في تحميل بيانات المستخدمين');
+            });
+        }
+
+        function loadSchedulesRealtime() {
+            db.collection('schedules').onSnapshot((snapshot) => {
+                allSchedules = [];
+                snapshot.forEach((doc) => {
+                    allSchedules.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                updateSchedulesCount();
+                displaySchedules();
+                hideLoading('schedules');
+            });
+        }
+
+        // Archive functionality
+        function openArchivedPlansModal() {
+            document.getElementById('archived-plans-modal').classList.remove('hidden');
+            document.getElementById('archived-plans-modal').classList.add('flex');
+            displayArchivedPlans();
+        }
+
+        function closeArchivedPlansModal() {
+            document.getElementById('archived-plans-modal').classList.add('hidden');
+            document.getElementById('archived-plans-modal').classList.remove('flex');
+        }
+
+        function displayArchivedPlans() {
+            const archivedPlansGrid = document.getElementById('archived-plans-grid');
+            const emptyState = document.getElementById('archived-plans-empty');
+            const loadingState = document.getElementById('archived-plans-loading');
+            
+            loadingState.classList.add('hidden');
+            
+            if (archivedPlans.length === 0) {
+                archivedPlansGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            archivedPlansGrid.classList.remove('hidden');
+            
+            archivedPlansGrid.innerHTML = '';
+            
+            // Sort archived plans by week start date (newest first)
+            archivedPlans.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
+            
+            archivedPlans.forEach(plan => {
+                const planCard = createArchivedPlanCard(plan);
+                archivedPlansGrid.appendChild(planCard);
+            });
+        }
+
+        function createArchivedPlanCard(plan) {
+            const card = document.createElement('div');
+            card.className = 'archived-plan rounded-lg p-6 shadow-lg';
+            
+            const subjectsCount = plan.subjects ? plan.subjects.length : 0;
+            const canManage = currentUser.role === 'admin' || plan.createdBy === currentUser.id;
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold text-white">${getGradeName(plan.grade)} (جميع الشعب)</h4>
+                        <p class="text-white opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
+                        <p class="text-white opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
+                        <div class="mt-2">
+                            <span class="bg-white bg-opacity-20 text-white px-2 py-1 rounded-full text-xs">
+                                <i class="fas fa-archive ml-1"></i>
+                                مؤرشفة
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="viewWeeklyPlan('${plan.id}')" class="text-white hover:text-blue-200 p-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${canManage ? `
+                            <button onclick="unarchiveWeeklyPlan('${plan.id}')" class="text-white hover:text-green-200 p-2" title="إلغاء الأرشفة">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button onclick="deleteWeeklyPlan('${plan.id}')" class="text-white hover:text-red-200 p-2">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="text-sm text-white opacity-90">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-user ml-2"></i>
+                        <span>أنشأه: ${plan.createdByName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock ml-2"></i>
+                        <span>آخر تحديث: ${plan.updatedAt ? formatDateArabic(plan.updatedAt.toDate()) : 'غير محدد'}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        async function archiveWeeklyPlan(planId) {
+            showConfirmDialog('هل أنت متأكد من أرشفة هذه الخطة؟ سيتم إخفاؤها من العرض الرئيسي.', async () => {
+                try {
+                    await db.collection('weeklyPlans').doc(planId).update({
+                        archived: true,
+                        archivedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        archivedBy: currentUser.id
+                    });
+                    showSuccessMessage('تم أرشفة الخطة الأسبوعية بنجاح');
+                } catch (error) {
+                    console.error('Error archiving weekly plan:', error);
+                    showErrorMessage('حدث خطأ في أرشفة الخطة الأسبوعية');
+                }
+            });
+        }
+
+        async function unarchiveWeeklyPlan(planId) {
+            showConfirmDialog('هل أنت متأكد من إلغاء أرشفة هذه الخطة؟ ستظهر مرة أخرى في العرض الرئيسي.', async () => {
+                try {
+                    await db.collection('weeklyPlans').doc(planId).update({
+                        archived: false,
+                        unarchivedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        unarchivedBy: currentUser.id
+                    });
+                    showSuccessMessage('تم إلغاء أرشفة الخطة الأسبوعية بنجاح');
+                } catch (error) {
+                    console.error('Error unarchiving weekly plan:', error);
+                    showErrorMessage('حدث خطأ في إلغاء أرشفة الخطة الأسبوعية');
+                }
+            });
+        }
+
+        function shouldShowArchiveButton(plan) {
+            if (!plan.weekEnd) return false;
+            
+            const today = new Date();
+            const weekEnd = new Date(plan.weekEnd);
+            today.setHours(0, 0, 0, 0);
+            weekEnd.setHours(23, 59, 59, 999);
+            
+            // Show archive button if the week has ended
+            return today > weekEnd;
+        }
+
+        // Weekly Plan Management Functions
+        function openPlanModal() {
+            document.getElementById('add-plan-modal').classList.remove('hidden');
+            document.getElementById('add-plan-modal').classList.add('flex');
+            
+            // Reset subjects list
+            teacherSubjects = [];
+            updateSubjectsList();
+            updateWeeklyPlanTable();
+        }
+
+        function closePlanModal() {
+            document.getElementById('add-plan-modal').classList.add('hidden');
+            document.getElementById('add-plan-modal').classList.remove('flex');
+            document.getElementById('plan-form').reset();
+            teacherSubjects = [];
+        }
+
+        function updateWeekEnd() {
+            const startDate = document.getElementById('plan-week-start').value;
+            if (startDate) {
+                const start = new Date(startDate);
+                const end = new Date(start);
+                end.setDate(start.getDate() + 4); // Friday
+                
+                document.getElementById('plan-week-end').value = end.toISOString().split('T')[0];
+                
+                // Update week title
+                const weekTitle = document.getElementById('week-title');
+                const gradeName = getGradeName(document.getElementById('plan-grade').value) || 'الصف';
+                weekTitle.textContent = `خطة أسبوع ${gradeName} (جميع الشعب) من ${formatDateArabic(start)} إلى ${formatDateArabic(end)}`;
+                
+                // Update day headers
+                updateDayHeaders(start);
+            }
+        }
+
+        function updateDayHeaders(startDate) {
+            const days = ['الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+            const headers = ['monday-header', 'tuesday-header', 'wednesday-header', 'thursday-header', 'friday-header'];
+            
+            headers.forEach((headerId, index) => {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + index);
+                const header = document.getElementById(headerId);
+                if (header) {
+                    header.innerHTML = `${days[index]}<br><small>${formatDateShort(date)}</small>`;
+                }
+            });
+        }
+
+        function addSubjectInput() {
+            const subjectName = prompt('اسم المادة:');
+            if (subjectName && subjectName.trim()) {
+                teacherSubjects.push({
+                    id: Date.now().toString(),
+                    name: subjectName.trim(),
+                    teacherId: currentUser.id,
+                    teacherName: currentUser.name
+                });
+                updateSubjectsList();
+                updateWeeklyPlanTable();
+            }
+        }
+
+        function updateSubjectsList() {
+            const container = document.getElementById('teacher-subjects-list');
+            container.innerHTML = '';
+            
+            teacherSubjects.forEach((subject, index) => {
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'subject-input-group';
+                subjectDiv.innerHTML = `
+                    <input type="text" value="${subject.name}" 
+                           onchange="updateSubjectName(${index}, this.value)"
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-base">
+                    <span class="teacher-protection-badge">${subject.teacherName}</span>
+                    <button type="button" onclick="removeSubject(${index})" 
+                            class="text-red-600 hover:text-red-800 px-2">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                container.appendChild(subjectDiv);
+            });
+        }
+
+        function updateSubjectName(index, newName) {
+            if (teacherSubjects[index]) {
+                teacherSubjects[index].name = newName;
+                updateWeeklyPlanTable();
+            }
+        }
+
+        function removeSubject(index) {
+            teacherSubjects.splice(index, 1);
+            updateSubjectsList();
+            updateWeeklyPlanTable();
+        }
+
+        function updateWeeklyPlanTable() {
+            const tbody = document.getElementById('weekly-plan-body');
+            tbody.innerHTML = '';
+            
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            
+            teacherSubjects.forEach((subject, subjectIndex) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">
+                        ${subject.name}
+                        <br><small class="teacher-protection-badge">${subject.teacherName}</small>
+                    </td>
+                    ${days.map(day => `
+                        <td class="weekly-plan-cell border border-gray-300 ${subject.teacherId === currentUser.id ? 'editable-cell' : 'protected-cell'}">
+                            <textarea data-subject="${subject.id}" data-day="${day}" 
+                                     placeholder="موضوع الدرس والأنشطة..."
+                                     ${subject.teacherId !== currentUser.id ? 'readonly' : ''}
+                                     class="w-full h-20 p-2 border-none bg-transparent resize-none text-sm"></textarea>
+                        </td>
+                    `).join('')}
+                `;
+                tbody.appendChild(row);
+            });
+            
+            if (teacherSubjects.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6" class="border border-gray-300 px-3 py-8 text-center text-gray-500">
+                        يرجى إضافة المواد التي تدرسها أولاً
+                    </td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        async function handlePlanSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('plan-submit-text');
+            const submitSpinner = document.getElementById('plan-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const grade = document.getElementById('plan-grade').value;
+                const weekStart = document.getElementById('plan-week-start').value;
+                const weekEnd = document.getElementById('plan-week-end').value;
+                
+                if (!grade || !weekStart) {
+                    showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
+                    return;
+                }
+                
+                if (teacherSubjects.length === 0) {
+                    showErrorMessage('يرجى إضافة مادة واحدة على الأقل');
+                    return;
+                }
+                
+                // Collect weekly plan data
+                const weeklyData = {};
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+                
+                teacherSubjects.forEach(subject => {
+                    weeklyData[subject.id] = {
+                        subjectName: subject.name,
+                        teacherId: subject.teacherId,
+                        teacherName: subject.teacherName,
+                        days: {}
+                    };
+                    
+                    days.forEach(day => {
+                        const textarea = document.querySelector(`textarea[data-subject="${subject.id}"][data-day="${day}"]`);
+                        if (textarea) {
+                            weeklyData[subject.id].days[day] = textarea.value;
+                        }
+                    });
+                });
+                
+                const planData = {
+                    grade: grade,
+                    weekStart: weekStart,
+                    weekEnd: weekEnd,
+                    weeklyData: weeklyData,
+                    subjects: teacherSubjects,
+                    createdBy: currentUser.id,
+                    createdByName: currentUser.name,
+                    archived: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('weeklyPlans').add(planData);
+                showSuccessMessage('تمت إضافة الخطة الأسبوعية بنجاح');
+                closePlanModal();
+                
+            } catch (error) {
+                console.error('Error saving weekly plan:', error);
+                showErrorMessage('حدث خطأ في حفظ الخطة الأسبوعية');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        function displayPlans() {
+            const plansGrid = document.getElementById('plans-grid');
+            const emptyState = document.getElementById('plans-empty');
+            
+            if (allPlans.length === 0) {
+                plansGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            plansGrid.classList.remove('hidden');
+            
+            plansGrid.innerHTML = '';
+            
+            // Sort plans by week start date (newest first)
+            allPlans.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
+            
+            allPlans.forEach(plan => {
+                const planCard = createWeeklyPlanCard(plan);
+                plansGrid.appendChild(planCard);
+            });
+        }
+
+        function createWeeklyPlanCard(plan) {
+            const card = document.createElement('div');
+            card.className = 'weekly-plan-card';
+            
+            const subjectsCount = plan.subjects ? plan.subjects.length : 0;
+            const canEdit = currentUser.role === 'admin' || plan.createdBy === currentUser.id;
+            const showArchive = shouldShowArchiveButton(plan) && canEdit;
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold">${getGradeName(plan.grade)} (جميع الشعب)</h4>
+                        <p class="opacity-90 text-sm">من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}</p>
+                        <p class="opacity-75 text-sm mt-1">${subjectsCount} مادة</p>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="viewWeeklyPlan('${plan.id}')" class="text-white hover:text-blue-200 p-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${canEdit ? `
+                            <button onclick="editWeeklyPlan('${plan.id}')" class="text-white hover:text-yellow-200 p-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            ${showArchive ? `
+                                <button onclick="archiveWeeklyPlan('${plan.id}')" class="text-white hover:text-orange-200 p-2" title="أرشفة الخطة">
+                                    <i class="fas fa-archive"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="deleteWeeklyPlan('${plan.id}')" class="text-white hover:text-red-200 p-2">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="text-sm opacity-90">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-user ml-2"></i>
+                        <span>أنشأه: ${plan.createdByName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock ml-2"></i>
+                        <span>آخر تحديث: ${plan.updatedAt ? formatDateArabic(plan.updatedAt.toDate()) : 'غير محدد'}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function viewWeeklyPlan(planId) {
+            // Look in both active and archived plans
+            const plan = allPlans.find(p => p.id === planId) || archivedPlans.find(p => p.id === planId);
+            if (!plan) {
+                showErrorMessage('لم يتم العثور على الخطة');
+                return;
+            }
+            
+            // Create view modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary">
+                            خطة أسبوع ${getGradeName(plan.grade)} (جميع الشعب)
+                            ${plan.archived ? '<span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-sm mr-2">مؤرشفة</span>' : ''}
+                        </h3>
+                        <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mb-4 p-4 ${plan.archived ? 'bg-orange-50 dark:bg-orange-900' : 'bg-blue-50 dark:bg-blue-900'} rounded-lg">
+                        <p class="${plan.archived ? 'text-orange-800 dark:text-orange-200' : 'text-blue-800 dark:text-blue-200'} font-medium">
+                            من ${formatDateArabic(new Date(plan.weekStart))} إلى ${formatDateArabic(new Date(plan.weekEnd))}
+                        </p>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        ${generateWeeklyPlanViewTable(plan)}
+                    </div>
+                </div>
+            `;
+            
+            modal.querySelector('.close-view-modal').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            document.body.appendChild(modal);
+        }
+
+        function generateWeeklyPlanViewTable(plan) {
+            if (!plan.subjects || plan.subjects.length === 0) {
+                return '<p class="text-center text-gray-500 py-8">لا توجد مواد في هذه الخطة</p>';
+            }
+            
+            const days = [
+                {key: 'monday', name: 'الإثنين'},
+                {key: 'tuesday', name: 'الثلاثاء'},
+                {key: 'wednesday', name: 'الأربعاء'},
+                {key: 'thursday', name: 'الخميس'},
+                {key: 'friday', name: 'الجمعة'}
+            ];
+            
+            let tableHTML = `
+                <table class="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-primary text-white">
+                            <th class="border border-gray-300 px-3 py-2">المادة</th>
+                            ${days.map(day => `<th class="border border-gray-300 px-3 py-2">${day.name}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            plan.subjects.forEach(subject => {
+                const subjectData = plan.weeklyData[subject.id] || {};
+                tableHTML += `
+                    <tr>
+                        <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">
+                            ${subject.name}
+                            <br><small class="teacher-protection-badge">${subject.teacherName}</small>
+                        </td>
+                        ${days.map(day => `
+                            <td class="border border-gray-300 px-3 py-2 text-sm">
+                                ${subjectData.days ? (subjectData.days[day.key] || '-') : '-'}
+                            </td>
+                        `).join('')}
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table>';
+            return tableHTML;
+        }
+
+        function editWeeklyPlan(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (!plan) {
+                showErrorMessage('لم يتم العثور على الخطة');
+                return;
+            }
+            
+            // Check permissions
+            if (currentUser.role !== 'admin' && plan.createdBy !== currentUser.id) {
+                showErrorMessage('ليس لديك صلاحية لتعديل هذه الخطة');
+                return;
+            }
+            
+            // Fill form with existing data
+            document.getElementById('plan-grade').value = plan.grade;
+            document.getElementById('plan-week-start').value = plan.weekStart;
+            document.getElementById('plan-week-end').value = plan.weekEnd;
+            
+            // Load subjects
+            teacherSubjects = plan.subjects || [];
+            
+            // Update modal title
+            document.getElementById('plan-modal-title').textContent = 'تعديل الخطة الأسبوعية';
+            document.getElementById('plan-submit-text').textContent = 'حفظ التعديلات';
+            
+            // Store plan ID for update
+            document.getElementById('plan-form').dataset.editId = planId;
+            
+            openPlanModal();
+            
+            // Fill the table with existing data
+            setTimeout(() => {
+                updateWeekEnd();
+                updateSubjectsList();
+                updateWeeklyPlanTable();
+                
+                // Fill existing data
+                if (plan.weeklyData) {
+                    Object.entries(plan.weeklyData).forEach(([subjectId, subjectData]) => {
+                        if (subjectData.days) {
+                            Object.entries(subjectData.days).forEach(([day, content]) => {
+                                const textarea = document.querySelector(`textarea[data-subject="${subjectId}"][data-day="${day}"]`);
+                                if (textarea) {
+                                    textarea.value = content;
+                                }
+                            });
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        async function deleteWeeklyPlan(planId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذه الخطة الأسبوعية؟', async () => {
+                try {
+                    await db.collection('weeklyPlans').doc(planId).delete();
+                    showSuccessMessage('تم حذف الخطة الأسبوعية بنجاح');
+                } catch (error) {
+                    console.error('Error deleting weekly plan:', error);
+                    showErrorMessage('حدث خطأ في حذف الخطة الأسبوعية');
+                }
+            });
+        }
+
+        // Student Management Functions
+        function openStudentModal() {
+            document.getElementById('student-modal-title').textContent = 'إضافة طالب جديد';
+            document.getElementById('student-submit-text').textContent = 'إضافة الطالب';
+            delete document.getElementById('student-form').dataset.editId;
+            
+            document.getElementById('add-student-modal').classList.remove('hidden');
+            document.getElementById('add-student-modal').classList.add('flex');
+        }
+
+        function closeStudentModal() {
+            document.getElementById('add-student-modal').classList.add('hidden');
+            document.getElementById('add-student-modal').classList.remove('flex');
+            document.getElementById('student-form').reset();
+            delete document.getElementById('student-form').dataset.editId;
+        }
+
+        async function handleStudentSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const editId = form.dataset.editId;
+            const isEdit = !!editId;
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('student-submit-text');
+            const submitSpinner = document.getElementById('student-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const studentData = {
+                    studentId: document.getElementById('student-id').value,
+                    name: document.getElementById('student-name').value,
+                    grade: document.getElementById('student-grade').value,
+                    section: document.getElementById('student-section').value,
+                    parentPhone: document.getElementById('parent-phone').value,
+                    parentName: document.getElementById('parent-name').value || '',
+                    notes: document.getElementById('student-notes').value || '',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                if (isEdit) {
+                    await db.collection('students').doc(editId).update(studentData);
+                    showSuccessMessage('تم تحديث بيانات الطالب بنجاح');
+                } else {
+                    studentData.createdBy = currentUser.id;
+                    studentData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('students').add(studentData);
+                    showSuccessMessage('تمت إضافة الطالب بنجاح');
+                }
+                
+                closeStudentModal();
+                
+            } catch (error) {
+                console.error('Error saving student:', error);
+                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' الطالب');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        function displayStudents() {
+            const filteredStudents = filterStudentsByGradeAndSection();
+            const studentsGrid = document.getElementById('students-grid');
+            const emptyState = document.getElementById('students-empty');
+            
+            if (filteredStudents.length === 0) {
+                studentsGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            studentsGrid.classList.remove('hidden');
+            
+            studentsGrid.innerHTML = '';
+            filteredStudents.forEach(student => {
+                const studentCard = createStudentCard(student);
+                studentsGrid.appendChild(studentCard);
+            });
+        }
+
+        function createStudentCard(student) {
+            const card = document.createElement('div');
+            card.className = 'student-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">${student.name}</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">رقم الاسيس: ${student.studentId}</p>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="bg-primary text-white px-2 py-1 rounded-full text-xs">${getGradeName(student.grade)}</span>
+                        <span class="section-badge text-xs mr-2">${student.section}</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-user-tie ml-2 text-primary"></i>
+                        <span>${student.parentName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-phone ml-2 text-primary"></i>
+                        <span dir="ltr">${student.parentPhone || 'غير محدد'}</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                        <label class="text-sm font-medium">حالة الحضور:</label>
+                        <select class="attendance-status-select border rounded px-2 py-1 text-sm" data-student-id="${student.id}">
+                            <option value="present">حاضر</option>
+                            <option value="absent">غائب</option>
+                            <option value="late">متأخر</option>
+                        </select>
+                    </div>
+                    <div class="absence-reason hidden mt-2">
+                        <input type="text" placeholder="سبب الغياب..." class="absence-reason-input w-full" data-student-id="${student.id}">
+                        <button onclick="sendAbsenceWhatsApp('${student.id}')" class="whatsapp-btn text-white px-3 py-1 rounded text-sm mt-2">
+                            <i class="fab fa-whatsapp ml-1"></i>
+                            إرسال لولي الأمر
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div class="flex space-x-2 space-x-reverse">
+                        <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteStudent('${student.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    ${student.parentPhone ? `
+                        <button onclick="sendWhatsAppToParent('${student.parentPhone}', '${student.name}')" 
+                                class="whatsapp-btn text-white px-3 py-1 rounded text-sm hover:bg-opacity-90 transition-colors">
+                            <i class="fab fa-whatsapp ml-1"></i>
+                            واتساب
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Add event listener for attendance status change
+            const attendanceSelect = card.querySelector('.attendance-status-select');
+            const absenceReasonDiv = card.querySelector('.absence-reason');
+            
+            attendanceSelect.addEventListener('change', function() {
+                if (this.value === 'absent') {
+                    absenceReasonDiv.classList.remove('hidden');
+                } else {
+                    absenceReasonDiv.classList.add('hidden');
+                }
+            });
+            
+            return card;
+        }
+
+        function editStudent(studentId) {
+            const student = allStudents.find(s => s.id === studentId);
+            if (!student) return;
+            
+            // Fill form with existing data
+            document.getElementById('student-id').value = student.studentId;
+            document.getElementById('student-name').value = student.name;
+            document.getElementById('student-grade').value = student.grade;
+            document.getElementById('student-section').value = student.section;
+            document.getElementById('parent-phone').value = student.parentPhone;
+            document.getElementById('parent-name').value = student.parentName || '';
+            document.getElementById('student-notes').value = student.notes || '';
+            
+            // Update modal title and form behavior
+            document.getElementById('student-modal-title').textContent = 'تعديل بيانات الطالب';
+            document.getElementById('student-submit-text').textContent = 'حفظ التعديلات';
+            
+            // Store student ID for update
+            document.getElementById('student-form').dataset.editId = studentId;
+            
+            openStudentModal();
+        }
+
+        function filterStudentsByGradeAndSection() {
+            const selectedGrade = document.getElementById('students-grade-select').value;
+            const selectedSection = document.getElementById('students-section-select').value;
+            const searchTerm = document.getElementById('students-search').value.toLowerCase();
+            
+            let filtered = allStudents;
+            
+            if (selectedGrade) {
+                filtered = filtered.filter(student => student.grade === selectedGrade);
+            }
+            
+            if (selectedSection) {
+                filtered = filtered.filter(student => student.section === selectedSection);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(student => 
+                    student.name.toLowerCase().includes(searchTerm) ||
+                    student.studentId.toLowerCase().includes(searchTerm) ||
+                    (student.parentName && student.parentName.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            return filtered;
+        }
+
+        function filterStudents() {
+            displayStudents();
+        }
+
+        async function deleteStudent(studentId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا الطالب؟', async () => {
+                try {
+                    await db.collection('students').doc(studentId).delete();
+                    showSuccessMessage('تم حذف الطالب بنجاح');
+                } catch (error) {
+                    console.error('Error deleting student:', error);
+                    showErrorMessage('حدث خطأ في حذف الطالب');
+                }
+            });
+        }
+
+        function sendWhatsAppToParent(phoneNumber, studentName) {
+            const message = encodeURIComponent(`مرحباً، هذه رسالة من مدرسة الثروات الوطنية الخاصة بخصوص الطالب ${studentName}.`);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function sendAbsenceWhatsApp(studentId) {
+            const student = allStudents.find(s => s.id === studentId);
+            if (!student || !student.parentPhone) {
+                showErrorMessage('لا يوجد رقم هاتف لولي الأمر');
+                return;
+            }
+            
+            const reasonInput = document.querySelector(`input[data-student-id="${studentId}"]`);
+            const reason = reasonInput ? reasonInput.value : '';
+            
+            const message = encodeURIComponent(
+                `مرحباً، نود إعلامكم بأن الطالب/ة ${student.name} غائب/ة اليوم.\n` +
+                (reason ? `سبب الغياب: ${reason}\n` : '') +
+                `يرجى التواصل معنا لأي استفسار.\n\n` +
+                `مدرسة الثروات الوطنية الخاصة`
+            );
+            
+            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Attendance Management Functions
+        function openAttendanceModal() {
+            document.getElementById('attendance-modal').classList.remove('hidden');
+            document.getElementById('attendance-modal').classList.add('flex');
+        }
+
+        function closeAttendanceModal() {
+            document.getElementById('attendance-modal').classList.add('hidden');
+            document.getElementById('attendance-modal').classList.remove('flex');
+            document.getElementById('attendance-students-grid').classList.add('hidden');
+        }
+
+        async function loadAttendanceStudents() {
+            const grade = document.getElementById('attendance-grade').value;
+            const section = document.getElementById('attendance-section').value;
+            const date = document.getElementById('attendance-date').value;
+            
+            if (!grade || !section || !date) {
+                showErrorMessage('يرجى اختيار الصف والشعبة والتاريخ');
+                return;
+            }
+            
+            try {
+                const studentsQuery = await db.collection('students')
+                    .where('grade', '==', grade)
+                    .where('section', '==', section)
+                    .get();
+                
+                const studentsGrid = document.getElementById('attendance-students-grid');
+                studentsGrid.innerHTML = '';
+                
+                if (studentsQuery.empty) {
+                    showErrorMessage('لا يوجد طلاب في هذا الصف والشعبة');
+                    return;
+                }
+                
+                studentsQuery.forEach(doc => {
+                    const student = { id: doc.id, ...doc.data() };
+                    const studentCard = createAttendanceStudentCard(student, date);
+                    studentsGrid.appendChild(studentCard);
+                });
+                
+                studentsGrid.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error loading students:', error);
+                showErrorMessage('حدث خطأ في تحميل قائمة الطلاب');
+            }
+        }
+
+        function createAttendanceStudentCard(student, date) {
+            const card = document.createElement('div');
+            card.className = 'bg-white border rounded-lg p-4';
+            
+            card.innerHTML = `
+                <div class="text-center mb-3">
+                    <h4 class="font-semibold">${student.name}</h4>
+                    <p class="text-sm text-gray-600">${student.studentId}</p>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="flex items-center">
+                        <input type="radio" name="attendance-${student.id}" value="present" class="ml-2" checked>
+                        <span class="attendance-status present">حاضر</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="attendance-${student.id}" value="absent" class="ml-2">
+                        <span class="attendance-status absent">غائب</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="radio" name="attendance-${student.id}" value="late" class="ml-2">
+                        <span class="attendance-status late">متأخر</span>
+                    </label>
+                </div>
+                
+                <div class="absence-reason-section hidden mt-3">
+                    <input type="text" placeholder="سبب الغياب..." class="w-full px-2 py-1 border rounded text-sm" data-student-id="${student.id}">
+                </div>
+            `;
+            
+            // Add event listeners for attendance status change
+            const radioButtons = card.querySelectorAll('input[type="radio"]');
+            const absenceReasonSection = card.querySelector('.absence-reason-section');
+            
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'absent') {
+                        absenceReasonSection.classList.remove('hidden');
+                    } else {
+                        absenceReasonSection.classList.add('hidden');
+                    }
+                });
+            });
+            
+            return card;
+        }
+
+        async function saveAttendance() {
+            const grade = document.getElementById('attendance-grade').value;
+            const section = document.getElementById('attendance-section').value;
+            const date = document.getElementById('attendance-date').value;
+            
+            const submitText = document.getElementById('attendance-submit-text');
+            const submitSpinner = document.getElementById('attendance-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const attendanceRecords = [];
+                const studentsGrid = document.getElementById('attendance-students-grid');
+                const studentCards = studentsGrid.querySelectorAll('.bg-white');
+                
+                studentCards.forEach(card => {
+                    const studentName = card.querySelector('h4').textContent;
+                    const studentId = card.querySelector('p').textContent;
+                    const checkedRadio = card.querySelector('input[type="radio"]:checked');
+                    const status = checkedRadio.value;
+                    const reasonInput = card.querySelector('input[data-student-id]');
+                    const reason = reasonInput ? reasonInput.value : '';
+                    
+                    attendanceRecords.push({
+                        studentId: studentId,
+                        studentName: studentName,
+                        status: status,
+                        reason: reason,
+                        grade: grade,
+                        section: section,
+                        date: date,
+                        recordedBy: currentUser.id,
+                        recordedByName: currentUser.name,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                
+                // Save all attendance records
+                const batch = db.batch();
+                attendanceRecords.forEach(record => {
+                    const docRef = db.collection('attendance').doc();
+                    batch.set(docRef, record);
+                });
+                
+                await batch.commit();
+                
+                showSuccessMessage('تم حفظ الحضور بنجاح');
+                closeAttendanceModal();
+                
+            } catch (error) {
+                console.error('Error saving attendance:', error);
+                showErrorMessage('حدث خطأ في حفظ الحضور');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        // Activity Management Functions
+        function openActivityModal() {
+            document.getElementById('add-activity-modal').classList.remove('hidden');
+            document.getElementById('add-activity-modal').classList.add('flex');
+        }
+
+        function closeActivityModal() {
+            document.getElementById('add-activity-modal').classList.add('hidden');
+            document.getElementById('add-activity-modal').classList.remove('flex');
+            document.getElementById('activity-form').reset();
+        }
+
+        async function handleActivitySubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('activity-submit-text');
+            const submitSpinner = document.getElementById('activity-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const activityData = {
+                    name: document.getElementById('activity-name').value,
+                    description: document.getElementById('activity-description').value,
+                    date: document.getElementById('activity-date').value,
+                    time: document.getElementById('activity-time').value,
+                    location: document.getElementById('activity-location').value || '',
+                    target: document.getElementById('activity-target').value,
+                    notes: document.getElementById('activity-notes').value || '',
+                    createdBy: currentUser.id,
+                    archived: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('activities').add(activityData);
+                showSuccessMessage('تمت إضافة النشاط بنجاح');
+                closeActivityModal();
+                
+            } catch (error) {
+                console.error('Error saving activity:', error);
+                showErrorMessage('حدث خطأ في إضافة النشاط');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        function displayActivities() {
+            const activitiesGrid = document.getElementById('activities-grid');
+            const emptyState = document.getElementById('activities-empty');
+            
+            if (allActivities.length === 0) {
+                activitiesGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            activitiesGrid.classList.remove('hidden');
+            
+            activitiesGrid.innerHTML = '';
+            
+            // Sort activities by date (newest first)
+            allActivities.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            allActivities.forEach(activity => {
+                const activityCard = createActivityCard(activity);
+                activitiesGrid.appendChild(activityCard);
+            });
+        }
+
+        function createActivityCard(activity) {
+            const card = document.createElement('div');
+            card.className = 'activity-card bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg';
+            
+            const status = getActivityStatus(activity.date);
+            const statusClass = getActivityStatusClass(status);
+            const statusText = getActivityStatusText(status);
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">${activity.name}</h4>
+                        <div class="flex items-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="editActivity('${activity.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 p-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteActivity('${activity.id}')" class="text-red-600 hover:text-red-800 dark:text-red-400 p-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">${activity.description}</p>
+                
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-calendar ml-2 text-primary"></i>
+                        <span>${formatDate(activity.date)}</span>
+                    </div>
+                    <div class="flex items-center text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-clock ml-2 text-primary"></i>
+                        <span>${activity.time}</span>
+                    </div>
+                    ${activity.location ? `
+                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt ml-2 text-primary"></i>
+                            <span>${activity.location}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function editActivity(activityId) {
+            const activity = allActivities.find(a => a.id === activityId);
+            if (!activity) return;
+            
+            // Fill form with existing data
+            document.getElementById('activity-name').value = activity.name;
+            document.getElementById('activity-description').value = activity.description;
+            document.getElementById('activity-date').value = activity.date;
+            document.getElementById('activity-time').value = activity.time;
+            document.getElementById('activity-location').value = activity.location || '';
+            document.getElementById('activity-target').value = activity.target;
+            document.getElementById('activity-notes').value = activity.notes || '';
+            
+            // Update modal title and form behavior
+            document.getElementById('activity-modal-title').textContent = 'تعديل النشاط';
+            document.getElementById('activity-submit-text').textContent = 'حفظ التعديلات';
+            
+            // Store activity ID for update
+            document.getElementById('activity-form').dataset.editId = activityId;
+            
+            openActivityModal();
+        }
+
+        function getActivityStatus(activityDate) {
+            const today = new Date();
+            const activity = new Date(activityDate);
+            
+            today.setHours(0, 0, 0, 0);
+            activity.setHours(0, 0, 0, 0);
+            
+            if (activity < today) return 'completed';
+            if (activity.getTime() === today.getTime()) return 'active';
+            return 'upcoming';
+        }
+
+        function getActivityStatusClass(status) {
+            switch (status) {
+                case 'completed': return 'activity-status-completed text-white';
+                case 'active': return 'activity-status-active text-white';
+                case 'upcoming': return 'activity-status-upcoming text-white';
+                default: return 'bg-gray-500 text-white';
+            }
+        }
+
+        function getActivityStatusText(status) {
+            switch (status) {
+                case 'completed': return 'مكتمل';
+                case 'active': return 'جاري اليوم';
+                case 'upcoming': return 'قادم';
+                default: return 'غير محدد';
+            }
+        }
+
+        async function deleteActivity(activityId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا النشاط؟', async () => {
+                try {
+                    await db.collection('activities').doc(activityId).delete();
+                    showSuccessMessage('تم حذف النشاط بنجاح');
+                } catch (error) {
+                    console.error('Error deleting activity:', error);
+                    showErrorMessage('حدث خطأ في حذف النشاط');
+                }
+            });
+        }
+
+        // Schedule Management Functions
+        function openScheduleModal() {
+            if (!document.getElementById('schedule-form').dataset.editId) {
+                document.getElementById('schedule-submit-text').textContent = 'حفظ الجدول';
+                document.getElementById('schedule-modal-title').textContent = 'إضافة جدول حصص جديد';
+            }
+            
+            generateScheduleGrid();
+            document.getElementById('add-schedule-modal').classList.remove('hidden');
+            document.getElementById('add-schedule-modal').classList.add('flex');
+        }
+
+        function closeScheduleModal() {
+            document.getElementById('add-schedule-modal').classList.add('hidden');
+            document.getElementById('add-schedule-modal').classList.remove('flex');
+            document.getElementById('schedule-form').reset();
+            delete document.getElementById('schedule-form').dataset.editId;
+            
+            document.getElementById('schedule-submit-text').textContent = 'حفظ الجدول';
+            document.getElementById('schedule-modal-title').textContent = 'إضافة جدول حصص جديد';
+            document.getElementById('schedule-preview').classList.add('hidden');
+        }
+
+        function generateScheduleGrid() {
+            const scheduleGrid = document.getElementById('schedule-grid');
+            
+            const timeSlots = [
+                { time: '8:00 - 8:45', isBreak: false, breakType: null },
+                { time: '8:45 - 9:30', isBreak: false, breakType: null },
+                { time: '9:30 - 9:45', isBreak: true, breakType: 'استراحة' },
+                { time: '9:45 - 10:30', isBreak: false, breakType: null },
+                { time: '10:30 - 11:15', isBreak: false, breakType: null },
+                { time: '11:15 - 12:00', isBreak: false, breakType: null },
+                { time: '12:00 - 12:15', isBreak: true, breakType: 'فسحة' },
+                { time: '12:15 - 1:00', isBreak: false, breakType: null },
+                { time: '1:00 - 1:45', isBreak: false, breakType: null },
+                { time: '1:45 - 2:30', isBreak: false, breakType: null }
+            ];
+
+            scheduleGrid.innerHTML = '';
+
+            timeSlots.forEach((slot, index) => {
+                const row = document.createElement('tr');
+                
+                if (slot.isBreak) {
+                    const breakColor = slot.breakType === 'استراحة' ? 'bg-orange-100' : 'bg-yellow-100';
+                    row.className = `break-row ${breakColor}`;
+                    row.innerHTML = `
+                        <td class="font-bold">${slot.time}</td>
+                        <td colspan="5" class="text-center font-bold text-lg">${slot.breakType}</td>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <td class="font-medium">${slot.time}</td>
+                        <td><input type="text" class="w-full p-2 border rounded" data-day="monday" data-slot="${index}" placeholder="المادة"></td>
+                        <td><input type="text" class="w-full p-2 border rounded" data-day="tuesday" data-slot="${index}" placeholder="المادة"></td>
+                        <td><input type="text" class="w-full p-2 border rounded" data-day="wednesday" data-slot="${index}" placeholder="المادة"></td>
+                        <td><input type="text" class="w-full p-2 border rounded" data-day="thursday" data-slot="${index}" placeholder="المادة"></td>
+                        <td><input type="text" class="w-full p-2 border rounded" data-day="friday" data-slot="${index}" placeholder="المادة"></td>
+                    `;
+                }
+                
+                scheduleGrid.appendChild(row);
+            });
+        }
+
+        function previewSchedule() {
+            const scheduleData = collectScheduleData();
+            
+            if (scheduleData.length === 0) {
+                showErrorMessage('يرجى إدخال مواد في الجدول أولاً');
+                return;
+            }
+            
+            const previewContent = document.getElementById('preview-content');
+            const previewTable = generateSchedulePreviewTable(scheduleData);
+            previewContent.innerHTML = previewTable;
+            
+            document.getElementById('schedule-preview').classList.remove('hidden');
+        }
+
+        function generateSchedulePreviewTable(scheduleData) {
+            const timeSlots = [
+                { time: '8:00 - 8:45', index: 0 },
+                { time: '8:45 - 9:30', index: 1 },
+                { time: '9:30 - 9:45', break: 'استراحة' },
+                { time: '9:45 - 10:30', index: 3 },
+                { time: '10:30 - 11:15', index: 4 },
+                { time: '11:15 - 12:00', index: 5 },
+                { time: '12:00 - 12:15', break: 'فسحة' },
+                { time: '12:15 - 1:00', index: 7 },
+                { time: '1:00 - 1:45', index: 8 },
+                { time: '1:45 - 2:30', index: 9 }
+            ];
+
+            let tableHTML = `
+                <table class="schedule-table w-full">
+                    <thead>
+                        <tr>
+                            <th>الوقت</th>
+                            <th>الإثنين</th>
+                            <th>الثلاثاء</th>
+                            <th>الأربعاء</th>
+                            <th>الخميس</th>
+                            <th>الجمعة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+
+            timeSlots.forEach(slot => {
+                if (slot.break) {
+                    tableHTML += `
+                        <tr class="break-row">
+                            <td>${slot.time}</td>
+                            <td colspan="5" class="text-center font-bold">${slot.break}</td>
+                        </tr>
+                    `;
+                } else {
+                    tableHTML += `<tr>
+                        <td class="font-medium">${slot.time}</td>
+                        ${days.map(day => {
+                            const dayData = scheduleData.find(item => item.day === day && item.timeSlot === slot.index);
+                            return `<td>${dayData ? dayData.subject : '-'}</td>`;
+                        }).join('')}
+                    </tr>`;
+                }
+            });
+
+            tableHTML += '</tbody></table>';
+            return tableHTML;
+        }
+
+        function collectScheduleData() {
+            const scheduleData = [];
+            const inputs = document.querySelectorAll('#schedule-grid input[data-day]');
+            
+            inputs.forEach(input => {
+                const day = input.dataset.day;
+                const timeSlot = parseInt(input.dataset.slot);
+                const subject = input.value.trim();
+                
+                if (subject) {
+                    scheduleData.push({
+                        day: day,
+                        timeSlot: timeSlot,
+                        subject: subject
+                    });
+                }
+            });
+            
+            return scheduleData;
+        }
+
+        async function handleScheduleSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const editId = form.dataset.editId;
+            const isEdit = !!editId;
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('schedule-submit-text');
+            const submitSpinner = document.getElementById('schedule-submit-spinner');
+            
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            
+            try {
+                const grade = document.getElementById('schedule-grade').value;
+                const section = document.getElementById('schedule-section').value;
+                const notes = document.getElementById('schedule-notes').value;
+                const scheduleData = collectScheduleData();
+                
+                if (scheduleData.length === 0) {
+                    showErrorMessage('يرجى إدخال مواد في الجدول');
+                    return;
+                }
+                
+                const data = {
+                    grade: parseInt(grade),
+                    section: section,
+                    gradeName: `الصف ${grade}`,
+                    notes: notes || '',
+                    schedule: scheduleData,
+                    createdBy: currentUser.id,
+                    createdByName: currentUser.name,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                if (isEdit) {
+                    await db.collection('schedules').doc(editId).update(data);
+                    showSuccessMessage('تم تحديث الجدول بنجاح');
+                } else {
+                    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('schedules').add(data);
+                    showSuccessMessage('تم إضافة الجدول بنجاح');
+                }
+                
+                closeScheduleModal();
+                
+            } catch (error) {
+                console.error('Error saving schedule:', error);
+                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' الجدول');
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        function displaySchedules() {
+            const schedulesGrid = document.getElementById('schedules-grid');
+            const emptyState = document.getElementById('schedules-empty');
+            
+            if (allSchedules.length === 0) {
+                schedulesGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            schedulesGrid.classList.remove('hidden');
+            
+            schedulesGrid.innerHTML = '';
+            
+            // Sort schedules by grade
+            allSchedules.sort((a, b) => (a.grade || 0) - (b.grade || 0));
+            
+            allSchedules.forEach(schedule => {
+                const scheduleCard = createScheduleCard(schedule);
+                schedulesGrid.appendChild(scheduleCard);
+            });
+        }
+
+        function createScheduleCard(schedule) {
+            const card = document.createElement('div');
+            card.className = 'schedule-card';
+            
+            const scheduleCount = schedule.schedule ? schedule.schedule.length : 0;
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold">${schedule.gradeName || `الصف ${schedule.grade}`} - الشعبة ${schedule.section}</h4>
+                        <p class="opacity-90">${scheduleCount} حصة مجدولة</p>
+                        ${schedule.notes ? `<p class="text-sm opacity-75 mt-2">${schedule.notes}</p>` : ''}
+                    </div>
+                    <div class="flex space-x-1 space-x-reverse">
+                        <button onclick="editSchedule('${schedule.id}')" class="text-white hover:text-yellow-200 p-2">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="viewSchedule('${schedule.id}')" class="text-white hover:text-blue-200 p-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="deleteSchedule('${schedule.id}')" class="text-white hover:text-red-200 p-2">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="text-sm opacity-90">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-user ml-2"></i>
+                        <span>أنشأه: ${schedule.createdByName || 'غير محدد'}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock ml-2"></i>
+                        <span>آخر تحديث: ${schedule.updatedAt ? formatDate(schedule.updatedAt.toDate()) : 'غير محدد'}</span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function editSchedule(scheduleId) {
+            const schedule = allSchedules.find(s => s.id === scheduleId);
+            if (!schedule) {
+                showErrorMessage('لم يتم العثور على الجدول');
+                return;
+            }
+            
+            // Fill the form with existing data
+            document.getElementById('schedule-grade').value = schedule.grade;
+            document.getElementById('schedule-section').value = schedule.section;
+            document.getElementById('schedule-notes').value = schedule.notes || '';
+            
+            // Generate grid and fill with data
+            generateScheduleGrid();
+            
+            setTimeout(() => {
+                if (schedule.schedule) {
+                    schedule.schedule.forEach(item => {
+                        const input = document.querySelector(`input[data-day="${item.day}"][data-slot="${item.timeSlot}"]`);
+                        if (input) {
+                            input.value = item.subject;
+                        }
+                    });
+                }
+            }, 100);
+            
+            // Change form mode to edit
+            document.getElementById('schedule-submit-text').textContent = 'حفظ التعديلات';
+            document.getElementById('schedule-modal-title').textContent = 'تعديل جدول الحصص';
+            
+            // Store schedule ID for updating
+            document.getElementById('schedule-form').dataset.editId = scheduleId;
+            
+            openScheduleModal();
+        }
+
+        function viewSchedule(scheduleId) {
+            const schedule = allSchedules.find(s => s.id === scheduleId);
+            if (!schedule) {
+                showErrorMessage('لم يتم العثور على الجدول');
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-primary">جدول حصص ${schedule.gradeName || `الصف ${schedule.grade}`} - الشعبة ${schedule.section}</h3>
+                        <button class="close-view-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="schedule-preview">
+                        <table class="schedule-table w-full">
+                            <thead>
+                                <tr>
+                                    <th>الوقت</th>
+                                    <th>الإثنين</th>
+                                    <th>الثلاثاء</th>
+                                    <th>الأربعاء</th>
+                                    <th>الخميس</th>
+                                    <th>الجمعة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${generateSchedulePreviewTable(schedule.schedule || [])}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    ${schedule.notes ? `
+                        <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <h5 class="font-bold mb-2">ملاحظات:</h5>
+                            <p>${schedule.notes}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            modal.querySelector('.close-view-modal').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            document.body.appendChild(modal);
+        }
+
+        async function deleteSchedule(scheduleId) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا الجدول؟', async () => {
+                try {
+                    await db.collection('schedules').doc(scheduleId).delete();
+                    showSuccessMessage('تم حذف الجدول بنجاح');
+                } catch (error) {
+                    console.error('Error deleting schedule:', error);
+                    showErrorMessage('حدث خطأ في حذف الجدول');
+                }
+            });
+        }
+
+        // User Management Functions - المشكلة الموقع الثاني - الإصلاح
         function openUserModal() {
-            populateGradesList();
+            if (currentUser && currentUser.role !== 'admin') {
+                showErrorMessage('ليس لديك صلاحية لإدارة المستخدمين');
+                return;
+            }
+            
+            populateGradesSelection();
+            
             document.getElementById('add-user-modal').classList.remove('hidden');
             document.getElementById('add-user-modal').classList.add('flex');
         }
@@ -681,172 +3395,478 @@
             document.getElementById('add-user-modal').classList.add('hidden');
             document.getElementById('add-user-modal').classList.remove('flex');
             document.getElementById('user-form').reset();
+            document.getElementById('teacher-permissions').classList.add('hidden');
+            document.getElementById('sections-selection').classList.add('hidden');
+            delete document.getElementById('user-form').dataset.editId;
         }
 
         function toggleTeacherPermissions() {
-            const role = document.getElementById('user-role').value;
-            const section = document.getElementById('teacher-permissions-section');
+            const role = document.getElementById('modal-user-role').value;
+            const teacherPermissions = document.getElementById('teacher-permissions');
             
             if (role === 'teacher') {
-                section.classList.remove('hidden');
+                teacherPermissions.classList.remove('hidden');
             } else {
-                section.classList.add('hidden');
+                teacherPermissions.classList.add('hidden');
+                document.getElementById('sections-selection').classList.add('hidden');
             }
         }
 
-        function populateGradesList() {
-            const container = document.getElementById('grades-list');
-            container.innerHTML = '';
+        function populateGradesSelection() {
+            const gradesContainer = document.getElementById('grades-selection');
+            const grades = [
+                { id: 'grade1', name: 'الأول' },
+                { id: 'grade2', name: 'الثاني' },
+                { id: 'grade3', name: 'الثالث' },
+                { id: 'grade4', name: 'الرابع' },
+                { id: 'grade5', name: 'الخامس' },
+                { id: 'grade6', name: 'السادس' },
+                { id: 'grade7', name: 'السابع' },
+                { id: 'grade8', name: 'الثامن' },
+                { id: 'grade9', name: 'التاسع' },
+                { id: 'grade10', name: 'العاشر' },
+                { id: 'grade11', name: 'الحادي عشر' },
+                { id: 'grade12', name: 'الثاني عشر' }
+            ];
             
-            const grades = Array.from({length: 12}, (_, i) => ({
-                id: `grade${i+1}`,
-                name: `الصف ${i+1}`
-            }));
+            gradesContainer.innerHTML = '';
             
             grades.forEach(grade => {
-                const label = document.createElement('label');
-                label.className = 'flex items-center';
-                label.innerHTML = `
-                    <input type="checkbox" name="grades" value="${grade.id}" class="ml-2">
-                    <span>${grade.name}</span>
+                const gradeCard = document.createElement('div');
+                gradeCard.className = 'grade-selector';
+                gradeCard.innerHTML = `
+                    <input type="checkbox" id="grade-${grade.id}" name="selectedGrades" value="${grade.id}" class="ml-2">
+                    <label for="grade-${grade.id}" class="cursor-pointer">الصف ${grade.name}</label>
                 `;
-                container.appendChild(label);
+                
+                const checkbox = gradeCard.querySelector('input');
+                checkbox.addEventListener('change', updateSectionsSelection);
+                
+                gradesContainer.appendChild(gradeCard);
+            });
+        }
+
+        function updateSectionsSelection() {
+            const selectedGrades = Array.from(document.querySelectorAll('input[name="selectedGrades"]:checked'))
+                .map(input => input.value);
+            
+            const sectionsContainer = document.getElementById('sections-per-grade');
+            const sectionsSelection = document.getElementById('sections-selection');
+            
+            if (selectedGrades.length === 0) {
+                sectionsSelection.classList.add('hidden');
+                return;
+            }
+            
+            sectionsSelection.classList.remove('hidden');
+            sectionsContainer.innerHTML = '';
+            
+            selectedGrades.forEach(gradeId => {
+                const gradeName = getGradeName(gradeId);
+                const gradeSection = document.createElement('div');
+                gradeSection.className = 'mb-4 p-3 border rounded-lg';
+                gradeSection.innerHTML = `
+                    <h6 class="font-semibold mb-2">${gradeName}</h6>
+                    <div class="flex flex-wrap gap-2" id="sections-${gradeId}">
+                        ${[1,2,3,4,5,6,7,8,9,10].map(section => `
+                            <label class="section-selector cursor-pointer">
+                                <input type="checkbox" name="sections-${gradeId}" value="${section}" class="hidden">
+                                <span class="section-display">${section}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                
+                // Add click handlers for section selection
+                gradeSection.querySelectorAll('.section-selector').forEach(selector => {
+                    selector.addEventListener('click', function() {
+                        const checkbox = this.querySelector('input');
+                        const display = this.querySelector('.section-display');
+                        
+                        checkbox.checked = !checkbox.checked;
+                        
+                        if (checkbox.checked) {
+                            this.classList.add('selected');
+                        } else {
+                            this.classList.remove('selected');
+                        }
+                    });
+                });
+                
+                sectionsContainer.appendChild(gradeSection);
             });
         }
 
         async function handleUserSubmit(e) {
             e.preventDefault();
             
-            const name = document.getElementById('user-name').value.trim();
-            const username = document.getElementById('user-username').value.trim();
-            const password = document.getElementById('user-password').value;
-            const role = document.getElementById('user-role').value;
+            const form = e.target;
+            const editId = form.dataset.editId;
+            const isEdit = !!editId;
             
-            if (!name || !username || !password || !role) {
+            const submitBtn = document.getElementById('user-submit-btn');
+            const submitText = document.getElementById('user-submit-text');
+            const submitSpinner = document.getElementById('user-submit-spinner');
+            
+            const name = document.getElementById('modal-user-name').value.trim();
+            const username = document.getElementById('modal-user-username').value.trim();
+            const password = document.getElementById('modal-user-password').value;
+            const role = document.getElementById('modal-user-role').value;
+            
+            if (!name || !username || (!isEdit && !password) || !role) {
                 showErrorMessage('يرجى ملء جميع الحقول المطلوبة');
                 return;
             }
             
+            // Show loading
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+            submitBtn.disabled = true;
+            
             try {
-                // Check if username exists
-                const existing = await db.collection('users').where('username', '==', username).get();
-                if (!existing.empty) {
-                    showErrorMessage('اسم المستخدم موجود بالفعل');
-                    return;
+                // Check if username already exists (only for new users or changed usernames)
+                if (!isEdit) {
+                    const existingUser = await db.collection('users').where('username', '==', username).get();
+                    if (!existingUser.empty) {
+                        showErrorMessage('اسم المستخدم موجود بالفعل');
+                        return;
+                    }
                 }
                 
-                const permissions = role === 'teacher' 
-                    ? Array.from(document.querySelectorAll('input[name="grades"]:checked')).map(cb => cb.value)
-                    : ['all'];
-                
-                await db.collection('users').add({
+                const userData = {
                     name: name,
                     username: username,
-                    password: password,
                     role: role,
-                    permissions: permissions,
                     status: 'active',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
                 
-                showSuccessMessage('تم إضافة المستخدم بنجاح');
+                if (!isEdit && password) {
+                    userData.password = password;
+                }
+                
+                if (role === 'teacher') {
+                    // Collect selected grades
+                    const selectedGrades = Array.from(document.querySelectorAll('input[name="selectedGrades"]:checked'))
+                        .map(input => input.value);
+                    
+                    // Collect selected sections for each grade
+                    const sectionPermissions = {};
+                    selectedGrades.forEach(gradeId => {
+                        const selectedSections = Array.from(document.querySelectorAll(`input[name="sections-${gradeId}"]:checked`))
+                            .map(input => input.value);
+                        if (selectedSections.length > 0) {
+                            sectionPermissions[gradeId] = selectedSections;
+                        }
+                    });
+                    
+                    userData.permissions = selectedGrades.length > 0 ? selectedGrades : ['all'];
+                    userData.sectionPermissions = Object.keys(sectionPermissions).length > 0 ? sectionPermissions : { all: ['all'] };
+                } else {
+                    userData.permissions = ['all'];
+                    userData.sectionPermissions = { all: ['all'] };
+                }
+                
+                if (isEdit) {
+                    await db.collection('users').doc(editId).update(userData);
+                    showSuccessMessage('تم تحديث المستخدم بنجاح');
+                } else {
+                    userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('users').add(userData);
+                    showSuccessMessage('تمت إضافة المستخدم بنجاح');
+                }
+                
                 closeUserModal();
                 
             } catch (error) {
-                console.error('Error:', error);
-                showErrorMessage('حدث خطأ: ' + error.message);
+                console.error('Error saving user:', error);
+                showErrorMessage('حدث خطأ في ' + (isEdit ? 'تحديث' : 'إضافة') + ' المستخدم: ' + error.message);
+            } finally {
+                submitText.classList.remove('hidden');
+                submitSpinner.classList.add('hidden');
+                submitBtn.disabled = false;
             }
         }
 
         function displayUsers() {
             const tableBody = document.getElementById('users-table-body');
-            const container = document.getElementById('users-table-container');
-            const empty = document.getElementById('users-empty');
+            const tableContainer = document.getElementById('users-table-container');
+            const emptyState = document.getElementById('users-empty');
             
-            if (allUsers.length === 0) {
-                container.classList.add('hidden');
-                empty.classList.remove('hidden');
-                document.getElementById('users-loading').classList.add('hidden');
+            const searchTerm = document.getElementById('users-search').value.toLowerCase();
+            const filteredUsers = allUsers.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) ||
+                user.username.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredUsers.length === 0) {
+                tableContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
                 return;
             }
             
-            empty.classList.add('hidden');
-            document.getElementById('users-loading').classList.add('hidden');
-            container.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            tableContainer.classList.remove('hidden');
             
             tableBody.innerHTML = '';
-            
-            allUsers.forEach(user => {
-                const permissionsText = Array.isArray(user.permissions) 
-                    ? user.permissions.map(p => p === 'all' ? 'جميع' : p).join(', ')
-                    : 'جميع';
+            filteredUsers.forEach(user => {
+                const permissions = Array.isArray(user.permissions) ? 
+                    user.permissions.map(p => getGradeName(p)).join(', ') : 'جميع الصفوف';
+                    
+                const sectionPermissions = user.sectionPermissions && typeof user.sectionPermissions === 'object' ?
+                    Object.entries(user.sectionPermissions).map(([grade, sections]) => 
+                        `${getGradeName(grade)}: ${Array.isArray(sections) ? sections.join(',') : 'الكل'}`
+                    ).join(' | ') : 'جميع الشعب';
                 
                 const row = tableBody.insertRow();
+                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
                 row.innerHTML = `
-                    <td class="border border-gray-300 px-4 py-2">${user.name}</td>
-                    <td class="border border-gray-300 px-4 py-2">${user.username}</td>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
-                            ${user.role === 'teacher' ? 'معلم' : 'مدير'}
-                        </span>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${user.name}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">${user.username}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">${user.role === 'teacher' ? 'معلم' : 'مدير'}</span>
                     </td>
-                    <td class="border border-gray-300 px-4 py-2 text-sm">${permissionsText}</td>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">نشط</span>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-xs">${permissions}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2 text-xs">${sectionPermissions}</td>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">${user.status === 'active' ? 'نشط' : 'معلق'}</span>
                     </td>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <button onclick="deleteUser('${user.id}')" class="text-red-600 hover:text-red-800">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                        <div class="flex space-x-1 space-x-reverse">
+                            <button onclick="editUser('${user.id}')" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteUser('${user.id}')" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 `;
             });
         }
 
-        function loadRealtimeData() {
-            db.collection('users').onSnapshot(snapshot => {
-                allUsers = [];
-                snapshot.forEach(doc => {
-                    if (doc.data().role === 'teacher') {
-                        allUsers.push({
-                            id: doc.id,
-                            ...doc.data()
+        function editUser(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Fill form with existing data
+            document.getElementById('modal-user-name').value = user.name;
+            document.getElementById('modal-user-username').value = user.username;
+            document.getElementById('modal-user-password').value = '';
+            document.getElementById('modal-user-role').value = user.role;
+            
+            // Update modal title and form behavior
+            document.getElementById('user-modal-title').textContent = 'تعديل المستخدم';
+            document.getElementById('user-submit-text').textContent = 'حفظ التعديلات';
+            
+            // Show teacher permissions if teacher
+            toggleTeacherPermissions();
+            
+            if (user.role === 'teacher') {
+                // Set selected grades
+                setTimeout(() => {
+                    if (user.permissions && Array.isArray(user.permissions)) {
+                        user.permissions.forEach(gradeId => {
+                            const checkbox = document.getElementById(`grade-${gradeId}`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                            }
                         });
+                        
+                        updateSectionsSelection();
+                        
+                        // Set selected sections
+                        setTimeout(() => {
+                            if (user.sectionPermissions && typeof user.sectionPermissions === 'object') {
+                                Object.entries(user.sectionPermissions).forEach(([gradeId, sections]) => {
+                                    if (Array.isArray(sections)) {
+                                        sections.forEach(section => {
+                                            const sectionCheckbox = document.querySelector(`input[name="sections-${gradeId}"][value="${section}"]`);
+                                            if (sectionCheckbox) {
+                                                sectionCheckbox.checked = true;
+                                                sectionCheckbox.closest('.section-selector').classList.add('selected');
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }, 100);
                     }
-                });
-                displayUsers();
-            });
+                }, 100);
+            }
+            
+            // Store user ID for update
+            document.getElementById('user-form').dataset.editId = userId;
+            
+            openUserModal();
+        }
+
+        function filterUsers() {
+            displayUsers();
         }
 
         async function deleteUser(userId) {
-            if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+            showConfirmDialog('هل أنت متأكد من حذف هذا المستخدم؟', async () => {
                 try {
                     await db.collection('users').doc(userId).delete();
-                    showSuccessMessage('تم الحذف بنجاح');
+                    showSuccessMessage('تم حذف المستخدم بنجاح');
                 } catch (error) {
-                    showErrorMessage('حدث خطأ: ' + error.message);
+                    console.error('Error deleting user:', error);
+                    showErrorMessage('حدث خطأ في حذف المستخدم');
                 }
+            });
+        }
+
+        // Utility functions
+        function getGradeName(gradeId) {
+            const gradeNames = {
+                'grade1': 'الأول', 'grade2': 'الثاني', 'grade3': 'الثالث', 'grade4': 'الرابع',
+                'grade5': 'الخامس', 'grade6': 'السادس', 'grade7': 'السابع', 'grade8': 'الثامن',
+                'grade9': 'التاسع', 'grade10': 'العاشر', 'grade11': 'الحادي عشر', 'grade12': 'الثاني عشر',
+                'all': 'جميع الصفوف'
+            };
+            return gradeNames[gradeId] || gradeId;
+        }
+
+        function formatDate(dateString) {
+            if (typeof dateString === 'string') {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ar-AE', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            } else if (dateString && typeof dateString.toLocaleDateString === 'function') {
+                return dateString.toLocaleDateString('ar-AE', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            return 'غير محدد';
+        }
+
+        function formatDateArabic(date) {
+            return date.toLocaleDateString('ar-AE', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function formatDateShort(date) {
+            return date.toLocaleDateString('ar-AE', {
+                month: 'numeric',
+                day: 'numeric'
+            });
+        }
+
+        function hideLoading(section) {
+            const loadingElement = document.getElementById(`${section}-loading`);
+            if (loadingElement) {
+                loadingElement.classList.add('hidden');
             }
         }
 
-        // ===== UTILITY FUNCTIONS =====
-        function showSuccessMessage(msg) {
-            const div = document.createElement('div');
-            div.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-            div.innerHTML = `<i class="fas fa-check ml-2"></i>${msg}`;
-            document.body.appendChild(div);
-            setTimeout(() => div.remove(), 3000);
+        // Statistics updates
+        function updatePlansCount() {
+            document.getElementById('current-week-plans-count').textContent = allPlans.length;
         }
 
-        function showErrorMessage(msg) {
-            const div = document.createElement('div');
-            div.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-            div.innerHTML = `<i class="fas fa-exclamation ml-2"></i>${msg}`;
-            document.body.appendChild(div);
-            setTimeout(() => div.remove(), 5000);
+        function updateTeachersCount() {
+            document.getElementById('teachers-count').textContent = allUsers.length;
         }
 
+        function updateStudentsCount() {
+            document.getElementById('students-count').textContent = allStudents.length;
+        }
+
+        function updateActivitiesCount() {
+            document.getElementById('activities-count').textContent = allActivities.filter(a => !a.archived).length;
+        }
+
+        function updateSchedulesCount() {
+            document.getElementById('schedules-count').textContent = allSchedules.length;
+        }
+
+        function showSuccessMessage(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'fixed top-4 right-4 success-message text-white px-6 py-3 rounded-lg shadow-lg z-50 slide-in-right';
+            alertDiv.innerHTML = `
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        function showErrorMessage(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'fixed top-4 right-4 error-message text-white px-6 py-3 rounded-lg shadow-lg z-50 slide-in-right';
+            alertDiv.innerHTML = `
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function showConfirmDialog(message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">${message}</p>
+                    <div class="flex justify-end space-x-3 space-x-reverse">
+                        <button class="cancel-btn px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">إلغاء</button>
+                        <button class="confirm-btn px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded">تأكيد</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.querySelector('.cancel-btn').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modal.querySelector('.confirm-btn').addEventListener('click', () => {
+                modal.remove();
+                onConfirm();
+            });
+            
+            document.body.appendChild(modal);
+        }
+
+        // Global functions for button clicks
+        window.editSchedule = editSchedule;
+        window.viewSchedule = viewSchedule;
+        window.deleteSchedule = deleteSchedule;
+        window.editStudent = editStudent;
+        window.deleteStudent = deleteStudent;
+        window.editActivity = editActivity;
+        window.deleteActivity = deleteActivity;
+        window.editUser = editUser;
         window.deleteUser = deleteUser;
+        window.sendWhatsAppToParent = sendWhatsAppToParent;
+        window.sendAbsenceWhatsApp = sendAbsenceWhatsApp;
+        window.switchTab = switchTab;
+        window.viewWeeklyPlan = viewWeeklyPlan;
+        window.editWeeklyPlan = editWeeklyPlan;
+        window.deleteWeeklyPlan = deleteWeeklyPlan;
+        window.archiveWeeklyPlan = archiveWeeklyPlan;
+        window.unarchiveWeeklyPlan = unarchiveWeeklyPlan;
+        window.updateSubjectName = updateSubjectName;
+        window.removeSubject = removeSubject;
     </script>
 </body>
 </html>
