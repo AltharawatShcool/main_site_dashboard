@@ -377,7 +377,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Weekly Plan Specific Styles */
         .weekly-plan-card {
             background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
@@ -455,6 +454,15 @@
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
         }
+
+        .teacher-access-warning {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -468,7 +476,6 @@
             }
         }
         
-        // Dark mode support
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
@@ -527,7 +534,6 @@
         <header class="bg-white dark:bg-gray-800 shadow-lg">
             <nav class="container mx-auto px-4 py-3">
                 <div class="flex items-center justify-between">
-                    <!-- Logo and School Name -->
                     <div class="flex items-center space-x-4 space-x-reverse">
                         <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                             <i class="fas fa-graduation-cap text-white text-xl"></i>
@@ -538,13 +544,11 @@
                         </div>
                     </div>
                     
-                    <!-- User Menu -->
                     <div class="flex items-center space-x-4 space-x-reverse">
                         <div class="hidden md:block">
                             <span class="text-sm text-gray-600 dark:text-gray-400">مرحباً، </span>
                             <span id="user-name" class="font-semibold">المدير</span>
                             <span id="user-role-badge" class="mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"></span>
-                            <span id="user-section-badge" class="hidden mr-2 section-badge text-xs"></span>
                         </div>
                         <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
                             <i class="fas fa-sign-out-alt ml-2"></i>
@@ -624,6 +628,18 @@
         <section id="plans-tab" class="tab-content py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div id="teacher-access-notice" class="hidden teacher-access-warning">
+                        <div class="flex items-start">
+                            <i class="fas fa-lock ml-3 mt-1"></i>
+                            <div>
+                                <h5 class="font-semibold mb-1">حماية الخصوصية</h5>
+                                <p class="text-sm">
+                                    أنت تعرض فقط خططك الأسبوعية. لا يمكنك عرض أو تعديل خطط المعلمين الآخرين.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                         <div>
                             <h3 class="text-2xl font-bold text-primary mb-2">إدارة الخطط الأسبوعية</h3>
@@ -851,7 +867,7 @@
             </div>
         </section>
 
-        <!-- Users Management Tab -->
+        <!-- Users Management Tab - الآن مخفي عن المعلمين فقط -->
         <section id="users-tab" class="tab-content admin-only hidden py-8">
             <div class="container mx-auto px-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -1327,7 +1343,7 @@
         </div>
     </div>
 
-    <!-- Add User Modal -->
+    <!-- Add User Modal - للمدير فقط -->
     <div id="add-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
@@ -1368,7 +1384,7 @@
                 <div id="teacher-permissions" class="hidden">
                     <div class="user-permissions-card">
                         <h4 class="text-lg font-semibold mb-4 text-primary">الصفوف المخصصة للمعلم</h4>
-                        <p class="text-sm text-gray-600 mb-4">اختر الصفوف التي يحق للمعلم الوصول إليها:</p>
+                        <p class="text-sm text-gray-600 mb-4">اختر الصفوف التي يحق للمعلم الوصول إليها والعمل فيها فقط:</p>
                         
                         <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6" id="grades-selection">
                             <!-- Grade selection will be populated here -->
@@ -1376,7 +1392,7 @@
                         
                         <div id="sections-selection" class="hidden">
                             <h5 class="text-md font-semibold mb-3 text-primary">الشعب المخصصة</h5>
-                            <p class="text-sm text-gray-600 mb-3">اختر الشعب لكل صف:</p>
+                            <p class="text-sm text-gray-600 mb-3">اختر الشعب لكل صف (اختياري):</p>
                             <div id="sections-per-grade">
                                 <!-- Sections per grade will be populated here -->
                             </div>
@@ -1386,9 +1402,18 @@
                             <div class="flex items-start">
                                 <i class="fas fa-shield-alt text-blue-600 ml-3 mt-1"></i>
                                 <div>
-                                    <h5 class="font-semibold text-blue-800 dark:text-blue-200">حماية الخصوصية</h5>
+                                    <h5 class="font-semibold text-blue-800 dark:text-blue-200">حماية الخصوصية والأمان</h5>
                                     <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                                        سيتمكن المعلم من الوصول فقط إلى البيانات المخصصة له، ولن يتمكن من رؤية أو تعديل بيانات المعلمين الآخرين
+                                        <strong>المعلم سيتمكن من:</strong><br>
+                                        ✓ عرض وتعديل خططه الأسبوعية فقط<br>
+                                        ✓ عرض الطلاب في صفوفه المخصصة<br>
+                                        ✓ تسجيل الحضور والأنشطة<br>
+                                        <br>
+                                        <strong>المعلم لن يتمكن من:</strong><br>
+                                        ✗ عرض خطط المعلمين الآخرين<br>
+                                        ✗ تعديل أو حذف خطط المعلمين الآخرين<br>
+                                        ✗ الوصول إلى إدارة المستخدمين<br>
+                                        ✗ رؤية أو تعديل بيانات المعلمين الآخرين
                                     </p>
                                 </div>
                             </div>
@@ -1610,12 +1635,14 @@
             const isAdmin = currentUser.role === 'admin';
             const adminOnlyElements = document.querySelectorAll('.admin-only');
             
-            // Show/hide admin-only elements
+            // Show/hide admin-only elements - هذا هو الحل للمشكلة الثانية
             adminOnlyElements.forEach(element => {
                 if (isAdmin) {
                     element.classList.remove('teacher-hidden');
+                    element.style.display = '';
                 } else {
                     element.classList.add('teacher-hidden');
+                    element.style.display = 'none';
                 }
             });
             
@@ -1626,6 +1653,16 @@
                 roleBadge.className = isAdmin ? 
                     'mr-2 px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs' :
                     'mr-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs';
+            }
+
+            // Show teacher access notice
+            const teacherNotice = document.getElementById('teacher-access-notice');
+            if (teacherNotice) {
+                if (!isAdmin) {
+                    teacherNotice.classList.remove('hidden');
+                } else {
+                    teacherNotice.classList.add('hidden');
+                }
             }
             
             populateGradeSelects();
@@ -1659,10 +1696,11 @@
             });
         }
 
-        // Tab functionality
+        // Tab functionality - التحقق من الصلاحيات
         function handleTabClick() {
             const tabName = this.getAttribute('data-tab');
             
+            // منع المعلم من الوصول لقسم إدارة المستخدمين
             if (tabName === 'users' && currentUser && currentUser.role !== 'admin') {
                 showErrorMessage('ليس لديك صلاحية للوصول إلى إدارة المستخدمين');
                 return;
@@ -1699,7 +1737,7 @@
             }
         }
 
-        // Real-time data loading
+        // Real-time data loading - تصفية البيانات حسب صلاحيات المعلم
         function loadRealtimeData() {
             loadPlansRealtime();
             loadUsersRealtime();
@@ -1711,11 +1749,9 @@
         function loadPlansRealtime() {
             let query = db.collection('weeklyPlans');
             
-            // Filter by user permissions if not admin
+            // Filter plans based on user role - المعلم يرى خططه فقط
             if (currentUser && currentUser.role !== 'admin') {
-                if (currentUser.permissions && !currentUser.permissions.includes('all')) {
-                    query = query.where('grade', 'in', currentUser.permissions);
-                }
+                query = query.where('createdBy', '==', currentUser.id);
             }
             
             query.onSnapshot((snapshot) => {
@@ -1743,9 +1779,9 @@
         function loadStudentsRealtime() {
             let query = db.collection('students');
             
-            // Filter by user permissions if not admin
-            if (currentUser && currentUser.role !== 'admin') {
-                if (currentUser.permissions && !currentUser.permissions.includes('all')) {
+            // Filter students based on teacher's assigned grades
+            if (currentUser && currentUser.role !== 'admin' && currentUser.permissions) {
+                if (!currentUser.permissions.includes('all')) {
                     query = query.where('grade', 'in', currentUser.permissions);
                 }
             }
@@ -1782,6 +1818,12 @@
         }
 
         function loadUsersRealtime() {
+            // Only admin can see the users list
+            if (currentUser && currentUser.role !== 'admin') {
+                hideLoading('users');
+                return;
+            }
+
             db.collection('users').onSnapshot((snapshot) => {
                 allUsers = [];
                 snapshot.forEach((doc) => {
@@ -1800,7 +1842,6 @@
             }, (error) => {
                 console.error('Error loading users:', error);
                 hideLoading('users');
-                showErrorMessage('حدث خطأ في تحميل بيانات المستخدمين');
             });
         }
 
@@ -2504,24 +2545,6 @@
                     </div>
                 </div>
                 
-                <div class="mb-4">
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <label class="text-sm font-medium">حالة الحضور:</label>
-                        <select class="attendance-status-select border rounded px-2 py-1 text-sm" data-student-id="${student.id}">
-                            <option value="present">حاضر</option>
-                            <option value="absent">غائب</option>
-                            <option value="late">متأخر</option>
-                        </select>
-                    </div>
-                    <div class="absence-reason hidden mt-2">
-                        <input type="text" placeholder="سبب الغياب..." class="absence-reason-input w-full" data-student-id="${student.id}">
-                        <button onclick="sendAbsenceWhatsApp('${student.id}')" class="whatsapp-btn text-white px-3 py-1 rounded text-sm mt-2">
-                            <i class="fab fa-whatsapp ml-1"></i>
-                            إرسال لولي الأمر
-                        </button>
-                    </div>
-                </div>
-                
                 <div class="flex justify-between items-center">
                     <div class="flex space-x-2 space-x-reverse">
                         <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
@@ -2540,18 +2563,6 @@
                     ` : ''}
                 </div>
             `;
-            
-            // Add event listener for attendance status change
-            const attendanceSelect = card.querySelector('.attendance-status-select');
-            const absenceReasonDiv = card.querySelector('.absence-reason');
-            
-            attendanceSelect.addEventListener('change', function() {
-                if (this.value === 'absent') {
-                    absenceReasonDiv.classList.remove('hidden');
-                } else {
-                    absenceReasonDiv.classList.add('hidden');
-                }
-            });
             
             return card;
         }
@@ -2624,27 +2635,6 @@
         function sendWhatsAppToParent(phoneNumber, studentName) {
             const message = encodeURIComponent(`مرحباً، هذه رسالة من مدرسة الثروات الوطنية الخاصة بخصوص الطالب ${studentName}.`);
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        function sendAbsenceWhatsApp(studentId) {
-            const student = allStudents.find(s => s.id === studentId);
-            if (!student || !student.parentPhone) {
-                showErrorMessage('لا يوجد رقم هاتف لولي الأمر');
-                return;
-            }
-            
-            const reasonInput = document.querySelector(`input[data-student-id="${studentId}"]`);
-            const reason = reasonInput ? reasonInput.value : '';
-            
-            const message = encodeURIComponent(
-                `مرحباً، نود إعلامكم بأن الطالب/ة ${student.name} غائب/ة اليوم.\n` +
-                (reason ? `سبب الغياب: ${reason}\n` : '') +
-                `يرجى التواصل معنا لأي استفسار.\n\n` +
-                `مدرسة الثروات الوطنية الخاصة`
-            );
-            
-            const whatsappUrl = `https://wa.me/${student.parentPhone}?text=${message}`;
             window.open(whatsappUrl, '_blank');
         }
 
@@ -2722,25 +2712,7 @@
                         <span class="attendance-status late">متأخر</span>
                     </label>
                 </div>
-                
-                <div class="absence-reason-section hidden mt-3">
-                    <input type="text" placeholder="سبب الغياب..." class="w-full px-2 py-1 border rounded text-sm" data-student-id="${student.id}">
-                </div>
             `;
-            
-            // Add event listeners for attendance status change
-            const radioButtons = card.querySelectorAll('input[type="radio"]');
-            const absenceReasonSection = card.querySelector('.absence-reason-section');
-            
-            radioButtons.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'absent') {
-                        absenceReasonSection.classList.remove('hidden');
-                    } else {
-                        absenceReasonSection.classList.add('hidden');
-                    }
-                });
-            });
             
             return card;
         }
@@ -2767,14 +2739,11 @@
                     const studentId = card.querySelector('p').textContent;
                     const checkedRadio = card.querySelector('input[type="radio"]:checked');
                     const status = checkedRadio.value;
-                    const reasonInput = card.querySelector('input[data-student-id]');
-                    const reason = reasonInput ? reasonInput.value : '';
                     
                     attendanceRecords.push({
                         studentId: studentId,
                         studentName: studentName,
                         status: status,
-                        reason: reason,
                         grade: grade,
                         section: section,
                         date: date,
@@ -3378,7 +3347,7 @@
             });
         }
 
-        // User Management Functions - المشكلة الموقع الثاني - الإصلاح
+        // User Management Functions
         function openUserModal() {
             if (currentUser && currentUser.role !== 'admin') {
                 showErrorMessage('ليس لديك صلاحية لإدارة المستخدمين');
@@ -3858,7 +3827,6 @@
         window.editUser = editUser;
         window.deleteUser = deleteUser;
         window.sendWhatsAppToParent = sendWhatsAppToParent;
-        window.sendAbsenceWhatsApp = sendAbsenceWhatsApp;
         window.switchTab = switchTab;
         window.viewWeeklyPlan = viewWeeklyPlan;
         window.editWeeklyPlan = editWeeklyPlan;
